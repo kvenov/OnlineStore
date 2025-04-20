@@ -27,10 +27,10 @@ namespace OnlineStore.Data.Models
 
 
 
-		public string AuthorId { get; set; } = null!;
+		public string? AuthorId { get; set; }
 
 		[Comment("Article author")]
-		public virtual ApplicationUser Author { get; set; } = null!;
+		public virtual ApplicationUser? Author { get; set; }
 
 		public int CategoryId { get; set; }
 

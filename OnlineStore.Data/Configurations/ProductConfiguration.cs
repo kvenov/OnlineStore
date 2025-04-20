@@ -49,14 +49,24 @@ namespace OnlineStore.Data.Configurations
 				.HasMaxLength(ProductImageUrlMaxLength);
 
 			entity
+				.Property(p => p.CategoryId)
+				.IsRequired(true);
+
+			entity
+				.Property(p => p.BrandId)
+				.IsRequired(false);
+
+			entity
 				.HasOne(p => p.Category)
 				.WithMany(c => c.Products)
-				.HasForeignKey(p => p.CategoryId);
+				.HasForeignKey(p => p.CategoryId)
+				.OnDelete(DeleteBehavior.Restrict);
 
 			entity
 				.HasOne(p => p.Brand)
 				.WithMany(b => b.Products)
-				.HasForeignKey(p => p.BrandId);
+				.HasForeignKey(p => p.BrandId)
+				.OnDelete(DeleteBehavior.SetNull);
 		}
 	}
 }

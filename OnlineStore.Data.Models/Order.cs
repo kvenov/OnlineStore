@@ -24,10 +24,10 @@ namespace OnlineStore.Data.Models
 		public string ShippingAddress { get; set; } = null!;
 
 
-		public string UserId { get; set; } = null!;
+		public string? UserId { get; set; }
 
 		[Comment("User who placed the order")]
-		public virtual ApplicationUser User { get; set; } = null!;
+		public virtual ApplicationUser? User { get; set; }
 
 
 		[Comment("Items in the order")]

@@ -40,21 +40,23 @@ namespace OnlineStore.Data.Configurations
 
 			entity
 				.Property(p => p.AuthorId)
-				.IsRequired(true);
-
-			entity
-				.HasOne(a => a.Author)
-				.WithMany(au => au.Articles)
-				.HasForeignKey(a => a.AuthorId);
+				.IsRequired(false);
 
 			entity
 				.Property(p => p.CategoryId)
 				.IsRequired(true);
 
 			entity
+				.HasOne(a => a.Author)
+				.WithMany(au => au.Articles)
+				.HasForeignKey(a => a.AuthorId)
+				.OnDelete(DeleteBehavior.SetNull);
+
+			entity
 				.HasOne(a => a.Category)
 				.WithMany(c => c.Articles)
-				.HasForeignKey(a => a.CategoryId);
+				.HasForeignKey(a => a.CategoryId)
+				.OnDelete(DeleteBehavior.Restrict);
 		}
 	}
 }

@@ -36,7 +36,8 @@ namespace OnlineStore.Data.Configurations
 			entity
 				.HasOne(au => au.ShoppingCart)
 				.WithOne(sc => sc.User)
-				.HasForeignKey<ApplicationUser>(au => au.ShoppingCartId);
+				.HasForeignKey<ApplicationUser>(au => au.ShoppingCartId)
+				.OnDelete(DeleteBehavior.Cascade);
 
 		}
 	}

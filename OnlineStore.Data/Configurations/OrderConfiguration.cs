@@ -32,9 +32,14 @@ namespace OnlineStore.Data.Configurations
 				.IsRequired();
 
 			entity
+				.Property(o => o.UserId)
+				.IsRequired(false);
+
+			entity
 				.HasOne(o => o.User)
 				.WithMany(u => u.Orders)
-				.HasForeignKey(o => o.UserId);
+				.HasForeignKey(o => o.UserId)
+				.OnDelete(DeleteBehavior.SetNull);
 		}
 	}
 }

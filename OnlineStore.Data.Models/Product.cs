@@ -41,10 +41,10 @@ namespace OnlineStore.Data.Models
 		[Comment("Product category")]
 		public ProductCategory Category { get; set; } = null!;
 
-		public int BrandId { get; set; }
+		public int? BrandId { get; set; }
 
 		[Comment("Product brand")]
-		public virtual Brand Brand { get; set; } = null!;
+		public virtual Brand? Brand { get; set; }
 
 
 		public virtual ICollection<OrderItem> OrderItems { get; set; } =
