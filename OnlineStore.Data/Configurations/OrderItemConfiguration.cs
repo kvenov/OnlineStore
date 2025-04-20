@@ -34,7 +34,7 @@ namespace OnlineStore.Data.Configurations
 
 			entity
 				.HasOne(oi => oi.Product)
-				.WithMany(p => p.ItemOrders)
+				.WithMany(p => p.OrderItems)
 				.HasForeignKey(oi => oi.ProductId);
 		}
 	}

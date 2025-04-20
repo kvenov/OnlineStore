@@ -47,10 +47,10 @@ namespace OnlineStore.Data.Models
 		public virtual Brand Brand { get; set; } = null!;
 
 
-		public virtual ICollection<OrderItem> ItemOrders { get; set; } =
+		public virtual ICollection<OrderItem> OrderItems { get; set; } =
 					new HashSet<OrderItem>();
 
-		public virtual ICollection<ShoppingCartItem> ItemShoppingCarts { get; set; } =
+		public virtual ICollection<ShoppingCartItem> ShoppingCartItems { get; set; } =
 					new HashSet<ShoppingCartItem>();
 	}
 }

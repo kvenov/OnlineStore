@@ -35,7 +35,7 @@ namespace OnlineStore.Data.Configurations
 
 			entity
 				.HasOne(sci => sci.Product)
-				.WithMany(p => p.ItemShoppingCarts)
+				.WithMany(p => p.ShoppingCartItems)
 				.HasForeignKey(sci => sci.ProductId);
 		}
 	}
