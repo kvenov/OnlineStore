@@ -1,0 +1,42 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using OnlineStore.Data.Models;
+using static OnlineStore.Common.EntityConstants.ShoppingCartItem;
+
+namespace OnlineStore.Data.Configurations
+{
+	public class ShoppingCartItemConfiguration : IEntityTypeConfiguration<ShoppingCartItem>
+	{
+		public void Configure(EntityTypeBuilder<ShoppingCartItem> entity)
+		{
+
+			entity
+				.HasKey(e => e.Id);
+
+			entity
+				.Property(p => p.Quantity)
+				.IsRequired();
+
+			entity
+				.Property(p => p.Price)
+				.HasColumnType(ShoppingCartItemPriceType)
+				.IsRequired();
+
+			entity
+				.Property(p => p.TotalPrice)
+				.HasColumnType(ShoppingCartItemTotalPriceType)
+				.HasComputedColumnSql("[Price] * [Quantity]")
+				.IsRequired();
+
+			entity
+				.HasOne(sci => sci.ShoppingCart)
+				.WithMany(sc => sc.ShoppingCartItems)
+				.HasForeignKey(sci => sci.ShoppingCartId);
+
+			entity
+				.HasOne(sci => sci.Product)
+				.WithMany(p => p.ItemShoppingCarts)
+				.HasForeignKey(sci => sci.ProductId);
+		}
+	}
+}
