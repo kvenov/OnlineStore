@@ -24,6 +24,17 @@ namespace OnlineStore.Data.Models
 		public string ShippingAddress { get; set; } = null!;
 
 
+
+		public int PaymentMethodId { get; set; }
+
+		[Comment("Payment method used for the order")]
+		public virtual PaymentMethod PaymentMethod { get; set; } = null!;
+
+		public int PaymentDetailsId { get; set; }
+
+		[Comment("Payment details used for the order")]
+		public virtual PaymentDetails PaymentDetails { get; set; } = null!;
+
 		public string? UserId { get; set; }
 
 		[Comment("User who placed the order")]

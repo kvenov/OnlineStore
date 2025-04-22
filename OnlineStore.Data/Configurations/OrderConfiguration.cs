@@ -36,10 +36,30 @@ namespace OnlineStore.Data.Configurations
 				.IsRequired(false);
 
 			entity
+				.Property(o => o.PaymentMethodId)
+				.IsRequired(true);
+
+			entity
+				.Property(o => o.PaymentDetailsId)
+				.IsRequired(true);
+
+			entity
 				.HasOne(o => o.User)
 				.WithMany(u => u.Orders)
 				.HasForeignKey(o => o.UserId)
 				.OnDelete(DeleteBehavior.SetNull);
+
+			entity
+				.HasOne(o => o.PaymentMethod)
+				.WithMany(pm => pm.Orders)
+				.HasForeignKey(o => o.PaymentMethodId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			entity
+				.HasOne(o => o.PaymentDetails)
+				.WithOne(pd => pd.Order)
+				.HasForeignKey<Order>(o => o.PaymentDetailsId)
+				.OnDelete(DeleteBehavior.Cascade);
 		}
 	}
 }

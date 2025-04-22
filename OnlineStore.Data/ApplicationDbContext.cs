@@ -26,6 +26,8 @@ namespace OnlineStore.Data
 		public virtual DbSet<Product> Products { get; set; } = null!;
 		public virtual DbSet<ProductCategory> ProductCategories { get; set; } = null!;
 		public virtual DbSet<Brand> Brands { get; set; } = null!;
+		public virtual DbSet<PaymentMethod> PaymentMethods { get; set; } = null!;
+		public virtual DbSet<PaymentDetails> PaymentDetails { get; set; } = null!;
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{

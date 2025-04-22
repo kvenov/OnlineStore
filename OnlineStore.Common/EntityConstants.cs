@@ -144,6 +144,30 @@
 			/// </summary>
 			public const string ShoppingCartItemTotalPriceType = "DECIMAL(18,2)";
 		}
+
+		public static class PaymentDetails
+		{
+			/// <summary>
+			/// The maximum length of the payment details' name on card.
+			/// </summary>
+			public const int PaymentDetailsNameOnCardMaxLength = 40;
+			/// <summary>
+			/// The maximum length of the payment details' card brand.
+			/// </summary>
+			public const int PaymentDetailsCardBrandMaxLength = 20;
+			/// <summary>
+			/// The maximum length of the payment details' card number.
+			/// </summary>
+			public const int PaymentDetailsCardNumberMaxLength = 20;
+		}
+
+		public static class PaymentMethod
+		{
+			/// <summary>
+			/// The maximum length of the payment method's name.
+			/// </summary>
+			public const int PaymentMethodNameMaxLength = 50;
+		}
 	}
 
 }
