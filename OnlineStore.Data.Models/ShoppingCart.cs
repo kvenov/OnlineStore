@@ -14,6 +14,7 @@ namespace OnlineStore.Data.Models
 
 
 		public string UserId { get; set; } = null!;
+
 		[Comment("Owner of the cart")]
 		public virtual ApplicationUser User { get; set; } = null!;
 

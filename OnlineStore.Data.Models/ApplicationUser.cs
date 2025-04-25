@@ -26,6 +26,8 @@ namespace OnlineStore.Data.Models
 
 
 		public int ShoppingCartId { get; set; }
+
+		[Comment("Shopping cart of the user")]
 		public virtual ShoppingCart ShoppingCart { get; set; } = null!;
 
 		public virtual ICollection<Article> Articles { get; set; } =
