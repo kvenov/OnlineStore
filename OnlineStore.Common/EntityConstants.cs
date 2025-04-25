@@ -168,6 +168,62 @@
 			/// </summary>
 			public const int PaymentMethodNameMaxLength = 50;
 		}
+
+		public static class ProductDetails
+		{
+			/// <summary>
+			/// The maximum length of the product details' material.
+			/// </summary>
+			public const int MaterialMaxLength = 100;
+
+			/// <summary>
+			/// The maximum length of the product details' color.
+			/// </summary>
+			public const int ColorMaxLength = 50;
+
+			public static readonly string[] AllowedGenders = { "Men", "Women", "Unisex" };
+
+			/// <summary>
+			/// The maximum length of the product details' gender.
+			/// </summary>
+			public const int GenderMaxLength = 20;
+
+
+			/// <summary>
+			/// The maximum length of the product details' size guide URL.
+			/// </summary>
+			public const int SizeGuideUrlMaxLength = 300;
+
+
+			/// <summary>
+			/// The maximum length of the product details' country of origin.
+			/// </summary>
+			public const int CountryOfOriginMaxLength = 100;
+
+
+			/// <summary>
+			/// The maximum length of the product details' care instructions.
+			/// </summary>
+			public const int CareInstructionsMaxLength = 1000;
+
+			/// <summary>
+			/// The maximum length of the product details' weight.
+			/// </summary>
+			public const int MaxWeightKg = 50;
+
+			public static readonly string[] AllowedFits = { "Regular", "Slim", "Loose", "Oversized" };
+
+			/// <summary>
+			/// The maximum length of the product details' fit.
+			/// </summary>
+			public const int FitMaxLength = 30;
+
+
+			/// <summary>
+			/// The maximum length of the product details' style.
+			/// </summary>
+			public const int StyleMaxLength = 100;
+		}
 	}
 
 }

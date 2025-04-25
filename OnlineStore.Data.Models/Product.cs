@@ -39,13 +39,18 @@ namespace OnlineStore.Data.Models
 		public int CategoryId { get; set; }
 
 		[Comment("Product category")]
-		public ProductCategory Category { get; set; } = null!;
+		public virtual ProductCategory Category { get; set; } = null!;
 
 		public int? BrandId { get; set; }
 
 		[Comment("Product brand")]
 		public virtual Brand? Brand { get; set; }
 
+
+		public int ProductDetailsId { get; set; }
+
+		[Comment("Product details")]
+		public virtual ProductDetails ProductDetails { get; set; } = null!;
 
 		public virtual ICollection<OrderItem> OrderItems { get; set; } =
 					new HashSet<OrderItem>();
