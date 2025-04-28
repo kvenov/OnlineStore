@@ -34,6 +34,12 @@ namespace OnlineStore.Data.Models
 		[Comment("Product image url")]
 		public string ImageUrl { get; set; } = null!;
 
+		[Comment("Product avarage rating")]
+		public double AverageRating { get; set; }
+
+		[Comment("Product total ratings")]
+		public int TotalRatings { get; set; }
+
 
 
 		public int CategoryId { get; set; }
@@ -63,5 +69,9 @@ namespace OnlineStore.Data.Models
 		[Comment("Wishlist items that contained the current Product")]
 		public virtual ICollection<WishlistItem> WishlistItems { get; set; } =
 					new HashSet<WishlistItem>();
+
+		[Comment("Product ratings")]
+		public virtual ICollection<ProductRating> ProductRatings { get; set; } =
+					new HashSet<ProductRating>();
 	}
 }

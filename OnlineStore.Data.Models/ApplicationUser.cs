@@ -35,10 +35,16 @@ namespace OnlineStore.Data.Models
 		[Comment("Wishlist of the user")]
 		public virtual Wishlist Wishlist { get; set; } = null!;
 
+		[Comment("The User's articles")]
 		public virtual ICollection<Article> Articles { get; set; } =
 					new HashSet<Article>();
 
+		[Comment("The User's orders")]
 		public virtual ICollection<Order> Orders { get; set; } =
 					new HashSet<Order>();
+
+		[Comment("The User's products reviews")]
+		public virtual ICollection<ProductRating> ProductRatings { get; set; } =
+					new HashSet<ProductRating>();
 	}
 }

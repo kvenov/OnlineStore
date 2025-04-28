@@ -224,6 +224,20 @@
 			/// </summary>
 			public const int StyleMaxLength = 100;
 		}
+
+		public static class ProductRating
+		{
+			/// <summary>
+			/// The maximum length of the product rating's review.
+			/// </summary>
+			public const int ProductRatingReviewMaxLength = 1000;
+
+			/// <summary>
+			/// The maximum value for the product rating.
+			/// </summary>
+			public const int ProductRatingMaxValue = 5;
+
+		}
 	}
 
 }
