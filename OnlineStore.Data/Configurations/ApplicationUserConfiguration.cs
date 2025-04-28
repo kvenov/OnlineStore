@@ -39,6 +39,12 @@ namespace OnlineStore.Data.Configurations
 				.HasForeignKey<ApplicationUser>(au => au.ShoppingCartId)
 				.OnDelete(DeleteBehavior.Cascade);
 
+			entity
+				.HasOne(au => au.Wishlist)
+				.WithOne(w => w.User)
+				.HasForeignKey<ApplicationUser>(au => au.WishlistId)
+				.OnDelete(DeleteBehavior.Cascade);
+
 		}
 	}
 }

@@ -52,10 +52,16 @@ namespace OnlineStore.Data.Models
 		[Comment("Product details")]
 		public virtual ProductDetails ProductDetails { get; set; } = null!;
 
+		[Comment("Orders items that contained the current Product")]
 		public virtual ICollection<OrderItem> OrderItems { get; set; } =
 					new HashSet<OrderItem>();
 
+		[Comment("Shopping cart items that contained the current Product")]
 		public virtual ICollection<ShoppingCartItem> ShoppingCartItems { get; set; } =
 					new HashSet<ShoppingCartItem>();
+
+		[Comment("Wishlist items that contained the current Product")]
+		public virtual ICollection<WishlistItem> WishlistItems { get; set; } =
+					new HashSet<WishlistItem>();
 	}
 }

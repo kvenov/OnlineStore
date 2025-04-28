@@ -30,6 +30,11 @@ namespace OnlineStore.Data.Models
 		[Comment("Shopping cart of the user")]
 		public virtual ShoppingCart ShoppingCart { get; set; } = null!;
 
+		public int WishlistId { get; set; }
+
+		[Comment("Wishlist of the user")]
+		public virtual Wishlist Wishlist { get; set; } = null!;
+
 		public virtual ICollection<Article> Articles { get; set; } =
 					new HashSet<Article>();
 

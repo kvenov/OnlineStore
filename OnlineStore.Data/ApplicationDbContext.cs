@@ -29,6 +29,8 @@ namespace OnlineStore.Data
 		public virtual DbSet<PaymentMethod> PaymentMethods { get; set; } = null!;
 		public virtual DbSet<PaymentDetails> PaymentDetails { get; set; } = null!;
 		public virtual DbSet<ProductDetails> ProductDetails { get; set; } = null!;
+		public virtual DbSet<Wishlist> Wishlists { get; set; } = null!;
+		public virtual DbSet<WishlistItem> WishlistsItems { get; set; } = null!;
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
