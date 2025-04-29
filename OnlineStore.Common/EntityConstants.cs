@@ -238,6 +238,39 @@
 			public const int ProductRatingMaxValue = 5;
 
 		}
+
+		public static class Address
+		{
+			/// <summary>
+			/// The maximum length of the address's full name.
+			/// </summary>
+			public const int AddressFullNameMaxLength = 100;
+
+			/// <summary>
+			/// The maximum length of the address's street.
+			/// </summary>
+			public const int AddressStreetMaxLength = 200;
+
+			/// <summary>
+			/// The maximum length of the address's city.
+			/// </summary>
+			public const int AddressCityMaxLength = 100;
+
+			/// <summary>
+			/// The maximum length of the address's country.
+			/// </summary>
+			public const int AddressCountryMaxLength = 100;
+
+			/// <summary>
+			/// The maximum length of the address's zip code.
+			/// </summary>
+			public const int AddressZipCodeMaxLength = 20;
+
+			/// <summary>
+			/// The maximum length of the address's phone number.
+			/// </summary>
+			public const int AddressPhoneNumberMaxLength = 20;
+		}
 	}
 
 }

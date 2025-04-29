@@ -15,10 +15,6 @@ namespace OnlineStore.Data.Models
 		[Comment("Registration date of the user")]
 		public DateTime CreatedDate { get; set; }
 
-		[Comment("User Address")]
-		public string? DefaultAddress { get; set; }
-
-
 		//For now, we will keep this property as not-included, and latter we will think to do something with it
 		[NotMapped]
 		[Comment("User Loyalty points")]
@@ -34,6 +30,10 @@ namespace OnlineStore.Data.Models
 
 		[Comment("Wishlist of the user")]
 		public virtual Wishlist Wishlist { get; set; } = null!;
+
+		[Comment("User Addresses")]
+		public virtual ICollection<Address> Addresses { get; set; } =
+					new HashSet<Address>();
 
 		[Comment("The User's articles")]
 		public virtual ICollection<Article> Articles { get; set; } =

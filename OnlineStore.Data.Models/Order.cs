@@ -20,8 +20,15 @@ namespace OnlineStore.Data.Models
 		[Comment("Order status")]
 		public OrderStatus Status { get; set; }
 
+		public int ShippingAddressId { get; set; }
+
 		[Comment("Order Shipping address")]
-		public string ShippingAddress { get; set; } = null!;
+		public virtual Address ShippingAddress { get; set; } = null!;
+
+		public int BillingAddressId { get; set; }
+
+		[Comment("Order Billing address")]
+		public virtual Address BillingAddress { get; set; } = null!;
 
 
 

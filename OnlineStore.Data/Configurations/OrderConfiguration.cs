@@ -60,6 +60,18 @@ namespace OnlineStore.Data.Configurations
 				.WithOne(pd => pd.Order)
 				.HasForeignKey<Order>(o => o.PaymentDetailsId)
 				.OnDelete(DeleteBehavior.Cascade);
+
+			entity
+				.HasOne(o => o.ShippingAddress)
+				.WithMany()
+				.HasForeignKey(o => o.ShippingAddressId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			entity
+				.HasOne(o => o.BillingAddress)
+				.WithMany()
+				.HasForeignKey(o => o.BillingAddressId)
+				.OnDelete(DeleteBehavior.Restrict);
 		}
 	}
 }
