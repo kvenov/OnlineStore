@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using OnlineStore.Data.Models.Interfaces;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OnlineStore.Data.Models
 {
 
 	[Comment("Users in the store")]
-	public class ApplicationUser : IdentityUser
+	public class ApplicationUser : IdentityUser, ISoftDeletable
 	{
 
 		[Comment("User Fullname")]
@@ -50,5 +51,7 @@ namespace OnlineStore.Data.Models
 		[Comment("The User's products reviews")]
 		public virtual ICollection<ProductRating> ProductRatings { get; set; } =
 					new HashSet<ProductRating>();
+
+		public bool IsDeleted { get; set; }
 	}
 }

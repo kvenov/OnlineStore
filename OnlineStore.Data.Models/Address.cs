@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OnlineStore.Data.Models.Interfaces;
 
 namespace OnlineStore.Data.Models
 {
 
 	[Comment("The Addresses of the store")]
-	public class Address
+	public class Address : ISoftDeletable
 	{
 
 		[Comment("The Address identifier")]
@@ -38,5 +39,7 @@ namespace OnlineStore.Data.Models
 
 		[Comment("The Address User")]
 		public virtual ApplicationUser User { get; set; } = null!;
+
+		public bool IsDeleted { get; set; }
 	}
 }

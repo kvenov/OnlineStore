@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OnlineStore.Data.Models.Interfaces;
 
 namespace OnlineStore.Data.Models
 {
 
 	[Comment("The Wishlist in the store")]
-	public class Wishlist
+	public class Wishlist : ISoftDeletable
 	{
 
 		[Comment("The Wishlist Id")]
@@ -18,5 +19,7 @@ namespace OnlineStore.Data.Models
 		[Comment("The Wishlist items")]
 		public virtual ICollection<WishlistItem> WishlistItems { get; set; } = 
 					new HashSet<WishlistItem>();
+
+		public bool IsDeleted { get; set; }
 	}
 }

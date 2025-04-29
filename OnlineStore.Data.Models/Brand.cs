@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OnlineStore.Data.Models.Interfaces;
 
 namespace OnlineStore.Data.Models
 {
 
 	[Comment("Brands in the store")]
-	public class Brand
+	public class Brand : ISoftDeletable
 	{
 
 		[Comment("Brand identifier")]
@@ -28,5 +29,7 @@ namespace OnlineStore.Data.Models
 		[Comment("Products from that brand")]
 		public virtual ICollection<Product> Products { get; set; } =
 					new HashSet<Product>();
+
+		public bool IsDeleted { get; set; }
 	}
 }

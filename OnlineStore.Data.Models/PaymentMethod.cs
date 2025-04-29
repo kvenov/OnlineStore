@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineStore.Data.Models.Enums;
+using OnlineStore.Data.Models.Interfaces;
 
 namespace OnlineStore.Data.Models
 {
 
 	[Comment("The payment methods in the store")]
-	public class PaymentMethod
+	public class PaymentMethod : ISoftDeletable
 	{
 
 		[Comment("Payment method id")]
@@ -24,5 +25,7 @@ namespace OnlineStore.Data.Models
 		[Comment("Orders that use the paymnet method")]
 		public virtual ICollection<Order> Orders { get; set; } =
 					new HashSet<Order>();
+
+		public bool IsDeleted { get; set; }
 	}
 }

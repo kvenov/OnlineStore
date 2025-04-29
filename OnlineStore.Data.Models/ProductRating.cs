@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OnlineStore.Data.Models.Interfaces;
 
 namespace OnlineStore.Data.Models
 {
 
 	[Comment("The Products ratings in the store")]
-	public class ProductRating
+	public class ProductRating : ISoftDeletable
 	{
 
 		[Comment("Product rating identifier")]
@@ -28,5 +29,7 @@ namespace OnlineStore.Data.Models
 
 		[Comment("Rating creation date")]
 		public DateTime CreatedAt { get; set; }
+
+		public bool IsDeleted { get; set; }
 	}
 }

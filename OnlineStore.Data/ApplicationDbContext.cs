@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using OnlineStore.Data.Models;
+using OnlineStore.Data.Models.Interfaces;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace OnlineStore.Data
@@ -38,6 +40,28 @@ namespace OnlineStore.Data
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			base.OnModelCreating(builder);
+
+			foreach (var entityType in builder.Model.GetEntityTypes())
+			{
+				if (typeof(ISoftDeletable).IsAssignableFrom(entityType.ClrType))
+				{
+					var parameter = Expression
+							.Parameter(entityType.ClrType, "e");
+					var isDeletedProperty = Expression
+							.Property(parameter, nameof(ISoftDeletable.IsDeleted));
+
+					var filter = Expression.Lambda(
+						Expression
+							.Equal(isDeletedProperty, Expression.Constant(false)),
+								   parameter
+					);
+
+					builder
+							.Entity(entityType.ClrType).HasQueryFilter(filter);
+				}
+			}
+
+
 			builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 		}
 	}

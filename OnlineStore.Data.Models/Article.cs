@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OnlineStore.Data.Models.Interfaces;
 
 namespace OnlineStore.Data.Models
 {
 
 	[Comment("Articles in the store")]
-	public class Article
+	public class Article : ISoftDeletable
 	{
 
 		[Comment("Article identifier")]
@@ -36,5 +37,7 @@ namespace OnlineStore.Data.Models
 
 		[Comment("Article category")]
 		public virtual ArticleCategory Category { get; set; } = null!;
+
+		public bool IsDeleted { get; set; }
 	}
 }
