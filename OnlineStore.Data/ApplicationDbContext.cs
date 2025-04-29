@@ -33,6 +33,7 @@ namespace OnlineStore.Data
 		public virtual DbSet<WishlistItem> WishlistsItems { get; set; } = null!;
 		public virtual DbSet<ProductRating> ProductsRatings { get; set; } = null!;
 		public virtual DbSet<Address> Addresses { get; set; } = null!;
+		public virtual DbSet<RecentlyViewedProduct> RecentlyViewedProducts { get; set; } = null!;
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{

@@ -43,6 +43,10 @@ namespace OnlineStore.Data.Models
 		public virtual ICollection<Order> Orders { get; set; } =
 					new HashSet<Order>();
 
+		[Comment("The User's recently viewed products")]
+		public virtual ICollection<RecentlyViewedProduct> RecentlyViewedProducts { get; set; } =
+					new HashSet<RecentlyViewedProduct>();
+
 		[Comment("The User's products reviews")]
 		public virtual ICollection<ProductRating> ProductRatings { get; set; } =
 					new HashSet<ProductRating>();
