@@ -65,13 +65,13 @@ namespace OnlineStore.Data.Configurations
 
 			entity
 				.HasOne(o => o.ShippingAddress)
-				.WithMany()
+				.WithMany(a => a.ShippingAddressOrders)
 				.HasForeignKey(o => o.ShippingAddressId)
 				.OnDelete(DeleteBehavior.Restrict);
 
 			entity
 				.HasOne(o => o.BillingAddress)
-				.WithMany()
+				.WithMany(a => a.BillingAddressOrders)
 				.HasForeignKey(o => o.BillingAddressId)
 				.OnDelete(DeleteBehavior.Restrict);
 

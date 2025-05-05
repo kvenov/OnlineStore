@@ -40,6 +40,12 @@ namespace OnlineStore.Data.Models
 		[Comment("The Address User")]
 		public virtual ApplicationUser User { get; set; } = null!;
 
+		public virtual ICollection<Order> ShippingAddressOrders { get; set; } =
+					new HashSet<Order>();
+
+		public virtual ICollection<Order> BillingAddressOrders { get; set; } =
+					new HashSet<Order>();
+
 		public bool IsDeleted { get; set; }
 	}
 }
