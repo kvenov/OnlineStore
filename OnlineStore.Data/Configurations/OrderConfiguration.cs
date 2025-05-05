@@ -25,9 +25,12 @@ namespace OnlineStore.Data.Configurations
 				.HasColumnType(OrderTotalAmountType);
 
 			entity
-				.Property(o => o.ShippingAddress)
-				.IsRequired()
-				.HasMaxLength(OrderShippingAddressMaxLength);
+				.Property(o => o.ShippingAddressId)
+				.IsRequired(true);
+
+			entity
+				.Property(o => o.BillingAddressId)
+				.IsRequired(true);
 
 			entity
 				.Property(o => o.Status)
