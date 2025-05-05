@@ -19,7 +19,7 @@ namespace OnlineStore.Data.Configurations
 
 			entity
 				.Property(p => p.UserId)
-				.IsRequired(true);
+				.IsRequired(false);
 
 			entity
 				.Property(p => p.Rating)
