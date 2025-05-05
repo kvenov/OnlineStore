@@ -150,7 +150,7 @@
 			/// <summary>
 			/// The maximum length of the payment details' name on card.
 			/// </summary>
-			public const int PaymentDetailsNameOnCardMaxLength = 40;
+			public const int PaymentDetailsNameOnCardMaxLength = 100;
 			/// <summary>
 			/// The maximum length of the payment details' card brand.
 			/// </summary>

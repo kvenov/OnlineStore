@@ -17,7 +17,7 @@ namespace OnlineStore.Data.Models
 		public string? Notes { get; set; }
 
 		[Comment("The WishlistItem quantity")]
-		public int Quantity { get; set; }
+		public int? Quantity { get; set; }
 
 		public int WishlistId { get; set; }
 

@@ -63,6 +63,10 @@ namespace OnlineStore.Data.Configurations
 				.WithMany(u => u.Addresses)
 				.HasForeignKey(a => a.UserId)
 				.OnDelete(DeleteBehavior.Cascade);
+
+			entity
+				.HasIndex(p => p.UserId);
+
 		}
 	}
 }

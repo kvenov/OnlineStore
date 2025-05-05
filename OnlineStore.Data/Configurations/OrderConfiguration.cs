@@ -15,7 +15,8 @@ namespace OnlineStore.Data.Configurations
 
 			entity
 				.Property(o => o.OrderDate)
-				.IsRequired();
+				.IsRequired()
+				.HasDefaultValueSql("CURRENT_TIMESTAMP");
 
 			entity
 				.Property(o => o.TotalAmount)
@@ -27,6 +28,7 @@ namespace OnlineStore.Data.Configurations
 				.Property(o => o.ShippingAddress)
 				.IsRequired()
 				.HasMaxLength(OrderShippingAddressMaxLength);
+
 			entity
 				.Property(o => o.Status)
 				.IsRequired();
@@ -72,6 +74,16 @@ namespace OnlineStore.Data.Configurations
 				.WithMany()
 				.HasForeignKey(o => o.BillingAddressId)
 				.OnDelete(DeleteBehavior.Restrict);
+
+			entity
+				.HasIndex(o => o.OrderDate);
+
+			entity
+				.HasIndex(o => o.UserId);
+
+			entity
+				.HasIndex(o => o.Status);
+
 		}
 	}
 }

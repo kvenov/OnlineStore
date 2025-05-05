@@ -14,6 +14,11 @@ namespace OnlineStore.Data.Configurations
 
 			entity
 				.Property(sc => sc.CreatedAt)
+				.IsRequired()
+				.HasDefaultValueSql("GETUTCDATE()");
+
+			entity
+				.Property(sc => sc.UserId)
 				.IsRequired();
 
 			entity
@@ -21,6 +26,13 @@ namespace OnlineStore.Data.Configurations
 				.WithOne(u => u.ShoppingCart)
 				.HasForeignKey<ShoppingCart>(sc => sc.UserId)
 				.OnDelete(DeleteBehavior.Cascade);
+
+			entity
+				.HasIndex(sc => sc.UserId)
+				.IsUnique();
+
+			entity
+				.HasIndex(sc => sc.CreatedAt);
 
 		}
 	}

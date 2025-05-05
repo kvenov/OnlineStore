@@ -36,12 +36,21 @@ namespace OnlineStore.Data.Configurations
 				.IsRequired();
 
 			entity
+				.Property(p => p.AverageRating)
+				.HasPrecision(3, 2);
+
+			entity
+				.Property(p => p.TotalRatings)
+				.IsRequired();
+
+			entity
 				.Property(p => p.IsActive)
 				.IsRequired();
 
 			entity
 				.Property(p => p.CreatedAt)
-				.IsRequired();
+				.IsRequired()
+				.HasDefaultValueSql("GETUTCDATE()");
 
 			entity
 				.Property(p => p.ImageUrl)
@@ -77,6 +86,18 @@ namespace OnlineStore.Data.Configurations
 				.WithMany(b => b.Products)
 				.HasForeignKey(p => p.BrandId)
 				.OnDelete(DeleteBehavior.SetNull);
+
+			entity
+				.HasIndex(p => p.Name);
+			entity
+				.HasIndex(p => p.IsActive);
+			entity
+				.HasIndex(p => p.CreatedAt);
+			entity
+				.HasIndex(p => new { p.Price, p.DiscountPrice });
+			entity
+				.HasIndex(p => p.AverageRating);
+
 		}
 	}
 }

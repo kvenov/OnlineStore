@@ -21,6 +21,10 @@ namespace OnlineStore.Data.Configurations
 				.WithOne(u => u.Wishlist)
 				.HasForeignKey<Wishlist>(w => w.UserId)
 				.OnDelete(DeleteBehavior.Cascade);
+
+			entity
+				.HasIndex(w => w.UserId)
+				.IsUnique();
 		}
 	}
 }

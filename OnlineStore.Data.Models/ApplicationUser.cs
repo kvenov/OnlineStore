@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OnlineStore.Data.Models.Interfaces;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OnlineStore.Data.Models
 {
@@ -15,12 +14,6 @@ namespace OnlineStore.Data.Models
 
 		[Comment("Registration date of the user")]
 		public DateTime CreatedDate { get; set; }
-
-		//For now, we will keep this property as not-included, and latter we will think to do something with it
-		[NotMapped]
-		[Comment("User Loyalty points")]
-		public int? LoyaltyPoints { get; set; }
-
 
 		public int ShoppingCartId { get; set; }
 

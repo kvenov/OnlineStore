@@ -24,6 +24,7 @@ namespace OnlineStore.Data.Configurations
 
 			entity
 				.Property(p => p.Subtotal)
+				.IsRequired(true)
 				.HasComputedColumnSql("[Quantity] * [UnitPrice]")
 				.HasColumnType(OrderItemSubtotalPriceType);
 

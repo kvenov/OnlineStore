@@ -22,6 +22,9 @@ namespace OnlineStore.Data.Configurations
 				.Property(pc => pc.Description)
 				.IsRequired(false)
 				.HasMaxLength(ProductCategoryDescriptionMaxLength);
+
+			entity
+				.HasIndex(pc => pc.Name);
 		}
 	}
 }

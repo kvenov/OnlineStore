@@ -24,16 +24,18 @@ namespace OnlineStore.Data.Configurations
 
 			entity 
 				.Property(p => p.ExpMonth)
+				.HasPrecision(2)
 				.IsRequired(false);
 
 			entity 
 				.Property(p => p.ExpYear)
+				.HasPrecision(4)
 				.IsRequired(false);
 
 			entity
 				.Property(p => p.NameOnCard)
 				.HasMaxLength(PaymentDetailsNameOnCardMaxLength)
-				.IsRequired();
+				.IsRequired(true);
 
 			entity
 				.Property(p => p.PaidAt)
@@ -52,6 +54,12 @@ namespace OnlineStore.Data.Configurations
 				.WithOne(o => o.PaymentDetails)
 				.HasForeignKey<PaymentDetails>(p => p.OrderId)
 				.OnDelete(DeleteBehavior.Cascade);
+
+			entity
+				.HasIndex(p => p.Status);
+
+			entity
+				.HasIndex(p => p.PaidAt);
 		}
 	}
 	

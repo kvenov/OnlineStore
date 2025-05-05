@@ -38,7 +38,15 @@ namespace OnlineStore.Data.Configurations
 
 			entity
 				.Property(p => p.IsActive)
-				.IsRequired(true);
+				.IsRequired(true)
+				.HasDefaultValue(true);
+
+			entity
+				.HasIndex(p => p.Name)
+				.IsUnique(true);
+
+			entity
+				.HasIndex(p => p.IsActive);
 		}
 	}
 }

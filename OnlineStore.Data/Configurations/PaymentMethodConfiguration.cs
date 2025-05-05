@@ -16,7 +16,7 @@ namespace OnlineStore.Data.Configurations
 			entity
 				.Property(p => p.Name)
 				.HasMaxLength(PaymentMethodNameMaxLength)
-				.IsRequired();
+				.IsRequired(true);
 
 			entity
 				.Property(p => p.Code)
@@ -24,8 +24,11 @@ namespace OnlineStore.Data.Configurations
 
 			entity
 				.Property(p => p.IsActive)
-				.IsRequired(true);
+				.IsRequired(true)
+				.HasDefaultValue(true);
 
+			entity
+				.HasIndex(p => p.Name);
 		}
 	}
 }

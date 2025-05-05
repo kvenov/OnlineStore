@@ -15,23 +15,12 @@ namespace OnlineStore.Data.Configurations
 				.IsRequired(false)
 				.IsUnicode(true)
 				.HasMaxLength(UserFullNameMaxLength)
-				.HasColumnType("nvarchar");
+				.HasColumnType("NVARCHAR");
 
 			entity
 				.Property(p => p.CreatedDate)
 				.IsRequired(true)
 				.HasDefaultValueSql("GETDATE()");
-
-			entity
-				.Property(p => p.DefaultAddress)
-				.IsRequired(false)
-				.IsUnicode(true)
-				.HasMaxLength(UserDefaultAddressMaxLength)
-				.HasColumnType("nvarchar");
-
-			entity
-				.Property(p => p.LoyaltyPoints)
-				.IsRequired(false);
 
 			entity
 				.HasOne(au => au.ShoppingCart)

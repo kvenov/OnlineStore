@@ -23,6 +23,8 @@ namespace OnlineStore.Data.Configurations
 				.IsRequired(false)
 				.HasMaxLength(ArticleCategoryDescriptionMaxLength);
 
+			entity
+				.HasIndex(ac => ac.Name);
 		}
 	}
 }

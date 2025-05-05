@@ -22,7 +22,7 @@ namespace OnlineStore.Data.Configurations
 
 			entity
 				.Property(p => p.Quantity)
-				.IsRequired(true);
+				.IsRequired(false);
 
 			entity
 				.Property(p => p.WishlistId)
@@ -35,12 +35,14 @@ namespace OnlineStore.Data.Configurations
 			entity
 				.HasOne(wi => wi.Wishlist)
 				.WithMany(w => w.WishlistItems)
-				.HasForeignKey(wi => wi.WishlistId);
+				.HasForeignKey(wi => wi.WishlistId)
+				.OnDelete(DeleteBehavior.Cascade);
 
 			entity
 				.HasOne(wi => wi.Product)
 				.WithMany(p => p.WishlistItems)
-				.HasForeignKey(wi => wi.ProductId);
+				.HasForeignKey(wi => wi.ProductId)
+				.OnDelete(DeleteBehavior.Restrict);
 		}
 	}
 }

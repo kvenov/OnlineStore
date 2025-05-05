@@ -36,7 +36,8 @@ namespace OnlineStore.Data.Configurations
 
 			entity
 				.Property(p => p.IsPublished)
-				.IsRequired(true);
+				.IsRequired(true)
+				.HasDefaultValue(false);
 
 			entity
 				.Property(p => p.AuthorId)
@@ -57,6 +58,16 @@ namespace OnlineStore.Data.Configurations
 				.WithMany(c => c.Articles)
 				.HasForeignKey(a => a.CategoryId)
 				.OnDelete(DeleteBehavior.Restrict);
+
+			entity
+				.HasIndex(p => p.Title);
+
+			entity
+				.HasIndex(p => p.PublishedDate);
+
+			entity
+				.HasIndex(p => p.IsPublished);
+
 		}
 	}
 }
