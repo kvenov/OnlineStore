@@ -1,4 +1,4 @@
-﻿using CinemaApp.Data.Utilities.Interfaces;
+﻿using OnlineStore.Data.Utilities.Interfaces;
 using System.Text;
 using System.Xml.Serialization;
 
