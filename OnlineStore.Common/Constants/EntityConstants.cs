@@ -1,4 +1,4 @@
-﻿namespace OnlineStore.Common
+﻿namespace OnlineStore.Common.Constants
 {
 	public static class EntityConstants
 	{

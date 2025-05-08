@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OnlineStore.Data.Models;
-using static OnlineStore.Common.EntityConstants.Order;
+using static OnlineStore.Common.Constants.EntityConstants.Order;
 
 namespace OnlineStore.Data.Configurations
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OnlineStore.Data.Models;
-using static OnlineStore.Common.EntityConstants.PaymentDetails;
+using static OnlineStore.Common.Constants.EntityConstants.PaymentDetails;
 
 namespace OnlineStore.Data.Configurations
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using static OnlineStore.Common.EntityConstants.ApplicationUser;
+using static OnlineStore.Common.Constants.EntityConstants.ApplicationUser;
 using OnlineStore.Data.Models;
 
 namespace OnlineStore.Data.Configurations

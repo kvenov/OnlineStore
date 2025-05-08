@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35919.96 d17.13
+VisualStudioVersion = 17.13.35919.96
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineStore", "OnlineStore\OnlineStore.csproj", "{D850E15D-1768-4E2F-83F2-B17A53EE731C}"
 EndProject
@@ -12,6 +12,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineStore.Common", "OnlineStore.Common\OnlineStore.Common.csproj", "{82E16BE3-5DF3-4CA0-8D85-D0F7A346C479}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineStore.Services", "OnlineStore.Services\OnlineStore.Services.csproj", "{B3322BA1-8F68-490D-94FD-939D3F3BBAFA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{86F57B5A-F1C5-4989-94A9-D09B88141CAA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{D2A9736C-418A-4036-B5CF-18FCE3750DCB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{320C0E97-543A-4C85-939F-1A02804F0160}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +50,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D850E15D-1768-4E2F-83F2-B17A53EE731C} = {D2A9736C-418A-4036-B5CF-18FCE3750DCB}
+		{E49BBEDF-76C4-4701-9FDB-490DA6EB6E3B} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{6EA8A7AD-0AB3-4BD3-AC19-8311765AFB09} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{B3322BA1-8F68-490D-94FD-939D3F3BBAFA} = {86F57B5A-F1C5-4989-94A9-D09B88141CAA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1C16F987-AC59-44BD-A4BE-AE932185B75E}
