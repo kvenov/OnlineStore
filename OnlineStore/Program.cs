@@ -2,6 +2,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OnlineStore.Data;
 using OnlineStore.Data.Models;
+using OnlineStore.Data.Seeding;
+using OnlineStore.Data.Seeding.Interfaces;
+using OnlineStore.Data.Utilities;
+using OnlineStore.Data.Utilities.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,11 +17,10 @@ var connectionString = builder.Configuration
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-//Here we regester the required services for the application
-/*
-    builder.Services.AddSingleton<IXmlHelper, XMLHelper>();
-    builder.Services.AddScoped<IDbSeeder, ApplicationDbContextSeeder>();
-*/
+//Here we add the required services for the Application
+builder.Services.AddSingleton<IXmlHelper, XMLHelper>();
+builder.Services.AddScoped<IDbSeeder, ApplicationDbContextSeeder>();
+
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -63,6 +66,17 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 app.MapRazorPages();
+
+if (app.Environment.IsDevelopment())
+{
+	using IServiceScope scope = app.Services.CreateScope();
+
+	IServiceProvider services = scope.ServiceProvider;
+
+	IDbSeeder dataProcessor = services.GetRequiredService<IDbSeeder>();
+	await dataProcessor.SeedData();
+}
 
 app.Run();
