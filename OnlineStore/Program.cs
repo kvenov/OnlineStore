@@ -21,12 +21,19 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-//Here think how to congigure the Identity(To use the AddIdentity() or the AddDefaultIdentity() as a methods) and which options to use!!!
 builder.Services
-    .AddDefaultIdentity<ApplicationUser>(options => 
-            options.SignIn.RequireConfirmedAccount = false)
+    .AddIdentity<ApplicationUser, IdentityRole>(options =>
+    {
+        options.SignIn.RequireConfirmedAccount = false;
+		options.Password.RequireDigit = true;
+		options.Password.RequireLowercase = true;
+		options.Password.RequireUppercase = true;
+		options.Password.RequireNonAlphanumeric = false;
+		options.Password.RequiredLength = 6;
+	})
 	.AddSignInManager<SignInManager<ApplicationUser>>()
-	.AddEntityFrameworkStores<ApplicationDbContext>();
+	.AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
