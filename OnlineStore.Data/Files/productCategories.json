@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "Shoes",
+    "Description": "Footwear for all occasions",
+    "IsDeleted": false
+  },
+  {
+    "Name": "T-Shirts",
+    "Description": "Comfortable and stylish t-shirts",
+    "IsDeleted": false
+  },
+  {
+    "Name": "Jeans",
+    "Description": "Durable denim jeans",
+    "IsDeleted": false
+  },
+  {
+    "Name": "Accessories",
+    "Description": "Belts, bags, and more",
+    "IsDeleted": false
+  }
+]

@@ -18,7 +18,9 @@ namespace OnlineStore.Data.Seeding
 		private readonly ICollection<IEntitySeeder> entitySeeders;
 
 		public ApplicationDbContextSeeder(ApplicationDbContext context, UserManager<ApplicationUser> userManager, 
-			RoleManager<IdentityRole> roleManager, ILogger<IdentitySeeder> identityLogger, IXmlHelper xmlHelper)
+			RoleManager<IdentityRole> roleManager, ILogger<IdentitySeeder> identityLogger, 
+			ILogger<ProductCategorySeeder> productCategoryLogger, ILogger<BrandSeeder> brandLogger,
+			IXmlHelper xmlHelper)
 		{
 			this._context = context;
 
@@ -28,7 +30,7 @@ namespace OnlineStore.Data.Seeding
 			this._xmlHelper = xmlHelper;
 
 			this.entitySeeders = new List<IEntitySeeder>();
-			this.InitializeDbSeeders(identityLogger);
+			this.InitializeDbSeeders(identityLogger, productCategoryLogger, brandLogger);
 		}
 
 		public async Task SeedData()
@@ -40,13 +42,12 @@ namespace OnlineStore.Data.Seeding
 			}
 		}
 
-		private void InitializeDbSeeders(ILogger<IdentitySeeder> identityLogger)
+		private void InitializeDbSeeders(ILogger<IdentitySeeder> identityLogger, ILogger<ProductCategorySeeder> productCategoryLogger,
+										ILogger<BrandSeeder> brandLogger)
 		{
 
-			//this.entitySeeders.Add(new MoviesSeeder(this._context, movieLogger));
-			//this.entitySeeders.Add(new CinemaMovieSeeder(this._context, cinemaMovieLogger, this.mapper));
-			//this.entitySeeders.Add(new TicketSeeder(this._context, ticketLogger, this._xmlHelper));
-			//this.entitySeeders.Add(new WatchlistSeeder(watchlistLogger, this._context, this._xmlHelper, this.userManager));
+			this.entitySeeders.Add(new BrandSeeder(this._context, brandLogger));
+			this.entitySeeders.Add(new ProductCategorySeeder(this._context, productCategoryLogger));
 			this.entitySeeders.Add(new IdentitySeeder(this._context, this.userManager, this.roleManager, identityLogger));
 		}
 	}

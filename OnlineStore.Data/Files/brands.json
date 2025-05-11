@@ -1,0 +1,26 @@
+[
+  {
+    "Name": "Nike",
+    "LogoUrl": "https://example.com/logos/nike.png",
+    "Description": "Just Do It.",
+    "WebsiteUrl": "https://www.nike.com",
+    "IsActive": true,
+    "IsDeleted": false
+  },
+  {
+    "Name": "Adidas",
+    "LogoUrl": "https://example.com/logos/adidas.png",
+    "Description": "Impossible is nothing.",
+    "WebsiteUrl": "https://www.adidas.com",
+    "IsActive": true,
+    "IsDeleted": false
+  },
+  {
+    "Name": "Levi's",
+    "LogoUrl": "https://example.com/logos/levis.png",
+    "Description": "Quality never goes out of style.",
+    "WebsiteUrl": "https://www.levi.com",
+    "IsActive": true,
+    "IsDeleted": false
+  }
+]

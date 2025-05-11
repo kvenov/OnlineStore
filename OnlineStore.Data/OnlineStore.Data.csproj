@@ -20,4 +20,19 @@
     <ProjectReference Include="..\OnlineStore.Data.Models\OnlineStore.Data.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Files\brands.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\productCategories.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\productDetails.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\products.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
