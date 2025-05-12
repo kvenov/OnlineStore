@@ -1,6 +1,5 @@
 [
   {
-    "Id": 1,
     "Name": "Nike Air Max",
     "Description": "Stylish and comfortable sneakers",
     "Price": 120.99,
@@ -13,11 +12,20 @@
     "TotalRatings": 130,
     "CategoryId": 1,
     "BrandId": 1,
-    "ProductDetailsId": 1,
+    "ProductDetails": {
+      "Material": "Leather",
+      "Color": "Black",
+      "Gender": "Unisex",
+      "SizeGuideUrl": "https://example.com/size-guide/shoes",
+      "CountryOfOrigin": "USA",
+      "CareInstructions": "Wipe with a damp cloth",
+      "Weight": 0.75,
+      "Fit": "Regular",
+      "Style": "Sporty"
+    },
     "IsDeleted": false
   },
   {
-    "Id": 2,
     "Name": "Adidas Originals Tee",
     "Description": "Casual t-shirt with logo print",
     "Price": 35.00,
@@ -30,11 +38,20 @@
     "TotalRatings": 80,
     "CategoryId": 2,
     "BrandId": 2,
-    "ProductDetailsId": 2,
+    "ProductDetails": {
+      "Material": "Cotton",
+      "Color": "White",
+      "Gender": "Male",
+      "SizeGuideUrl": "https://example.com/size-guide/tshirts",
+      "CountryOfOrigin": "Bangladesh",
+      "CareInstructions": "Machine wash cold",
+      "Weight": 0.3,
+      "Fit": "Slim",
+      "Style": "Casual"
+    },
     "IsDeleted": false
   },
   {
-    "Id": 3,
     "Name": "Levi's 501 Jeans",
     "Description": "Original fit women's jeans",
     "Price": 89.99,
@@ -47,11 +64,20 @@
     "TotalRatings": 200,
     "CategoryId": 3,
     "BrandId": 3,
-    "ProductDetailsId": 3,
+    "ProductDetails": {
+      "Material": "Denim",
+      "Color": "Blue",
+      "Gender": "Female",
+      "SizeGuideUrl": "https://example.com/size-guide/jeans",
+      "CountryOfOrigin": "Mexico",
+      "CareInstructions": "Wash separately",
+      "Weight": 0.9,
+      "Fit": "Regular",
+      "Style": "Streetwear"
+    },
     "IsDeleted": false
   },
   {
-    "Id": 4,
     "Name": "Adidas Red Backpack",
     "Description": "Durable and stylish backpack",
     "Price": 49.99,
@@ -64,11 +90,20 @@
     "TotalRatings": 64,
     "CategoryId": 4,
     "BrandId": 2,
-    "ProductDetailsId": 4,
+    "ProductDetails": {
+      "Material": "Nylon",
+      "Color": "Red",
+      "Gender": "Unisex",
+      "SizeGuideUrl": "https://example.com/size-guide/accessories",
+      "CountryOfOrigin": "China",
+      "CareInstructions": "Hand wash only",
+      "Weight": 0.2,
+      "Fit": "One Size",
+      "Style": "Modern"
+    },
     "IsDeleted": false
   },
   {
-    "Id": 5,
     "Name": "Nike Canvas Sneakers",
     "Description": "Classic everyday sneakers",
     "Price": 74.95,
@@ -81,11 +116,20 @@
     "TotalRatings": 90,
     "CategoryId": 1,
     "BrandId": 1,
-    "ProductDetailsId": 5,
+    "ProductDetails": {
+      "Material": "Canvas",
+      "Color": "Gray",
+      "Gender": "Male",
+      "SizeGuideUrl": "https://example.com/size-guide/shoes",
+      "CountryOfOrigin": "Vietnam",
+      "CareInstructions": "Spot clean",
+      "Weight": 0.8,
+      "Fit": "Wide",
+      "Style": "Classic"
+    },
     "IsDeleted": false
   },
   {
-    "Id": 6,
     "Name": "Levi's Wool Sweater",
     "Description": "Cozy sweater perfect for winter",
     "Price": 65.99,
@@ -98,7 +142,17 @@
     "TotalRatings": 72,
     "CategoryId": 2,
     "BrandId": 3,
-    "ProductDetailsId": 6,
+    "ProductDetails": {
+      "Material": "Wool",
+      "Color": "Green",
+      "Gender": "Female",
+      "SizeGuideUrl": "https://example.com/size-guide/tshirts",
+      "CountryOfOrigin": "Italy",
+      "CareInstructions": "Dry clean only",
+      "Weight": 0.4,
+      "Fit": "Loose",
+      "Style": "Elegant"
+    },
     "IsDeleted": false
   }
 ]

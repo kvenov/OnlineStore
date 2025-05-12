@@ -1,6 +1,5 @@
 [
   {
-    "Id": 1,
     "Material": "Leather",
     "Color": "Black",
     "Gender": "Unisex",
@@ -13,7 +12,6 @@
     "ProductId": 1
   },
   {
-    "Id": 2,
     "Material": "Cotton",
     "Color": "White",
     "Gender": "Male",
@@ -26,7 +24,6 @@
     "ProductId": 2
   },
   {
-    "Id": 3,
     "Material": "Denim",
     "Color": "Blue",
     "Gender": "Female",
@@ -39,7 +36,6 @@
     "ProductId": 3
   },
   {
-    "Id": 4,
     "Material": "Nylon",
     "Color": "Red",
     "Gender": "Unisex",
@@ -52,7 +48,6 @@
     "ProductId": 4
   },
   {
-    "Id": 5,
     "Material": "Canvas",
     "Color": "Gray",
     "Gender": "Male",
@@ -65,7 +60,6 @@
     "ProductId": 5
   },
   {
-    "Id": 6,
     "Material": "Wool",
     "Color": "Green",
     "Gender": "Female",
