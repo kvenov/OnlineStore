@@ -45,10 +45,6 @@ namespace OnlineStore.Data.Configurations
 				.IsRequired(true);
 
 			entity
-				.Property(o => o.PaymentDetailsId)
-				.IsRequired(true);
-
-			entity
 				.HasOne(o => o.User)
 				.WithMany(u => u.Orders)
 				.HasForeignKey(o => o.UserId)
@@ -63,7 +59,7 @@ namespace OnlineStore.Data.Configurations
 			entity
 				.HasOne(o => o.PaymentDetails)
 				.WithOne(pd => pd.Order)
-				.HasForeignKey<Order>(o => o.PaymentDetailsId)
+				.HasForeignKey<PaymentDetails>(pd => pd.OrderId)
 				.OnDelete(DeleteBehavior.Cascade);
 
 			entity

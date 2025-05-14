@@ -66,13 +66,9 @@ namespace OnlineStore.Data.Configurations
 				.IsRequired(false);
 
 			entity
-				.Property(p => p.ProductDetailsId)
-				.IsRequired(true);
-
-			entity
 				.HasOne(p => p.ProductDetails)
 				.WithOne(pd => pd.Product)
-				.HasForeignKey<Product>(p => p.ProductDetailsId)
+				.HasForeignKey<ProductDetails>(pd => pd.ProductId)
 				.OnDelete(DeleteBehavior.Cascade);
 
 			entity

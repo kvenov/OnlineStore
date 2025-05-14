@@ -25,13 +25,13 @@ namespace OnlineStore.Data.Configurations
 			entity
 				.HasOne(au => au.ShoppingCart)
 				.WithOne(sc => sc.User)
-				.HasForeignKey<ApplicationUser>(au => au.ShoppingCartId)
+				.HasForeignKey<ShoppingCart>(sc => sc.UserId)
 				.OnDelete(DeleteBehavior.Cascade);
 
 			entity
 				.HasOne(au => au.Wishlist)
 				.WithOne(w => w.User)
-				.HasForeignKey<ApplicationUser>(au => au.WishlistId)
+				.HasForeignKey<Wishlist>(w => w.UserId)
 				.OnDelete(DeleteBehavior.Cascade);
 
 		}

@@ -53,9 +53,6 @@ namespace OnlineStore.Data.Models
 		[Comment("Product brand")]
 		public virtual Brand? Brand { get; set; }
 
-
-		public int ProductDetailsId { get; set; }
-
 		[Comment("Product details")]
 		public virtual ProductDetails ProductDetails { get; set; } = null!;
 

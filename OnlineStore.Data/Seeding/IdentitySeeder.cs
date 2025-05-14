@@ -98,12 +98,12 @@ namespace OnlineStore.Data.Seeding
 					UserId = user.Id
 				};
 
-				this._context.Wishlists.Add(wishlist);
-				this._context.ShoppingCarts.Add(shoppingCart);
+				await this._context.Wishlists.AddAsync(wishlist);
+				await this._context.ShoppingCarts.AddAsync(shoppingCart);
 				await this._context.SaveChangesAsync();
 
-				user.ShoppingCartId = shoppingCart.Id;
-				user.WishlistId = wishlist.Id;
+				user.ShoppingCart = shoppingCart;
+				user.Wishlist = wishlist;
 
 				await this.UserManager.UpdateAsync(user);
 			}

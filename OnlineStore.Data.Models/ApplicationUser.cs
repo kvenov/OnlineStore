@@ -15,12 +15,8 @@ namespace OnlineStore.Data.Models
 		[Comment("Registration date of the user")]
 		public DateTime CreatedDate { get; set; }
 
-		public int ShoppingCartId { get; set; }
-
 		[Comment("Shopping cart of the user")]
 		public virtual ShoppingCart ShoppingCart { get; set; } = null!;
-
-		public int WishlistId { get; set; }
 
 		[Comment("Wishlist of the user")]
 		public virtual Wishlist Wishlist { get; set; } = null!;
