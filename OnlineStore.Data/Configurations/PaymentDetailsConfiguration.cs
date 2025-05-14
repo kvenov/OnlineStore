@@ -56,6 +56,12 @@ namespace OnlineStore.Data.Configurations
 				.OnDelete(DeleteBehavior.Cascade);
 
 			entity
+				.HasOne(p => p.Checkout)
+				.WithOne(c => c.PaymentDetails)
+				.HasForeignKey<Checkout>(c => c.PaymentDetailsId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			entity
 				.HasIndex(p => p.Status);
 
 			entity

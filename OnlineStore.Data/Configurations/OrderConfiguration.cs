@@ -75,6 +75,12 @@ namespace OnlineStore.Data.Configurations
 				.OnDelete(DeleteBehavior.Restrict);
 
 			entity
+				.HasOne(o => o.Checkout)
+				.WithOne(c => c.Order)
+				.HasForeignKey<Order>(o => o.CheckoutId)
+				.OnDelete(DeleteBehavior.Cascade);
+
+			entity
 				.HasIndex(o => o.OrderDate);
 
 			entity

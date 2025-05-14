@@ -26,6 +26,10 @@ namespace OnlineStore.Data.Models
 		public virtual ICollection<Order> Orders { get; set; } =
 					new HashSet<Order>();
 
+		[Comment("Checkouts that use the paymnet method")]
+		public virtual ICollection<Checkout> Checkouts { get; set; } =
+					new HashSet<Checkout>();
+
 		public bool IsDeleted { get; set; }
 	}
 }

@@ -22,5 +22,9 @@ namespace OnlineStore.Data.Models
 		public virtual ICollection<ShoppingCartItem> ShoppingCartItems { get; set; } = 
 					new HashSet<ShoppingCartItem>();
 
+		[Comment("Shopping cart checkouts")]
+		public virtual ICollection<Checkout> Checkouts { get; set; } =
+					new HashSet<Checkout>();
+
 	}
 }

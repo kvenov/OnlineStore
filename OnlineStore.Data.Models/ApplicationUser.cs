@@ -41,6 +41,10 @@ namespace OnlineStore.Data.Models
 		public virtual ICollection<ProductRating> ProductRatings { get; set; } =
 					new HashSet<ProductRating>();
 
+		[Comment("The User's checkouts")]
+		public virtual ICollection<Checkout> Checkouts { get; set; } =
+					new HashSet<Checkout>();
+
 		public bool IsDeleted { get; set; }
 	}
 }

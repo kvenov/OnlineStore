@@ -38,5 +38,8 @@ namespace OnlineStore.Data.Models
 		[Comment("Order that uses the payment details")]
 		public virtual Order Order { get; set; } = null!;
 
+		[Comment("Checkout that uses the payment details")]
+		public virtual Checkout Checkout { get; set; } = null!;
+
 	}
 }

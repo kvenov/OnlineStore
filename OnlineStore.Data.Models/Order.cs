@@ -45,6 +45,11 @@ namespace OnlineStore.Data.Models
 		[Comment("User who placed the order")]
 		public virtual ApplicationUser? User { get; set; }
 
+		public int CheckoutId { get; set; }
+
+		[Comment("The Checkout that is used to create the Order")]
+		public virtual Checkout Checkout { get; set; } = null!;
+
 
 		[Comment("Items in the order")]
 		public virtual ICollection<OrderItem> OrderItems { get; set; } = 

@@ -271,6 +271,14 @@
 			/// </summary>
 			public const int AddressPhoneNumberMaxLength = 20;
 		}
+
+		public static class Checkout
+		{
+			/// <summary>
+			/// The data type for the checkout's total price.
+			/// </summary>
+			public const string CheckoutTotalPriceType = "DECIMAL(18,2)";
+		}
 	}
 
 }

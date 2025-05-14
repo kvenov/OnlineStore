@@ -48,6 +48,14 @@ namespace OnlineStore.Data.Models
 		public virtual ICollection<Order> BillingAddressOrders { get; set; } =
 					new HashSet<Order>();
 
+		[Comment("The Checkouts that use this address as Shipping Address")]
+		public virtual ICollection<Checkout> ShippingAddressCheckouts { get; set; } =
+					new HashSet<Checkout>();
+
+		[Comment("The Checkouts that use this address as Billing Address")]
+		public virtual ICollection<Checkout> BillingAddressCheckouts { get; set; } =
+					new HashSet<Checkout>();
+
 		public bool IsDeleted { get; set; }
 	}
 }
