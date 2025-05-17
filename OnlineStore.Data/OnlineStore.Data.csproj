@@ -21,6 +21,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Files\articles.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\articlesCategories.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Files\brands.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

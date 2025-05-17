@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Articles>
+	<Article>
+		<Title>Top 5 Summer Styles</Title>
+		<Content>Explore the hottest trends in summer wear, from breezy dresses to light denim jackets...</Content>
+		<PublishedDate>2025-05-01T09:00:00</PublishedDate>
+		<ImageUrl>https://cdn.onlinestore.com/images/articles/summer-styles.jpg</ImageUrl>
+		<IsPublished>true</IsPublished>
+		<AuthorId>575785fb-0ad4-4ad9-9916-6f673be3b66e</AuthorId>
+		<CategoryId>1</CategoryId>
+		<IsDeleted>false</IsDeleted>
+	</Article>
+	<Article>
+		<Title>50% Off All Footwear</Title>
+		<Content>Don’t miss out on this weekend’s amazing deal. All shoes are half price, in-store and online...</Content>
+		<PublishedDate>2025-05-10T12:00:00</PublishedDate>
+		<ImageUrl>https://cdn.onlinestore.com/images/articles/footwear-sale.jpg</ImageUrl>
+		<IsPublished>true</IsPublished>
+		<AuthorId>e9fc01ce-4002-4caf-87dd-fc683ee673a4</AuthorId>
+		<CategoryId>2</CategoryId>
+		<IsDeleted>false</IsDeleted>
+	</Article>
+	<Article>
+		<Title>Introducing Our Jeans Line</Title>
+		<Content>We’re excited to launch our new sustainable denim collection. Made from 100% recycled materials...</Content>
+		<PublishedDate>2025-04-28T08:30:00</PublishedDate>
+		<ImageUrl>https://cdn.onlinestore.com/images/articles/eco-jeans.jpg</ImageUrl>
+		<IsPublished>true</IsPublished>
+		<AuthorId>eab9df50-6940-46d8-8fd1-994231b200e0</AuthorId>
+		<CategoryId>3</CategoryId>
+		<IsDeleted>false</IsDeleted>
+	</Article>
+</Articles>

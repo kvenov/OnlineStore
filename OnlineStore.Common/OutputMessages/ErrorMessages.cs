@@ -23,5 +23,8 @@
 
         public const string FailedToAssignUserToRole =
             "Failed to assign {0} role to user: {1}";
+
+        public const string NoNewEntityDataToAdd =
+            "There're no new entities to add";
 	}
 }

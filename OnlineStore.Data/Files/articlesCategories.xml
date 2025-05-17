@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ArticleCategories>
+	<ArticleCategory>
+		<Name>Fashion</Name>
+		<Description>Latest fashion trends and tips.</Description>
+		<IsDeleted>false</IsDeleted>
+	</ArticleCategory>
+	<ArticleCategory>
+		<Name>Sales and Offers</Name>
+		<Description>Information on current discounts and promotions.</Description>
+		<IsDeleted>false</IsDeleted>
+	</ArticleCategory>
+	<ArticleCategory>
+		<Name>Product Highlights</Name>
+		<Description>Spotlight on selected products and new arrivals.</Description>
+		<IsDeleted>false</IsDeleted>
+	</ArticleCategory>
+</ArticleCategories>
