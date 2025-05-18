@@ -46,11 +46,13 @@ namespace OnlineStore.Data.Seeding
 				if (articleCategoryDTOs != null && articleCategoryDTOs.Length > 0)
 				{
 					ICollection<ArticleCategory> validArticleCategories = new List<ArticleCategory>();
-					List<string> existingArticleCategoriesNames = await this._context
+					HashSet<string> existingArticleCategoriesNames = (await this._context
 							.ArticleCategories
 							.AsNoTracking()
 							.Select(ac => ac.Name)
-							.ToListAsync();
+							.ToListAsync()).ToHashSet();
+
+					this.Logger.LogInformation($"Found {articleCategoryDTOs.Length} ArticlesCategories DTOs to process.");
 
 					foreach (var articleCategoryDto in articleCategoryDTOs)
 					{

@@ -20,7 +20,8 @@ namespace OnlineStore.Data.Seeding
 		public ApplicationDbContextSeeder(ApplicationDbContext context, UserManager<ApplicationUser> userManager, 
 			RoleManager<IdentityRole> roleManager, ILogger<IdentitySeeder> identityLogger, 
 			ILogger<ProductCategorySeeder> productCategoryLogger, ILogger<BrandSeeder> brandLogger, ILogger<ProductSeeder> productLogger,
-			ILogger<ArticleCategorySeeder> articleCategoryLogger, ILogger<ArticleSeeder> articleLogger, IXmlHelper xmlHelper)
+			ILogger<ArticleCategorySeeder> articleCategoryLogger, ILogger<ArticleSeeder> articleLogger, ILogger<ProductRatingSeeder> productRatingLogger, 
+			IXmlHelper xmlHelper)
 		{
 			this._context = context;
 
@@ -30,7 +31,7 @@ namespace OnlineStore.Data.Seeding
 			this._xmlHelper = xmlHelper;
 
 			this.entitySeeders = new List<IEntitySeeder>();
-			this.InitializeDbSeeders(identityLogger, productCategoryLogger, brandLogger, productLogger, articleCategoryLogger, articleLogger);
+			this.InitializeDbSeeders(identityLogger, productCategoryLogger, brandLogger, productLogger, articleCategoryLogger, articleLogger, productRatingLogger);
 		}
 
 		public async Task SeedData()
@@ -44,9 +45,10 @@ namespace OnlineStore.Data.Seeding
 
 		private void InitializeDbSeeders(ILogger<IdentitySeeder> identityLogger, ILogger<ProductCategorySeeder> productCategoryLogger,
 										ILogger<BrandSeeder> brandLogger, ILogger<ProductSeeder> productLogger, ILogger<ArticleCategorySeeder> articleCategoryLogger,
-											ILogger<ArticleSeeder> articleLogger)
+											ILogger<ArticleSeeder> articleLogger, ILogger<ProductRatingSeeder> productRatingLogger)
 		{
 
+			this.entitySeeders.Add(new ProductRatingSeeder(productRatingLogger, this._context, this._xmlHelper));
 			this.entitySeeders.Add(new ArticleSeeder(articleLogger, this._context, this._xmlHelper));
 			this.entitySeeders.Add(new ArticleCategorySeeder(articleCategoryLogger, this._context, this._xmlHelper));
 			this.entitySeeders.Add(new ProductSeeder(this._context, productLogger));

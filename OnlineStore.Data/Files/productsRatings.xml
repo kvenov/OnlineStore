@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ProductRatings>
+	<ProductRating>
+		<ProductId>3</ProductId>
+		<UserId>73c48509-ef99-40d3-b4ce-55b956ec464a</UserId>
+		<Rating>5</Rating>
+		<Review>Amazing quality! Totally worth the price.</Review>
+		<CreatedAt>2025-04-15T10:30:00</CreatedAt>
+		<IsDeleted>false</IsDeleted>
+	</ProductRating>
+	<ProductRating>
+		<ProductId>4</ProductId>
+		<UserId>e9fc01ce-4002-4caf-87dd-fc683ee673a4</UserId>
+		<Rating>4</Rating>
+		<Review>Good product, but the delivery was slow.</Review>
+		<CreatedAt>2025-04-20T14:45:00</CreatedAt>
+		<IsDeleted>false</IsDeleted>
+	</ProductRating>
+	<ProductRating>
+		<ProductId>6</ProductId>
+		<UserId>eab9df50-6940-46d8-8fd1-994231b200e0</UserId>
+		<Rating>3</Rating>
+		<Review>It’s okay. Quality could be better for the price.</Review>
+		<CreatedAt>2025-05-01T08:15:00</CreatedAt>
+		<IsDeleted>false</IsDeleted>
+	</ProductRating>
+	<ProductRating>
+		<ProductId>8</ProductId>
+		<UserId>73c48509-ef99-40d3-b4ce-55b956ec464a</UserId>
+		<Rating>5</Rating>
+		<Review>Exactly what I needed. Would buy again!</Review>
+		<CreatedAt>2025-05-10T12:00:00</CreatedAt>
+		<IsDeleted>false</IsDeleted>
+	</ProductRating>
+</ProductRatings>
+

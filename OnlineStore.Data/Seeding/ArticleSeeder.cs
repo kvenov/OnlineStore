@@ -47,17 +47,19 @@ namespace OnlineStore.Data.Seeding
 				{
 					ICollection<Article> validArticles = new List<Article>();
 
-					List<string> validUsersIds = await this._context
+					HashSet<string> validUsersIds = (await this._context
 							.Users
 							.AsNoTracking()
 							.Select(u => u.Id)
-							.ToListAsync();
+							.ToListAsync()).ToHashSet();
 
-					List<int> validArticleCategoriesIds = await this._context
+					HashSet<int> validArticleCategoriesIds = (await this._context
 							.ArticleCategories
 							.AsNoTracking()
 							.Select(ac => ac.Id)
-							.ToListAsync();
+							.ToListAsync()).ToHashSet();
+
+					this.Logger.LogInformation($"Found {articlesDTOs.Length} Articles DTOs to process.");
 
 					foreach (var articleDto in articlesDTOs)
 					{
@@ -83,7 +85,7 @@ namespace OnlineStore.Data.Seeding
 							continue;
 						}
 
-						if (articleDto.AuthorId != null)
+						if (!string.IsNullOrWhiteSpace(articleDto.AuthorId))
 						{
 
 							if (!validUsersIds.Contains(articleDto.AuthorId))
