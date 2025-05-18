@@ -1,0 +1,44 @@
+[
+  {
+    "Name": "Credit Card",
+    "Code": "CreditCard",
+    "IsActive": true,
+    "IsDeleted": false
+  },
+  {
+    "Name": "PayPal",
+    "Code": "PayPal",
+    "IsActive": true,
+    "IsDeleted": false
+  },
+  {
+    "Name": "Bank Transfer",
+    "Code": "BankTransfer",
+    "IsActive": true,
+    "IsDeleted": false
+  },
+  {
+    "Name": "Cash on Delivery",
+    "Code": "CashOnDelivery",
+    "IsActive": true,
+    "IsDeleted": false
+  },
+  {
+    "Name": "Apple Pay",
+    "Code": "ApplePay",
+    "IsActive": true,
+    "IsDeleted": false
+  },
+  {
+    "Name": "Google Pay",
+    "Code": "GooglePay",
+    "IsActive": false,
+    "IsDeleted": false
+  },
+  {
+    "Name": "Stripe",
+    "Code": "Stripe",
+    "IsActive": true,
+    "IsDeleted": false
+  }
+]
