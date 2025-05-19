@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Addresses>
+	<Address>
+		<FullName>Konstantin Ivanov</FullName>
+		<Street>Street Number 500</Street>
+		<City>Sofia</City>
+		<Country>BUL</Country>
+		<ZipCode>1336</ZipCode>
+		<PhoneNumber>+1-555-123-4567</PhoneNumber>
+		<IsBillingAddress>true</IsBillingAddress>
+		<IsShippingAddress>true</IsShippingAddress>
+		<UserId>73c48509-ef99-40d3-b4ce-55b956ec464a</UserId>
+		<IsDeleted>false</IsDeleted>
+	</Address>
+	<Address>
+		<FullName>Jane Smith</FullName>
+		<Street>456 Park Avenue</Street>
+		<City>Los Angeles</City>
+		<Country>USA</Country>
+		<ZipCode>90001</ZipCode>
+		<PhoneNumber>+1-555-987-6543</PhoneNumber>
+		<IsBillingAddress>false</IsBillingAddress>
+		<IsShippingAddress>true</IsShippingAddress>
+		<UserId>e9fc01ce-4002-4caf-87dd-fc683ee673a4</UserId>
+		<IsDeleted>false</IsDeleted>
+	</Address>
+	<Address>
+		<FullName>Emily Johnson</FullName>
+		<Street>789 Elm Street</Street>
+		<City>Chicago</City>
+		<Country>USA</Country>
+		<ZipCode>60601</ZipCode>
+		<PhoneNumber>+1-555-222-3333</PhoneNumber>
+		<IsBillingAddress>true</IsBillingAddress>
+		<IsShippingAddress>false</IsShippingAddress>
+		<UserId>73c48509-ef99-40d3-b4ce-55b956ec464a</UserId>
+		<IsDeleted>false</IsDeleted>
+	</Address>
+	<Address>
+		<FullName>Jane Smith</FullName>
+		<Street>321 Oak Street</Street>
+		<City>Houston</City>
+		<Country>USA</Country>
+		<ZipCode>77001</ZipCode>
+		<PhoneNumber>+1-555-987-6543</PhoneNumber>
+		<IsBillingAddress>true</IsBillingAddress>
+		<IsShippingAddress>true</IsShippingAddress>
+		<UserId>e9fc01ce-4002-4caf-87dd-fc683ee673a4</UserId>
+		<IsDeleted>false</IsDeleted>
+	</Address>
+</Addresses>
+

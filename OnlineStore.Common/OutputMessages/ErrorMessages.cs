@@ -26,5 +26,8 @@
 
         public const string NoNewEntityDataToAdd =
             "There're no new entities to add";
+
+        public const string EntityInstanceNotValid =
+            "The entity instance do not follow the validation rules of the seeding process";
 	}
 }
