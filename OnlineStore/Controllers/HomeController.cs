@@ -23,6 +23,15 @@ namespace OnlineStore.Controllers
             return View();
         }
 
+        [HttpGet]
+        [ActionName("About")]
+        [RequireHttps]
+        public IActionResult About()
+        {
+            ViewBag.Message = "Your application description page.";
+			return View();
+		}
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
