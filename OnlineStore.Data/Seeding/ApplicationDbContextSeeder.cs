@@ -21,7 +21,8 @@ namespace OnlineStore.Data.Seeding
 			RoleManager<IdentityRole> roleManager, ILogger<IdentitySeeder> identityLogger, 
 			ILogger<ProductCategorySeeder> productCategoryLogger, ILogger<BrandSeeder> brandLogger, ILogger<ProductSeeder> productLogger,
 			ILogger<ArticleCategorySeeder> articleCategoryLogger, ILogger<ArticleSeeder> articleLogger, ILogger<ProductRatingSeeder> productRatingLogger, 
-			ILogger<PaymentMethodSeeder> paymentMethodLogger, ILogger<AddressSeeder> addressLogger, IXmlHelper xmlHelper)
+			ILogger<PaymentMethodSeeder> paymentMethodLogger, ILogger<AddressSeeder> addressLogger, ILogger<ShoppingCartSeeder> shoppingCartLogger, 
+			IXmlHelper xmlHelper)
 		{
 			this._context = context;
 
@@ -32,7 +33,8 @@ namespace OnlineStore.Data.Seeding
 
 			this.entitySeeders = new List<IEntitySeeder>();
 			this.InitializeDbSeeders(identityLogger, productCategoryLogger, brandLogger, productLogger, 
-									articleCategoryLogger, articleLogger, productRatingLogger, paymentMethodLogger, addressLogger);
+									 articleCategoryLogger, articleLogger, productRatingLogger, paymentMethodLogger, 
+									 addressLogger, shoppingCartLogger);
 		}
 
 		public async Task SeedData()
@@ -47,10 +49,11 @@ namespace OnlineStore.Data.Seeding
 		private void InitializeDbSeeders(ILogger<IdentitySeeder> identityLogger, ILogger<ProductCategorySeeder> productCategoryLogger,
 										ILogger<BrandSeeder> brandLogger, ILogger<ProductSeeder> productLogger, ILogger<ArticleCategorySeeder> articleCategoryLogger,
 											ILogger<ArticleSeeder> articleLogger, ILogger<ProductRatingSeeder> productRatingLogger, 
-											ILogger<PaymentMethodSeeder> paymentMethodLogger, ILogger<AddressSeeder> addressLogger)
+											ILogger<PaymentMethodSeeder> paymentMethodLogger, ILogger<AddressSeeder> addressLogger, ILogger<ShoppingCartSeeder> shoppingCartLogger)
 		{
 			//Think how to optize this part.Use reflection to get all entity seeders and add them to the list
 
+			this.entitySeeders.Add(new ShoppingCartSeeder(shoppingCartLogger, this._context, this._xmlHelper));
 			this.entitySeeders.Add(new AddressSeeder(addressLogger, this._context, this._xmlHelper));
 			this.entitySeeders.Add(new PaymentMethodSeeder(paymentMethodLogger, this._context));
 			this.entitySeeders.Add(new ProductRatingSeeder(productRatingLogger, this._context, this._xmlHelper));

@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ShoppingCarts>
+	<ShoppingCart>
+		<CreatedAt>2025-05-01T10:15:00</CreatedAt>
+		<UserId>73c48509-ef99-40d3-b4ce-55b956ec464a</UserId>
+		<ShoppingCartItems>
+			<ShoppingCartItem>
+				<Quantity>1</Quantity>
+				<Price>25.99</Price>
+				<TotalPrice>51.98</TotalPrice>
+				<ProductId>3</ProductId>
+			</ShoppingCartItem>
+			<ShoppingCartItem>
+				<Quantity>1</Quantity>
+				<Price>150.00</Price>
+				<TotalPrice>150.00</TotalPrice>
+				<ProductId>4</ProductId>
+			</ShoppingCartItem>
+		</ShoppingCartItems>
+	</ShoppingCart>
+	
+	<ShoppingCart>
+		<CreatedAt>2025-05-10T13:45:00</CreatedAt>
+		<UserId>e9fc01ce-4002-4caf-87dd-fc683ee673a4</UserId>
+		<ShoppingCartItems>
+			<ShoppingCartItem>
+				<Quantity>1</Quantity>
+				<Price>9.99</Price>
+				<TotalPrice>29.97</TotalPrice>
+				<ProductId>5</ProductId>
+			</ShoppingCartItem>
+		</ShoppingCartItems>
+	</ShoppingCart>
+
+	<ShoppingCart>
+		<CreatedAt>2025-05-15T09:30:00</CreatedAt>
+		<UserId>174b1663-9a0d-46a0-acc8-473d23982d51</UserId>
+		<ShoppingCartItems>
+			<ShoppingCartItem>
+				<Quantity>1</Quantity>
+				<Price>300.00</Price>
+				<TotalPrice>300.00</TotalPrice>
+				<ProductId>5</ProductId>
+			</ShoppingCartItem>
+			<ShoppingCartItem>
+				<Quantity>1</Quantity>
+				<Price>19.50</Price>
+				<TotalPrice>39.00</TotalPrice>
+				<ProductId>6</ProductId>
+			</ShoppingCartItem>
+		</ShoppingCartItems>
+	</ShoppingCart>
+
+	<ShoppingCart>
+		<CreatedAt>2025-05-20T11:00:00</CreatedAt>
+		<UserId>eab9df50-6940-46d8-8fd1-994231b200e0</UserId>
+		<ShoppingCartItems>
+			<ShoppingCartItem>
+				<Quantity>1</Quantity>
+				<Price>7.99</Price>
+				<TotalPrice>39.95</TotalPrice>
+				<ProductId>8</ProductId>
+			</ShoppingCartItem>
+		</ShoppingCartItems>
+	</ShoppingCart>
+</ShoppingCarts>

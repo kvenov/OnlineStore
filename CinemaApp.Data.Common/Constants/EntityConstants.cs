@@ -143,6 +143,11 @@
 			/// The type of the shopping cart item's total price.
 			/// </summary>
 			public const string ShoppingCartItemTotalPriceType = "DECIMAL(18,2)";
+
+			/// <summary>
+			/// The minimum length of the shopping cart item's quantity. 
+			/// </summary>
+			public const int ShoppingCartItemQuantityMinValue = 1;
 		}
 
 		public static class PaymentDetails
