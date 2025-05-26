@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static OnlineStore.Common.Constants.EntityConstants.PaymentMethod;
+using static OnlineStore.Data.Common.Constants.EntityConstants.PaymentMethod;
 
 namespace OnlineStore.Data.DTOs
 {

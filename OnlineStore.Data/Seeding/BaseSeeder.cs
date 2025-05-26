@@ -1,6 +1,6 @@
 ﻿using OnlineStore.Data.Seeding.Interfaces;
 using Microsoft.Extensions.Logging;
-using static OnlineStore.Common.OutputMessages.ErrorMessages;
+using static OnlineStore.Data.Common.OutputMessages.ErrorMessages;
 
 namespace OnlineStore.Data.Seeding
 {

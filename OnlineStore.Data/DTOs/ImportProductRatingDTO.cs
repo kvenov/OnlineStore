@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
-using static OnlineStore.Common.Constants.EntityConstants.ProductRating;
+using static OnlineStore.Data.Common.Constants.EntityConstants.ProductRating;
 
 namespace OnlineStore.Data.DTOs
 {

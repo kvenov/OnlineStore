@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Xml.Serialization;
-using static OnlineStore.Common.Constants.EntityConstants.Address;
+using static OnlineStore.Data.Common.Constants.EntityConstants.Address;
 
 namespace OnlineStore.Data.DTOs
 {

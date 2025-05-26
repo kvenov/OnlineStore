@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using OnlineStore.Data.Models;
 using OnlineStore.Data.Seeding.Interfaces;
-using static OnlineStore.Common.OutputMessages.ErrorMessages;
+using static OnlineStore.Data.Common.OutputMessages.ErrorMessages;
 using System.Text.Json;
 
 namespace OnlineStore.Data.Seeding

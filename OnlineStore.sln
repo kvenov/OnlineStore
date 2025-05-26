@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35919.96
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineStore", "OnlineStore\OnlineStore.csproj", "{D850E15D-1768-4E2F-83F2-B17A53EE731C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineStore.Web", "OnlineStore\OnlineStore.Web.csproj", "{D850E15D-1768-4E2F-83F2-B17A53EE731C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineStore.Data", "OnlineStore.Data\OnlineStore.Data.csproj", "{E49BBEDF-76C4-4701-9FDB-490DA6EB6E3B}"
 EndProject
@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineStore.Data.Models", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineStore.Common", "OnlineStore.Common\OnlineStore.Common.csproj", "{82E16BE3-5DF3-4CA0-8D85-D0F7A346C479}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineStore.Services", "OnlineStore.Services\OnlineStore.Services.csproj", "{B3322BA1-8F68-490D-94FD-939D3F3BBAFA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineStore.Services.Core", "OnlineStore.Services\OnlineStore.Services.Core.csproj", "{B3322BA1-8F68-490D-94FD-939D3F3BBAFA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
@@ -20,6 +20,16 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{D2A9736C-418A-4036-B5CF-18FCE3750DCB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{320C0E97-543A-4C85-939F-1A02804F0160}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineStore.Data.Common", "CinemaApp.Data.Common\OnlineStore.Data.Common.csproj", "{240F2101-9042-4B8F-BF20-6DE6FC90B9B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineStore.Services.AutoMapping", "OnlineStore.Services.AutoMapping\OnlineStore.Services.AutoMapping.csproj", "{69EFF842-A1FF-47E9-A0D6-3E58FA9CBF17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineStore.Services.Common", "OnlineStore.Services.Common\OnlineStore.Services.Common.csproj", "{ECFF6935-12EE-4081-8E95-4E9B6807037A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineStore.Web.ViewModels", "OnlineStore.Web.ViewModels\OnlineStore.Web.ViewModels.csproj", "{CF7E6E92-AFDB-4B3E-A71E-72B1A7395A0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineStore.Web.Infrastructure", "OnlineStore.Web.Infrastructure\OnlineStore.Web.Infrastructure.csproj", "{C1405A87-6F2E-419B-8118-9BCBABD7DFC2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +57,26 @@ Global
 		{B3322BA1-8F68-490D-94FD-939D3F3BBAFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3322BA1-8F68-490D-94FD-939D3F3BBAFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3322BA1-8F68-490D-94FD-939D3F3BBAFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{240F2101-9042-4B8F-BF20-6DE6FC90B9B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{240F2101-9042-4B8F-BF20-6DE6FC90B9B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{240F2101-9042-4B8F-BF20-6DE6FC90B9B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{240F2101-9042-4B8F-BF20-6DE6FC90B9B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69EFF842-A1FF-47E9-A0D6-3E58FA9CBF17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69EFF842-A1FF-47E9-A0D6-3E58FA9CBF17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69EFF842-A1FF-47E9-A0D6-3E58FA9CBF17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69EFF842-A1FF-47E9-A0D6-3E58FA9CBF17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECFF6935-12EE-4081-8E95-4E9B6807037A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECFF6935-12EE-4081-8E95-4E9B6807037A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECFF6935-12EE-4081-8E95-4E9B6807037A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECFF6935-12EE-4081-8E95-4E9B6807037A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF7E6E92-AFDB-4B3E-A71E-72B1A7395A0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF7E6E92-AFDB-4B3E-A71E-72B1A7395A0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF7E6E92-AFDB-4B3E-A71E-72B1A7395A0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF7E6E92-AFDB-4B3E-A71E-72B1A7395A0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1405A87-6F2E-419B-8118-9BCBABD7DFC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1405A87-6F2E-419B-8118-9BCBABD7DFC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1405A87-6F2E-419B-8118-9BCBABD7DFC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1405A87-6F2E-419B-8118-9BCBABD7DFC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,6 +86,11 @@ Global
 		{E49BBEDF-76C4-4701-9FDB-490DA6EB6E3B} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{6EA8A7AD-0AB3-4BD3-AC19-8311765AFB09} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{B3322BA1-8F68-490D-94FD-939D3F3BBAFA} = {86F57B5A-F1C5-4989-94A9-D09B88141CAA}
+		{240F2101-9042-4B8F-BF20-6DE6FC90B9B1} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{69EFF842-A1FF-47E9-A0D6-3E58FA9CBF17} = {86F57B5A-F1C5-4989-94A9-D09B88141CAA}
+		{ECFF6935-12EE-4081-8E95-4E9B6807037A} = {86F57B5A-F1C5-4989-94A9-D09B88141CAA}
+		{CF7E6E92-AFDB-4B3E-A71E-72B1A7395A0F} = {D2A9736C-418A-4036-B5CF-18FCE3750DCB}
+		{C1405A87-6F2E-419B-8118-9BCBABD7DFC2} = {D2A9736C-418A-4036-B5CF-18FCE3750DCB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1C16F987-AC59-44BD-A4BE-AE932185B75E}

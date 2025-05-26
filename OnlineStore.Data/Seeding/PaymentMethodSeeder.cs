@@ -5,7 +5,7 @@ using OnlineStore.Data.Models;
 using OnlineStore.Data.Models.Enums;
 using OnlineStore.Data.Seeding.Interfaces;
 using System.Text.Json;
-using static OnlineStore.Common.OutputMessages.ErrorMessages;
+using static OnlineStore.Data.Common.OutputMessages.ErrorMessages;
 using static OnlineStore.Data.Utilities.EntityValidator;
 
 namespace OnlineStore.Data.Seeding

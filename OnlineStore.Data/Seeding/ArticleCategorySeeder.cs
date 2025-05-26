@@ -4,7 +4,7 @@ using OnlineStore.Data.DTOs;
 using OnlineStore.Data.Models;
 using OnlineStore.Data.Seeding.Interfaces;
 using OnlineStore.Data.Utilities.Interfaces;
-using static OnlineStore.Common.OutputMessages.ErrorMessages;
+using static OnlineStore.Data.Common.OutputMessages.ErrorMessages;
 using static OnlineStore.Data.Utilities.EntityValidator;
 
 namespace OnlineStore.Data.Seeding

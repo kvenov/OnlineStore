@@ -1,4 +1,4 @@
-﻿namespace OnlineStore.Common.OutputMessages
+﻿namespace OnlineStore.Data.Common.OutputMessages
 {
     public static class ErrorMessages
     {
