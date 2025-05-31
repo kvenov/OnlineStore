@@ -15,7 +15,9 @@ namespace OnlineStore.Controllers
 
         public IActionResult Index()
         {
-            return View();
+			//This redirect to the Product controller's Index action.
+            //Fix this!!!
+			return RedirectToAction("Index", "Product");
         }
 
         public IActionResult Privacy()

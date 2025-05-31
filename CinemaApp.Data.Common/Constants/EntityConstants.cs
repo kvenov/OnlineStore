@@ -94,6 +94,11 @@
 		public static class Product
 		{
 			/// <summary>
+			/// The minimum length of the product's name.
+			/// </summary>
+			public const int ProductNameMinLength = 3;
+
+			/// <summary>
 			/// The maximum length of the product's name.
 			/// </summary>
 			public const int ProductNameMaxLength = 100;

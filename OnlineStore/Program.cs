@@ -6,6 +6,8 @@ using OnlineStore.Data.Seeding;
 using OnlineStore.Data.Seeding.Interfaces;
 using OnlineStore.Data.Utilities;
 using OnlineStore.Data.Utilities.Interfaces;
+using OnlineStore.Services.Core;
+using OnlineStore.Services.Core.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //Here we add the required services for the Application
 builder.Services.AddSingleton<IXmlHelper, XMLHelper>();
 builder.Services.AddScoped<IDbSeeder, ApplicationDbContextSeeder>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
