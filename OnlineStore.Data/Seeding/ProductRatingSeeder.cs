@@ -138,10 +138,12 @@ namespace OnlineStore.Data.Seeding
 
 						ApplicationUser user = await this._context
 							.Users
+							.Include(u => u.ProductRatings)
 							.FirstAsync(u => u.Id == userId);
 
 						Product product = await this._context
 							.Products
+							.Include(p => p.ProductRatings)
 							.FirstAsync(p => p.Id == productId);
 
 						user.ProductRatings.Add(productRating);

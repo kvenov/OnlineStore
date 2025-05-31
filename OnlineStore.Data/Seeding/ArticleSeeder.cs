@@ -115,6 +115,7 @@ namespace OnlineStore.Data.Seeding
 
 						ArticleCategory? articleCategory = await this._context
 								.ArticleCategories
+								.Include(ac => ac.Articles)
 								.FirstOrDefaultAsync(ac => ac.Id == categoryId);
 
 						if (articleCategory != null)

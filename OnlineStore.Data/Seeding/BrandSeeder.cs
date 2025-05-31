@@ -29,64 +29,66 @@ namespace OnlineStore.Data.Seeding
 		{
 			string brandsJson = await File.ReadAllTextAsync(this.FilePath);
 
-			List<Brand>? brands = JsonSerializer
+
+			try
+			{
+				List<Brand>? brands = JsonSerializer
 				.Deserialize<List<Brand>>(brandsJson);
 
-			if (brands != null && brands.Count > 0)
-			{
-				var brandsFromDb = await this._context
-					.Brands
-					.AsNoTracking()
-					.Select(b => new
-					{
-						b.Id,
-						b.Name,
-						b.WebsiteUrl,
-						b.LogoUrl
-					})
-					.ToListAsync();
-
-				var distinctBrands = brands
-					.GroupBy(b => new { b.Id, b.Name, b.WebsiteUrl, b.LogoUrl})
-					.Select(g => g.First())
-					.ToList();
-
-				var validBrands = new List<Brand>();
-				foreach (var brand in distinctBrands)
+				if (brands != null && brands.Count > 0)
 				{
-					
-					bool isBrandAlreadyExistInDb = brandsFromDb
-						.Any(b => b.Id == brand.Id || b.Name == brand.Name || 
-						          b.WebsiteUrl == brand.WebsiteUrl || b.LogoUrl == brand.LogoUrl);
+					var brandsFromDb = await this._context
+						.Brands
+						.AsNoTracking()
+						.Select(b => new
+						{
+							b.Id,
+							b.Name,
+							b.WebsiteUrl,
+							b.LogoUrl
+						})
+						.ToListAsync();
 
-					if (isBrandAlreadyExistInDb)
+					var distinctBrands = brands
+						.GroupBy(b => new { b.Id, b.Name, b.WebsiteUrl, b.LogoUrl })
+						.Select(g => g.First())
+						.ToList();
+
+					var validBrands = new List<Brand>();
+					foreach (var brand in distinctBrands)
 					{
-						this.Logger.LogWarning(EntityInstanceAlreadyExists);
-						continue;
+
+						bool isBrandAlreadyExistInDb = brandsFromDb
+							.Any(b => b.Id == brand.Id || b.Name == brand.Name ||
+									  b.WebsiteUrl == brand.WebsiteUrl || b.LogoUrl == brand.LogoUrl);
+
+						if (isBrandAlreadyExistInDb)
+						{
+							this.Logger.LogWarning(EntityInstanceAlreadyExists);
+							continue;
+						}
+
+						validBrands.Add(brand);
 					}
 
-					validBrands.Add(brand);
-				}
-
-				if (validBrands.Count > 0)
-				{
-					await this._context.Brands.AddRangeAsync(validBrands);
-					await this._context.SaveChangesAsync();
-					this.Logger.LogInformation(
-						$"Successfully imported {validBrands.Count} brands.");
-				}
-				else
-				{
-					this.Logger.LogWarning(
-						$"No new brands to import from {this.FilePath}");
+					if (validBrands.Count > 0)
+					{
+						await this._context.Brands.AddRangeAsync(validBrands);
+						await this._context.SaveChangesAsync();
+						this.Logger.LogInformation(
+							$"Successfully imported {validBrands.Count} brands.");
+					}
+					else
+					{
+						this.Logger.LogWarning(NoNewEntityDataToAdd);
+					}
 				}
 			}
-			else
+			catch (Exception ex)
 			{
-				this.Logger.LogWarning(
-							BuildEntityValidatorWarningMessage(nameof(Brand)));
-				return;
+				this.Logger.LogError(ex.Message);
 			}
+			
 		}
 	}
 }

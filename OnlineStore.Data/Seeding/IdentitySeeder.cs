@@ -101,11 +101,6 @@ namespace OnlineStore.Data.Seeding
 				await this._context.Wishlists.AddAsync(wishlist);
 				await this._context.ShoppingCarts.AddAsync(shoppingCart);
 				await this._context.SaveChangesAsync();
-
-				user.ShoppingCart = shoppingCart;
-				user.Wishlist = wishlist;
-
-				await this.UserManager.UpdateAsync(user);
 			}
 
 			var isInRole = await this.UserManager.IsInRoleAsync(user, role);

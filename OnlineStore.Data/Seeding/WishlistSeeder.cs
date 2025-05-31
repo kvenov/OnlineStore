@@ -23,38 +23,48 @@ namespace OnlineStore.Data.Seeding
 
 		private async Task SeedWishlistsForUsers()
 		{
-			
-			var users = await this._context
+
+			try
+			{
+				var users = await this._context
 					.Users
+					.Include(u => u.Wishlist)
 					.Where(u => u.Wishlist == null)
 					.ToListAsync();
 
-			if (users != null && users.Count > 0)
-			{
-
-				ICollection<Wishlist> validWishlists = new List<Wishlist>();
-				foreach (var user in users)
+				if (users != null && users.Count > 0)
 				{
+					ICollection<Wishlist> validWishlists = new List<Wishlist>();
 
-					var wishlist = new Wishlist
+					this.Logger.LogInformation($"{users.Count} users without Wishlists were found.");
+
+					foreach (var user in users)
 					{
-						UserId = user.Id,
-						IsDeleted = false
-					};
 
-					user.Wishlist = wishlist;
-					validWishlists.Add(wishlist);
+						var wishlist = new Wishlist
+						{
+							UserId = user.Id,
+							IsDeleted = false
+						};
+
+						user.Wishlist = wishlist;
+						validWishlists.Add(wishlist);
+					}
+
+					await this._context.Wishlists.AddRangeAsync(validWishlists);
+					await this._context.SaveChangesAsync();
+					this.Logger.LogInformation($"{validWishlists.Count} new Wishlists were added to the database.");
 				}
-
-				await this._context.Wishlists.AddRangeAsync(validWishlists);
-				await this._context.SaveChangesAsync();
-				this.Logger.LogInformation($"{validWishlists.Count} new Wishlists were added to the database.");
+				else
+				{
+					this.Logger.LogInformation(NoNewEntityDataToAdd);
+				}
 			}
-			else
+			catch (Exception ex)
 			{
-				this.Logger.LogInformation(NoNewEntityDataToAdd);
+				this.Logger.LogError(ex.Message);
+				return;
 			}
-
 		}
 	}
 }
