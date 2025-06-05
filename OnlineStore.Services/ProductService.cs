@@ -1,19 +1,25 @@
 ﻿using OnlineStore.Data;
 using OnlineStore.Services.Core.Interfaces;
-using OnlineStore.Web.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using OnlineStore.Web.ViewModels.Product;
 
 namespace OnlineStore.Services.Core
 {
-	public class ProductService(ApplicationDbContext context) : IProductService
+	public class ProductService : IProductService
 	{
+		private readonly ApplicationDbContext _context;
 
-		public async Task<IEnumerable<ProductViewModel>> GetAllProductsAsync()
+		public ProductService(ApplicationDbContext context)
 		{
-			return await context
+			this._context = context ?? throw new ArgumentNullException(nameof(context));
+		}
+
+		public async Task<IEnumerable<AllProductListViewModel>> GetAllProductsAsync()
+		{
+			IEnumerable<AllProductListViewModel> productList = await _context
 			  .Products
 			  .AsNoTracking()
-			  .Select(p => new ProductViewModel
+			  .Select(p => new AllProductListViewModel
 			  {
 				  Id = p.Id,
 				  Name = p.Name,
@@ -22,14 +28,16 @@ namespace OnlineStore.Services.Core
 				  ImageUrl = p.ImageUrl
 			  })
 			  .ToListAsync();
+
+			return productList;
 		}
 
-		public async Task<ProductViewModel> GetProductByIdAsync(int id)
+		public async Task<AllProductListViewModel> GetProductByIdAsync(int id)
 		{
-			return await context
+			return await _context
 				.Products
 				.AsNoTracking()
-				.Select(p => new ProductViewModel
+				.Select(p => new AllProductListViewModel
 				{
 					Id = p.Id,
 					Name = p.Name,

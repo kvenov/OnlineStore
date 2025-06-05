@@ -1,0 +1,12 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-1 text-dark fw-semibold" asp-area="" asp-action="Index" asp-controller="Wishlist">
+            <i class="bi bi-heart-fill text-danger"></i>
+            Wishlist
+        </a>
+    </li>
+}

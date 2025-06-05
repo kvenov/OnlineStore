@@ -13,13 +13,6 @@ namespace OnlineStore.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
-        {
-			//This redirect to the Product controller's Index action.
-            //Fix this!!!
-			return RedirectToAction("Index", "Product");
-        }
-
         public IActionResult Privacy()
         {
             return View();

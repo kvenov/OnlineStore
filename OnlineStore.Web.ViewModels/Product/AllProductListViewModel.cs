@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static OnlineStore.Data.Common.Constants.EntityConstants.Product;
 
-namespace OnlineStore.Web.ViewModels
+namespace OnlineStore.Web.ViewModels.Product
 {
-	public class ProductViewModel
+	public class AllProductListViewModel
 	{
 
 		public int Id { get; set; }
