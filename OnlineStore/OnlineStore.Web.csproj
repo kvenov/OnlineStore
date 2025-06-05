@@ -25,4 +25,9 @@
     <ProjectReference Include="..\OnlineStore.Web.ViewModels\OnlineStore.Web.ViewModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
+  </ItemGroup>
+
 </Project>

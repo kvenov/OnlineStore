@@ -1,7 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
-@if (SignInManager.IsSignedIn(User))
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("User"))
 {
     <li class="nav-item">
         <a class="nav-link d-flex align-items-center gap-1 text-dark fw-semibold" asp-area="" asp-action="Index" asp-controller="Wishlist">

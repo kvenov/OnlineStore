@@ -1,18 +1,23 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using OnlineStore.Data.Models
 @inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
 @{
 	bool isSignedIn = SignInManager.IsSignedIn(User);
 	string cartTitle = isSignedIn ? "View your cart" : "Sign in to access your cart";
 }
 
-<li class="nav-item">
-    <a class="nav-link text-dark d-flex align-items-center gap-1 @(SignInManager.IsSignedIn(User) ? "" : "disabled")"
-       asp-area=""
-       asp-controller="Cart"
-       asp-action="Index"
-       title="@cartTitle">
-        <i class="bi bi-cart-fill"></i>
-        Cart
-    </a>
-</li>
+@if (!User.IsInRole("Admin"))
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark d-flex align-items-center gap-1 @(SignInManager.IsSignedIn(User) ? "" : "disabled")"
+           asp-area=""
+           asp-controller="Cart"
+           asp-action="Index"
+           title="@cartTitle">
+            <i class="bi bi-cart-fill"></i>
+            Cart
+        </a>
+    </li>
+}
