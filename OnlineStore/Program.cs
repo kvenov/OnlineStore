@@ -7,6 +7,8 @@ using OnlineStore.Data.Seeding.Interfaces;
 using OnlineStore.Data.Utilities;
 using OnlineStore.Data.Utilities.Interfaces;
 using OnlineStore.Services.Core;
+using OnlineStore.Services.Core.Admin;
+using OnlineStore.Services.Core.Admin.Interfaces;
 using OnlineStore.Services.Core.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +25,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddSingleton<IXmlHelper, XMLHelper>();
 builder.Services.AddScoped<IDbSeeder, ApplicationDbContextSeeder>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IAdminProductService, AdminProductService>();
 
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
