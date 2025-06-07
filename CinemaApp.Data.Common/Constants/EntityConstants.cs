@@ -109,6 +109,11 @@
 			public const int ProductDescriptionMaxLength = 1000;
 
 			/// <summary>
+			/// The minimum length of the product's description.
+			/// </summary>
+			public const int ProductDescriptionMinLength = 1;
+
+			/// <summary>
 			/// The maximum length of the product's image url.
 			/// </summary>
 			public const int ProductImageUrlMaxLength = 200;

@@ -26,6 +26,8 @@ builder.Services.AddSingleton<IXmlHelper, XMLHelper>();
 builder.Services.AddScoped<IDbSeeder, ApplicationDbContextSeeder>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IAdminProductService, AdminProductService>();
+builder.Services.AddScoped<IAdminProductCategoryService, AdminProductCategoryService>();
+builder.Services.AddScoped<IAdminBrandService, AdminBrandService>();
 
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
