@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OnlineStore.Data;
+using OnlineStore.Data.Interceptors;
 using OnlineStore.Data.Models;
 using OnlineStore.Data.Seeding;
 using OnlineStore.Data.Seeding.Interfaces;
@@ -18,8 +19,18 @@ var connectionString = builder.Configuration
             .GetConnectionString("DbConnectionString") ?? 
                     throw new InvalidOperationException("Connection string 'DbConnectionString' not found.");
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+builder.Services.AddScoped<SoftDeleteInterceptor>();
+
+//builder.Services.AddDbContext<ApplicationDbContext>(options =>
+//    options.UseSqlServer(connectionString));
+
+builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
+{
+	var interceptor = sp.GetRequiredService<SoftDeleteInterceptor>();
+	options
+		.UseSqlServer(connectionString)
+		.AddInterceptors(interceptor);
+});
 
 //Here we add the required services for the Application
 builder.Services.AddSingleton<IXmlHelper, XMLHelper>();

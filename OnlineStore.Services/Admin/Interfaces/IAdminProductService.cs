@@ -6,6 +6,10 @@ namespace OnlineStore.Services.Core.Admin.Interfaces
 	{
 		Task<IEnumerable<AllProductsViewModel>> GetAllProductsAsync();
 
+		Task<ProductDetailsForDeleteViewModel?> GetProductDetailsForDeleteAsync(string id);
+
 		Task AddProductAsync(AddProductViewModel model);
+
+		Task DeleteProductAsync(string id);
 	}
 }

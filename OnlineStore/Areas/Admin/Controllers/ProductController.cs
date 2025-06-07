@@ -70,5 +70,45 @@ namespace OnlineStore.Web.Areas.Admin.Controllers
 				return View(model);
 			}
 		}
+
+		[Area("Admin")]
+		[Authorize(Roles = "Admin")]
+		[ActionName("Delete")]
+		[HttpGet]
+		public async Task<IActionResult> Delete(string id)
+		{
+			ProductDetailsForDeleteViewModel? model = await this._productService.GetProductDetailsForDeleteAsync(id);
+
+			if (model == null)
+			{
+				return NotFound();
+			}
+
+			return View(model);
+		}
+
+		[Area("Admin")]
+		[Authorize(Roles = "Admin")]
+		[ActionName("Delete")]
+		[HttpPost]
+		public async Task<IActionResult> DeleteConfirmed(string id)
+		{
+			if (string.IsNullOrEmpty(id))
+			{
+				return NotFound();
+			}
+
+			try
+			{
+				await this._productService.DeleteProductAsync(id);
+				return RedirectToAction(nameof(All), "Product", new { Area = "Admin" });
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+
+				return RedirectToAction(nameof(All), "Product", new { Area = "Admin" });
+			}
+		}
 	}
 }

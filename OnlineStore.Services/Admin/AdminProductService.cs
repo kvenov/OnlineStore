@@ -70,6 +70,21 @@ namespace OnlineStore.Services.Core.Admin
 			await this._context.SaveChangesAsync();
 		}
 
+		public async Task DeleteProductAsync(string id)
+		{
+			Product? productToDelete = await this._context
+				.Products
+				.SingleOrDefaultAsync(p => p.Id.ToString() == id);
+
+			if (productToDelete != null)
+			{
+
+				//Fix this to use async methods for the remove operation!!!
+				this._context.Products.Remove(productToDelete);
+				await this._context.SaveChangesAsync();
+			}
+		}
+
 		public async Task<IEnumerable<AllProductsViewModel>> GetAllProductsAsync()
 		{
 			IEnumerable<AllProductsViewModel> productList = await _context
@@ -89,6 +104,33 @@ namespace OnlineStore.Services.Core.Admin
 				.ToListAsync();
 
 			return productList;
+		}
+
+		public async Task<ProductDetailsForDeleteViewModel?> GetProductDetailsForDeleteAsync(string id)
+		{
+			ProductDetailsForDeleteViewModel? productDetails = null;
+			bool isValidId = int.TryParse(id, out int productId);
+
+			if (isValidId)
+			{
+				productDetails = await _context
+					.Products
+					.AsNoTracking()
+					.Where(p => p.Id == productId)
+					.Select(p => new ProductDetailsForDeleteViewModel
+					{
+						Id = p.Id.ToString(),
+						Name = p.Name,
+						Description = p.Description,
+						ImageUrl = p.ImageUrl,
+						Price = p.Price.ToString("F2"),
+						Category = p.Category.Name,
+						Brand = p.Brand != null ? p.Brand.Name : "",
+					})
+					.SingleOrDefaultAsync();
+			}
+
+			return productDetails;
 		}
 	}
 }
