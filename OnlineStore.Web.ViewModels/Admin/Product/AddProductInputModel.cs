@@ -6,7 +6,7 @@ using static OnlineStore.Data.Common.Constants.EntityConstants.ProductDetails;
 
 namespace OnlineStore.Web.ViewModels.Admin.Product
 {
-	public class AddProductViewModel
+	public class AddProductInputModel
 	{
 
 		// Product information

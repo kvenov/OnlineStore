@@ -24,7 +24,7 @@
                         <span class="badge bg-secondary">@Model.Brand</span>
                     </div>
 
-                    <form asp-action="DeleteConfirmed" asp-route-id="@Model.Id" method="post" class="text-center">
+                    <form asp-action="Delete" asp-controller="Product" asp-route-id="@Model.Id" method="post" class="text-center">
                         @Html.AntiForgeryToken()
 
                         <p class="fw-bold text-danger mb-4">
@@ -35,7 +35,7 @@
                             <i class="bi bi-trash-fill me-1"></i> Delete
                         </button>
 
-                        <a asp-action="All" class="btn btn-outline-secondary btn-lg">
+                        <a asp-action="All" asp-controller="Product" class="btn btn-outline-secondary btn-lg">
                             <i class="bi bi-x-circle me-1"></i> Cancel
                         </a>
                     </form>

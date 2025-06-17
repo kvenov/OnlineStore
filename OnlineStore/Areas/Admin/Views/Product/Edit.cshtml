@@ -1,0 +1,157 @@
+﻿@model EditProductInputModel
+
+@{
+    ViewData["Title"] = "Edit Product";
+}
+
+<div class="container py-5">
+    <h2 class="mb-4 fw-bold text-primary">Edit Product</h2>
+
+    <form asp-action="Edit" method="post" class="bg-white shadow rounded-4 p-4">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <label asp-for="Name" class="form-label">Name</label>
+                <input asp-for="Name" class="form-control" placeholder="Enter product name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="ImageUrl" class="form-label">Image URL</label>
+                <input asp-for="ImageUrl" class="form-control" placeholder="e.g. https://..." />
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-12">
+                <label asp-for="Description" class="form-label">Description</label>
+                <textarea asp-for="Description" class="form-control" rows="4" placeholder="Enter a short product description..."></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="Price" class="form-label">Price</label>
+                <input asp-for="Price" class="form-control" type="number" step="0.01" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="DiscountPrice" class="form-label">Discount Price</label>
+                <input asp-for="DiscountPrice" class="form-control" type="number" step="0.01" />
+                <span asp-validation-for="DiscountPrice" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="IsActive" class="form-label">Is Active</label>
+                <div class="form-check form-switch">
+                    <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+                </div>
+                <span asp-validation-for="IsActive" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="StockQuantity" class="form-label">Stock Quantity</label>
+                <input asp-for="StockQuantity" class="form-control" type="number" />
+                <span asp-validation-for="StockQuantity" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="AverageRating" class="form-label">Avg. Rating</label>
+                <input asp-for="AverageRating" class="form-control" type="number" step="0.1" />
+                <span asp-validation-for="AverageRating" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="TotalRatings" class="form-label">Total Ratings</label>
+                <input asp-for="TotalRatings" class="form-control" type="number" />
+                <span asp-validation-for="TotalRatings" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="CategoryId" class="form-label">Category</label>
+                <select asp-for="CategoryId" asp-items="Model.Categories" class="form-select"></select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="BrandId" class="form-label">Brand</label>
+                <select asp-for="BrandId" asp-items="Model.Brands" class="form-select">
+                    <option value="">(Optional) Choose brand</option>
+                </select>
+                <span asp-validation-for="BrandId" class="text-danger"></span>
+            </div>
+
+            <hr class="mt-4 mb-3" />
+            <h5 class="text-muted">Details</h5>
+
+            <div class="col-md-6">
+                <label asp-for="Material" class="form-label">Material</label>
+                <input asp-for="Material" class="form-control" />
+                <span asp-validation-for="Material" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Color" class="form-label">Color</label>
+                <input asp-for="Color" class="form-control" />
+                <span asp-validation-for="Color" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="Gender" class="form-label">Gender</label>
+                <select asp-for="Gender" class="form-select">
+                    <option value="">Select Gender</option>
+                    <option value="Men">Men</option>
+                    <option value="Women">Women</option>
+                    <option value="Unisex">Unisex</option>
+                </select>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="SizeGuideUrl" class="form-label">Size Guide URL</label>
+                <input asp-for="SizeGuideUrl" class="form-control" />
+                <span asp-validation-for="SizeGuideUrl" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="CountryOfOrigin" class="form-label">Country of Origin</label>
+                <input asp-for="CountryOfOrigin" class="form-control" />
+                <span asp-validation-for="CountryOfOrigin" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="CareInstructions" class="form-label">Care Instructions</label>
+                <input asp-for="CareInstructions" class="form-control" />
+                <span asp-validation-for="CareInstructions" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-3">
+                <label asp-for="Weight" class="form-label">Weight (kg)</label>
+                <input asp-for="Weight" class="form-control" type="number" step="0.01" />
+                <span asp-validation-for="Weight" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-3">
+                <label asp-for="Fit" class="form-label">Fit</label>
+                <input asp-for="Fit" class="form-control" />
+                <span asp-validation-for="Fit" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-12">
+                <label asp-for="Style" class="form-label">Style</label>
+                <input asp-for="Style" class="form-control" />
+                <span asp-validation-for="Style" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-12 mt-4">
+                <button type="submit" class="btn btn-lg btn-success px-5">Update Product</button>
+                <a asp-action="All"  asp-controller="Product" class="btn btn-lg 
+                        btn-outline-secondary ms-3">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

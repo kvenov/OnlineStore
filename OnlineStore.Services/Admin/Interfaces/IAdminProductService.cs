@@ -8,8 +8,12 @@ namespace OnlineStore.Services.Core.Admin.Interfaces
 
 		Task<ProductDetailsForDeleteViewModel?> GetProductDetailsForDeleteAsync(string id);
 
-		Task AddProductAsync(AddProductViewModel model);
+		Task<bool> AddProductAsync(AddProductInputModel model);
 
-		Task DeleteProductAsync(string id);
+		Task<EditProductInputModel?> GetEditableProductByIdAsync(int? id);
+
+		Task<bool> EditProductAsync(EditProductInputModel? model);
+
+		Task<bool> SoftDeleteProductAsync(string id);
 	}
 }
