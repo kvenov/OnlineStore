@@ -5,6 +5,9 @@ using OnlineStore.Web.ViewModels.Admin.Product;
 
 namespace OnlineStore.Web.Areas.Admin.Controllers
 {
+
+	[Area("Admin")]
+	[Authorize(Roles = "Admin")]
 	public class ProductController : Controller
 	{
 		private readonly IAdminProductService _productService;
@@ -21,9 +24,7 @@ namespace OnlineStore.Web.Areas.Admin.Controllers
 		}
 
 
-		[Area("Admin")]
 		[HttpGet]
-		[Authorize(Roles = "Admin")]
 		[ActionName("All")]
 		public async Task<IActionResult> All()
 		{
@@ -46,9 +47,7 @@ namespace OnlineStore.Web.Areas.Admin.Controllers
 			}
 		}
 
-		[Area("Admin")]
 		[HttpGet]
-		[Authorize(Roles = "Admin")]
 		[ActionName("Details")]
 		public async Task<IActionResult> Details(int? id)
 		{
@@ -56,9 +55,7 @@ namespace OnlineStore.Web.Areas.Admin.Controllers
 			return RedirectToAction(nameof(All));
 		}
 
-		[Area("Admin")]
 		[HttpGet]
-		[Authorize(Roles = "Admin")]
 		[ActionName("Add")]
 		public async Task<IActionResult> Add()
 		{
@@ -71,10 +68,8 @@ namespace OnlineStore.Web.Areas.Admin.Controllers
 			return View(model);
 		}
 
-		[Area("Admin")]
-		[Authorize(Roles = "Admin")]
-		[ActionName("Add")]
 		[HttpPost]
+		[ActionName("Add")]
 		public async Task<IActionResult> Add(AddProductInputModel model)
 		{
 			try
@@ -110,10 +105,8 @@ namespace OnlineStore.Web.Areas.Admin.Controllers
 			}
 		}
 
-		[Area("Admin")]
-		[Authorize(Roles = "Admin")]
-		[ActionName("Edit")]
 		[HttpGet]
+		[ActionName("Edit")]
 		public async Task<IActionResult> Edit(int? id)
 		{
 			try
@@ -143,10 +136,8 @@ namespace OnlineStore.Web.Areas.Admin.Controllers
 			}
 		}
 
-		[Area("Admin")]
-		[Authorize(Roles = "Admin")]
-		[ActionName("Edit")]
 		[HttpPost]
+		[ActionName("Edit")]
 		public async Task<IActionResult> Edit(EditProductInputModel? model)
 		{
 			try
@@ -190,31 +181,32 @@ namespace OnlineStore.Web.Areas.Admin.Controllers
 			}
 		}
 
-		[Area("Admin")]
-		[Authorize(Roles = "Admin")]
-		[ActionName("Delete")]
 		[HttpGet]
-		public async Task<IActionResult> Delete(string id)
+		[ActionName("Delete")]
+		public async Task<IActionResult> Delete(string? id)
 		{
+			if (string.IsNullOrWhiteSpace(id))
+			{
+				return this.RedirectToAction(nameof(All));
+			}
+
 			ProductDetailsForDeleteViewModel? model = await this._productService.GetProductDetailsForDeleteAsync(id);
 
 			if (model == null)
 			{
-				return NotFound();
+				return this.RedirectToAction(nameof(All));
 			}
 
 			return View(model);
 		}
 
-		[Area("Admin")]
-		[Authorize(Roles = "Admin")]
-		[ActionName("Delete")]
 		[HttpPost]
-		public async Task<IActionResult> DeleteConfirmed(string id)
+		[ActionName("Delete")]
+		public async Task<IActionResult> DeleteConfirmed(string? id)
 		{
 			try
 			{
-				if (string.IsNullOrEmpty(id))
+				if (string.IsNullOrWhiteSpace(id))
 				{
 					return RedirectToAction(nameof(All));
 				}

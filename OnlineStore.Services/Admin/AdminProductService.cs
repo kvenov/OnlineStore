@@ -78,20 +78,24 @@ namespace OnlineStore.Services.Core.Admin
 			return isAdded;
 		}
 
-		public async Task<bool> SoftDeleteProductAsync(string id)
+		public async Task<bool> SoftDeleteProductAsync(string? id)
 		{
 			bool isRemoved = false;
-			Product? productToDelete = await this._context
+
+			if (string.IsNullOrWhiteSpace(id))
+			{
+				Product? productToDelete = await this._context
 				.Products
 				.SingleOrDefaultAsync(p => p.Id.ToString() == id);
 
-			if (productToDelete != null)
-			{
+				if (productToDelete != null)
+				{
 
-				productToDelete.IsDeleted = true;
-				await this._context.SaveChangesAsync();
+					productToDelete.IsDeleted = true;
+					await this._context.SaveChangesAsync();
 
-				isRemoved = true;
+					isRemoved = true;
+				}
 			}
 
 			return isRemoved;
@@ -101,6 +105,8 @@ namespace OnlineStore.Services.Core.Admin
 		{
 			IEnumerable<AllProductsViewModel> productList = await _context
 				.Products
+				.Include(p => p.Brand)
+				.Include(p => p.Category)
 				.AsNoTracking()
 				.Select(p => new AllProductsViewModel
 				{

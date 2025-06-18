@@ -14,6 +14,6 @@ namespace OnlineStore.Services.Core.Admin.Interfaces
 
 		Task<bool> EditProductAsync(EditProductInputModel? model);
 
-		Task<bool> SoftDeleteProductAsync(string id);
+		Task<bool> SoftDeleteProductAsync(string? id);
 	}
 }
