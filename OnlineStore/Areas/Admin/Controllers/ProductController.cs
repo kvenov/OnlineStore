@@ -51,8 +51,29 @@ namespace OnlineStore.Web.Areas.Admin.Controllers
 		[ActionName("Details")]
 		public async Task<IActionResult> Details(int? id)
 		{
-			//TODO: Implement product details view and logic
-			return RedirectToAction(nameof(All));
+
+			try
+			{
+				if (id == null)
+				{
+					return RedirectToAction(nameof(All));
+				}
+
+				ProductDetailsViewModel? model = await this._productService.GetProductDetailsByIdAsync(id);
+
+				if (model == null)
+				{
+					return RedirectToAction(nameof(All));
+				}
+
+				return View(model);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+
+				return RedirectToAction(nameof(All));
+			}
 		}
 
 		[HttpGet]
@@ -107,7 +128,7 @@ namespace OnlineStore.Web.Areas.Admin.Controllers
 
 		[HttpGet]
 		[ActionName("Edit")]
-		public async Task<IActionResult> Edit(int? id)
+		public async Task<IActionResult> Edit(int? id, string? source)
 		{
 			try
 			{
@@ -125,6 +146,11 @@ namespace OnlineStore.Web.Areas.Admin.Controllers
 
 				model.Categories = await this._productCategoryService.GetAllProductCategoriesIdsAndNamesAsync();
 				model.Brands = await this._brandService.GetAllBrandsIdsAndNamesAsync();
+
+				if (!string.IsNullOrWhiteSpace(source))
+				{
+					ViewBag.Source = source;
+				}
 
 				return View(model);
 			}

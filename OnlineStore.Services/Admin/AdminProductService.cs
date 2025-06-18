@@ -269,5 +269,53 @@ namespace OnlineStore.Services.Core.Admin
 
 			return isEdited;
 		}
+
+		public async Task<ProductDetailsViewModel?> GetProductDetailsByIdAsync(int? id)
+		{
+			ProductDetailsViewModel? productDetails = null;
+
+			if (id != null)
+			{
+				Product? product = await this._context
+					.Products
+					.Include(p => p.Category)
+					.Include(p => p.Brand)
+					.Include(p => p.ProductDetails)
+					.AsNoTracking()
+					.SingleOrDefaultAsync(p => p.Id == id);
+
+				if (product != null)
+				{
+
+					productDetails = new ProductDetailsViewModel()
+					{
+						Id = product.Id,
+						Name = product.Name,
+						Description = product.Description,
+						ImageUrl = product.ImageUrl,
+						Price = product.Price,
+						DiscountPrice = product.DiscountPrice,
+						IsActive = product.IsActive,
+						StockQuantity = product.StockQuantity,
+						AverageRating = product.AverageRating,
+						TotalRatings = product.TotalRatings,
+						Category = product.Category.Name,
+						Brand = product.Brand != null ? product.Brand.Name : null,
+						Material = product.ProductDetails.Material,
+						Color = product.ProductDetails.Color,
+						Gender = product.ProductDetails.Gender,
+						SizeGuideUrl = product.ProductDetails.SizeGuideUrl,
+						CountryOfOrigin = product.ProductDetails.CountryOfOrigin,
+						CareInstructions = product.ProductDetails.CareInstructions,
+						Weight = product.ProductDetails.Weight,
+						Fit = product.ProductDetails.Fit,
+						Style = product.ProductDetails.Style
+					};
+
+				}
+			}
+
+			return productDetails;
+		}
 	}
 }

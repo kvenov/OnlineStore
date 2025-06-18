@@ -1,0 +1,108 @@
+﻿@model ProductDetailsViewModel
+
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-0">
+        <div class="row g-0">
+            <div class="col-md-5">
+                <img src="@Model.ImageUrl" class="img-fluid rounded-start object-fit-cover w-100 h-100" style="max-height: 500px;" alt="@Model.Name">
+            </div>
+            <div class="col-md-7">
+                <div class="card-body">
+                    <h2 class="card-title fw-bold">@Model.Name</h2>
+                    <p class="card-text text-muted">@Model.Description</p>
+
+                    <div class="mb-3">
+                        <span class="badge bg-success fs-6 me-2">Price: @Model.Price.ToString("C")</span>
+                        @if (Model.DiscountPrice.HasValue)
+                        {
+                            <span class="badge bg-danger fs-6">Discount: @Model.DiscountPrice.Value.ToString("C")</span>
+                        }
+                    </div>
+
+                    <dl class="row">
+                        <dt class="col-sm-4">Category</dt>
+                        <dd class="col-sm-8">@Model.Category</dd>
+
+                        @if (!string.IsNullOrEmpty(Model.Brand))
+                        {
+                            <dt class="col-sm-4">Brand</dt>
+                            <dd class="col-sm-8">@Model.Brand</dd>
+                        }
+
+                        <dt class="col-sm-4">Stock Quantity</dt>
+                        <dd class="col-sm-8">@Model.StockQuantity</dd>
+
+                        <dt class="col-sm-4">Is Active</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.IsActive)
+                            {
+                                <span class="badge bg-success">Yes</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">No</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-4">Average Rating</dt>
+                        <dd class="col-sm-8">@Model.AverageRating / 5</dd>
+
+                        <dt class="col-sm-4">Total Ratings</dt>
+                        <dd class="col-sm-8">@Model.TotalRatings</dd>
+                    </dl>
+
+                    <hr />
+
+                    <h5 class="mb-3">Product Details</h5>
+
+                    <dl class="row">
+                        <dt class="col-sm-4">Material</dt>
+                        <dd class="col-sm-8">@Model.Material</dd>
+
+                        <dt class="col-sm-4">Color</dt>
+                        <dd class="col-sm-8">@Model.Color</dd>
+
+                        <dt class="col-sm-4">Gender</dt>
+                        <dd class="col-sm-8">@Model.Gender</dd>
+
+                        <dt class="col-sm-4">Country of Origin</dt>
+                        <dd class="col-sm-8">@Model.CountryOfOrigin</dd>
+
+                        <dt class="col-sm-4">Care Instructions</dt>
+                        <dd class="col-sm-8">@Model.CareInstructions</dd>
+
+                        <dt class="col-sm-4">Weight</dt>
+                        <dd class="col-sm-8">@Model.Weight kg</dd>
+
+                        <dt class="col-sm-4">Fit</dt>
+                        <dd class="col-sm-8">@Model.Fit</dd>
+
+                        <dt class="col-sm-4">Style</dt>
+                        <dd class="col-sm-8">@Model.Style</dd>
+
+                        <dt class="col-sm-4">Size Guide</dt>
+                        <dd class="col-sm-8">
+                            <a href="@Model.SizeGuideUrl" target="_blank" class="btn btn-sm btn-outline-info">
+                                View Size Guide
+                            </a>
+                        </dd>
+                    </dl>
+
+                    <div class="mt-4">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" asp-route-source="Details" class="btn btn-primary me-2">
+                            <i class="bi bi-pencil-square"></i> Edit Product
+                        </a>
+                        <a asp-action="All" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Back to List
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

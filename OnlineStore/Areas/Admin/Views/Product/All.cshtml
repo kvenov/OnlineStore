@@ -29,14 +29,19 @@
                             <span class="text-muted text-decoration-line-through ms-2">@product.DiscountPrice</span>
                         }
                     </p>
-                    <div class="d-flex justify-content-between">
-                        <a asp-area="Admin" asp-action="Edit" asp-controller="Product" asp-route-id="@product.Id" class="btn btn-sm btn-outline-primary">
+                    <div class="d-flex justify-content-between gap-2 mt-3">
+                        <a asp-area="Admin" asp-action="Edit" asp-controller="Product" asp-route-id="@product.Id" asp-route-source="All"
+                                class="btn btn-sm btn-outline-primary flex-fill text-nowrap">
                             <i class="bi bi-pencil-square"></i> Edit
                         </a>
-                        <a asp-area="Admin" asp-action="Delete" asp-controller="Product" asp-route-id="@product.Id" class="btn btn-sm btn-outline-danger">
+                        <a asp-area="Admin" asp-action="Delete" asp-controller="Product" asp-route-id="@product.Id" class="btn btn-sm btn-outline-danger flex-fill text-nowrap">
                             <i class="bi bi-trash3"></i> Delete
                         </a>
+                        <a asp-area="Admin" asp-action="Details" asp-controller="Product" asp-route-id="@product.Id" class="btn btn-sm btn-outline-secondary flex-fill text-nowrap">
+                            <i class="bi bi-info-circle"></i> Details
+                        </a>
                     </div>
+
                 </div>
             </div>
         </div>

@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Edit Product";
+    string? returnSourceUrl = ViewBag.Source as string;
 }
 
 <div class="container py-5">
@@ -145,8 +146,17 @@
 
             <div class="col-md-12 mt-4">
                 <button type="submit" class="btn btn-lg btn-success px-5">Update Product</button>
-                <a asp-action="All"  asp-controller="Product" class="btn btn-lg 
-                        btn-outline-secondary ms-3">Cancel</a>
+                @if (returnSourceUrl != null && returnSourceUrl == "Details")
+                {
+                    <a asp-action="Details" asp-controller="Product" asp-route-id="@Model.Id" class="btn btn-lg
+                            btn-outline-secondary ms-3">Cancel</a>
+                }
+				else if (returnSourceUrl != null && returnSourceUrl == "All")
+                {
+                    <a asp-action="All" asp-controller="Product" class="btn btn-lg
+                            btn-outline-secondary ms-3">Cancel</a>
+                }
+                
             </div>
         </div>
     </form>
