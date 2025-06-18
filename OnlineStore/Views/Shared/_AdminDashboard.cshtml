@@ -1,0 +1,41 @@
+﻿<div class="container py-5">
+	<h2 class="mb-4 text-center">Admin Dashboard</h2>
+
+	<div class="row g-4">
+		<div class="col-md-4">
+			<div class="card shadow-sm border-0 text-white bg-primary">
+				<div class="card-body">
+					<h5 class="card-title"><i class="bi bi-box-seam me-2"></i> Manage Products</h5>
+					<p class="card-text">Add, edit, or delete products in the store.</p>
+					<a asp-area="Admin" asp-controller="Product" asp-action="All" class="btn btn-outline-light btn-sm">Go to Product Panel</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-4">
+			<div class="card shadow-sm border-0 text-white bg-success">
+				<div class="card-body">
+					<h5 class="card-title"><i class="bi bi-people me-2"></i> Manage Users</h5>
+					<p class="card-text">View or edit registered users, roles, and permissions.</p>
+					<a asp-area="Admin" asp-controller="User" asp-action="All" class="btn btn-outline-light btn-sm">Go to User Panel</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-4">
+			<div class="card shadow-sm border-0 text-white bg-warning">
+				<div class="card-body">
+					<h5 class="card-title"><i class="bi bi-bar-chart-line me-2"></i> Sales Overview</h5>
+					<p class="card-text">View analytics about product sales and traffic.</p>
+					<a asp-area="Admin" asp-controller="Reports" asp-action="Sales" class="btn btn-outline-light btn-sm">View Reports</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="mt-5 text-center">
+		<a href="/Admin" class="btn btn-outline-dark btn-lg">
+			<i class="bi bi-speedometer2"></i> Go to Full Admin Panel
+		</a>
+	</div>
+</div>

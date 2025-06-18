@@ -39,6 +39,8 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IAdminProductService, AdminProductService>();
 builder.Services.AddScoped<IAdminProductCategoryService, AdminProductCategoryService>();
 builder.Services.AddScoped<IAdminBrandService, AdminBrandService>();
+builder.Services.AddScoped<IProductCategoryService, ProductCategoryService>();
+builder.Services.AddScoped<IBrandService, BrandService>();
 
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -88,7 +90,7 @@ app.MapControllerRoute(
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Product}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
 

@@ -2,7 +2,11 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-@if (SignInManager.IsSignedIn(User) && User.IsInRole("User"))
+@{
+	bool isUser = SignInManager.IsSignedIn(User) && User.IsInRole("User");
+}
+
+@if (isUser)
 {
     <li class="nav-item">
         <a class="nav-link d-flex align-items-center gap-1 text-dark fw-semibold" asp-area="" asp-action="Index" asp-controller="Wishlist">

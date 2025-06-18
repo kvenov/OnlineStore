@@ -11,7 +11,7 @@ namespace OnlineStore.Services.Core
 
 		public ProductService(ApplicationDbContext context)
 		{
-			this._context = context ?? throw new ArgumentNullException(nameof(context));
+			this._context = context;
 		}
 
 		public async Task<IEnumerable<AllProductListViewModel>> GetAllProductsAsync()
@@ -25,7 +25,8 @@ namespace OnlineStore.Services.Core
 				  Name = p.Name,
 				  Description = p.Description,
 				  Price = p.Price,
-				  ImageUrl = p.ImageUrl
+				  ImageUrl = p.ImageUrl,
+				  Rating  = (float)p.AverageRating
 			  })
 			  .ToListAsync();
 

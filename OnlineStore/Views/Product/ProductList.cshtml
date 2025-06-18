@@ -1,0 +1,93 @@
+﻿@using OnlineStore.Web.ViewModels.Product
+@model IEnumerable<AllProductListViewModel>
+
+@{
+    ViewBag.Title = "All Products";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="bg-light py-5 text-center border-bottom shadow-sm">
+    <div class="container">
+        <h1 class="fw-bold display-5">Browse All Products</h1>
+        <p class="lead text-muted">Explore our full range of high-quality products. Use filters and search to find exactly what you need.</p>
+    </div>
+</section>
+
+<section class="container py-4">
+    <div class="row mb-4">
+        <div class="col-md-4 mb-2">
+            <form method="get" asp-action="All">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="search" placeholder="Search products...">
+                    <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-4 mb-2">
+            <form method="get" asp-action="All">
+                <select class="form-select" name="category">
+                    <option value="">All Categories</option>
+                    <!-- Populate dynamically -->
+                    <option value="Clothing">Clothing</option>
+                    <option value="Accessories">Accessories</option>
+                    <option value="Tech">Tech</option>
+                </select>
+            </form>
+        </div>
+
+        <div class="col-md-4 d-flex align-items-center justify-content-end">
+            <span class="text-muted small">Showing @Model.Count() product(s)</span>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var product in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    <img src="@Url.Content(product.ImageUrl)" class="card-img-top" alt="@product.Name" style="height: 220px; object-fit: cover;">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@product.Name</h5>
+
+                        <!-- Product Rating -->
+                        <div class="mb-2 text-warning">
+                            @{
+                                int fullStars = (int)Math.Floor(product.Rating);
+                                bool halfStar = product.Rating % 1 >= 0.5;
+                                int emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+                            }
+
+                            @for (int i = 0; i < fullStars; i++)
+                            {
+                                <i class="bi bi-star-fill"></i>
+                            }
+
+                            @if (halfStar)
+                            {
+                                <i class="bi bi-star-half"></i>
+                            }
+
+                            @for (int i = 0; i < emptyStars; i++)
+                            {
+                                <i class="bi bi-star"></i>
+                            }
+                        </div>
+
+                        <p class="card-text text-muted">@product.Price.ToString("C")</p>
+
+                        <div class="mt-auto d-flex justify-content-between align-items-center">
+                            <a href="@Url.Action("Details", "Product", new { id = product.Id })" class="btn btn-outline-primary btn-sm">
+                                View Details
+                            </a>
+                            <button class="btn btn-success btn-sm">
+                                <i class="bi bi-cart-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
