@@ -1,14 +1,16 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OnlineStore.Models;
 using OnlineStore.Services.Core.Interfaces;
+using OnlineStore.Web.Controllers;
 using OnlineStore.Web.ViewModels.Home;
 using OnlineStore.Web.ViewModels.Product;
 
 namespace OnlineStore.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IProductService _productService;
@@ -26,7 +28,9 @@ namespace OnlineStore.Controllers
             this._brandService = brandService;
 		}
 
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        [AllowAnonymous]
+		public async Task<IActionResult> Index()
         {
             try
             {
@@ -74,14 +78,15 @@ namespace OnlineStore.Controllers
 			}
 		}
 
+        [HttpGet]
+        [AllowAnonymous]
 		public IActionResult Privacy()
         {
             return View();
         }
 
         [HttpGet]
-        [ActionName("About")]
-        [RequireHttps]
+        [AllowAnonymous]
         public IActionResult About()
         {
             ViewBag.Message = "Your application description page.";
