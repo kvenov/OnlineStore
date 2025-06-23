@@ -10,6 +10,7 @@ using OnlineStore.Data.Utilities.Interfaces;
 using OnlineStore.Services.Core;
 using OnlineStore.Services.Core.Admin;
 using OnlineStore.Services.Core.Admin.Interfaces;
+using OnlineStore.Services.Core.Identity;
 using OnlineStore.Services.Core.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -58,6 +59,8 @@ builder.Services
 	.AddSignInManager<SignInManager<ApplicationUser>>()
 	.AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, CustomClaimsPrincipalFactory>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
