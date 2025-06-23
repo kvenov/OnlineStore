@@ -19,6 +19,9 @@ namespace OnlineStore.Data.Models
 		[Comment("Product details gender")]
 		public string Gender { get; set; } = null!;
 
+		[Comment("Product details size")]
+		public string Size { get; set; } = null!;
+
 		[Comment("Product details size guide url")]
 		public string SizeGuideUrl { get; set; } = null!;
 

@@ -20,6 +20,7 @@ namespace OnlineStore.Data
         }
 
 		public virtual DbSet<Article> Articles { get; set; } = null!;
+		public virtual DbSet<ProductReview> ProductReviews { get; set; } = null!;
 		public virtual DbSet<ArticleCategory> ArticleCategories { get; set; } = null!;
 		public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; } = null!;
 		public virtual DbSet<ShoppingCartItem> ShoppingCartsItems { get; set; } = null!;

@@ -30,6 +30,10 @@ namespace OnlineStore.Data.Configurations
 				.HasMaxLength(GenderMaxLength);
 
 			entity
+				.Property(p => p.Size)
+				.IsRequired();
+
+			entity
 				.Property(p => p.SizeGuideUrl)
 				.IsRequired()
 				.HasMaxLength(SizeGuideUrlMaxLength)

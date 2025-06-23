@@ -45,6 +45,10 @@ namespace OnlineStore.Data.Models
 		public virtual ICollection<Checkout> Checkouts { get; set; } =
 					new HashSet<Checkout>();
 
+		[Comment("The User's product reviews")]
+		public virtual ICollection<ProductReview> ProductReviews { get; set; } =
+					new HashSet<ProductReview>();
+
 		public bool IsDeleted { get; set; }
 	}
 }

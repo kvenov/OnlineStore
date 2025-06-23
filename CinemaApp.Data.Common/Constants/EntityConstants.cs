@@ -30,6 +30,15 @@
 
 		}
 
+		public static class ProductReview
+		{
+			/// <summary>
+			/// The maximum length of the product review's content.
+			/// </summary>
+			public const int ProductReviewContentMaxLength = 1000;
+
+		}
+
 		public static class ArticleCategory
 		{
 			/// <summary>
