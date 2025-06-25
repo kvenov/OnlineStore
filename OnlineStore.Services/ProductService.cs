@@ -4,16 +4,19 @@ using Microsoft.EntityFrameworkCore;
 using OnlineStore.Web.ViewModels.Product;
 using OnlineStore.Web.ViewModels.Product.Partial;
 using OnlineStore.Data.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace OnlineStore.Services.Core
 {
 	public class ProductService : IProductService
 	{
 		private readonly ApplicationDbContext _context;
+		private readonly UserManager<ApplicationUser> _userManager;
 
-		public ProductService(ApplicationDbContext context)
+		public ProductService(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
 		{
 			this._context = context;
+			this._userManager = userManager;
 		}
 
 		public async Task<IEnumerable<AllProductListViewModel>> GetAllProductsAsync()
@@ -51,7 +54,7 @@ namespace OnlineStore.Services.Core
 				.FirstAsync(p => p.Id == id);
 		}
 
-		public async Task<ProductDetailsViewModel?> GetProductDetailsByIdAsync(int? productId)
+		public async Task<ProductDetailsViewModel?> GetProductDetailsByIdAsync(int? productId, string? userId)
 		{
 			ProductDetailsViewModel? productDetails = null;
 
@@ -76,6 +79,7 @@ namespace OnlineStore.Services.Core
 						AverageRating = p.AverageRating.ToString("0.0"),
 						Category = p.Category.Name,
 						Brand = p.Brand!.Name,
+						IsProductReviewed = userId != null && p.ProductReviews.Any(pr => pr.UserId == userId),
 						AvailableSizes = GetSizesForCategory(p.Category.Name),
 						Details = new ProductDetailsPartialViewModel
 						{
@@ -92,6 +96,8 @@ namespace OnlineStore.Services.Core
 						Reviews = p.ProductReviews
 								  .Select(r => new ProductReviewPartialViewModel
 								  {
+									  Id = r.Id,
+									  PublisherId = r.UserId,
 									  Publisher = r.User.UserName,
 									  Content = r.Content
 								  })
@@ -101,6 +107,61 @@ namespace OnlineStore.Services.Core
 
 			return productDetails;
 		}
+
+		public async Task<bool> AddProductReviewAsync(int? productId, int? rating, string? content, string userId)
+		{
+			bool isAdded = false;
+
+			if ((productId != null) && (rating != null) && (content != null))
+			{
+				Product? product = await this._context
+					.Products
+					.FindAsync(productId);
+
+				ApplicationUser? user = await this._userManager
+					.FindByIdAsync(userId);
+
+				bool isValidRating = (rating > 0) && (rating <= 5);
+
+				ProductReview? existingProductReview = await this._context
+					.ProductReviews
+					.SingleOrDefaultAsync(pr => pr.ProductId == productId && pr.UserId == userId);
+
+				ProductRating? existingProductRating = await this._context
+					.ProductsRatings
+					.SingleOrDefaultAsync(pr => pr.ProductId == productId && pr.UserId == userId);
+
+
+				if ((product != null) && (user != null) && 
+						(isValidRating) && (existingProductReview == null) 
+										&& (existingProductRating == null))
+				{
+					ProductReview productReview = new ProductReview()
+					{
+						ProductId = product.Id,
+						UserId = user.Id,
+						Content = content
+					};
+
+					ProductRating productRating = new ProductRating()
+					{
+						ProductId = product.Id,
+						UserId = user.Id,
+						Rating = (int)rating,
+						IsDeleted = false
+					};
+
+					await this._context.ProductReviews.AddAsync(productReview);
+					await this._context.ProductsRatings.AddAsync(productRating);
+
+					await this._context.SaveChangesAsync();
+					isAdded = true;
+				}
+			}
+
+			return isAdded;
+		}
+
 
 
 		private static IEnumerable<string> GetSizesForCategory(string categoryName)

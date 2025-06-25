@@ -8,7 +8,9 @@ namespace OnlineStore.Services.Core.Interfaces
 
 		Task<AllProductListViewModel> GetProductByIdAsync(int id);
 
-		Task<ProductDetailsViewModel?> GetProductDetailsByIdAsync(int? productId);
+		Task<ProductDetailsViewModel?> GetProductDetailsByIdAsync(int? productId, string? userId);
+
+		Task<bool> AddProductReviewAsync(int? productId, int? rating, string? content, string userId);
 
 	}
 }

@@ -2,6 +2,9 @@
 {
 	public class ProductReviewPartialViewModel
 	{
+		public int Id { get; set; }
+
+		public string PublisherId { get; set; } = null!;
 
 		public string? Publisher { get; set; }
 

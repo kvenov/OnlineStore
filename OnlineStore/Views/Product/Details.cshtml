@@ -1,9 +1,12 @@
-﻿@using OnlineStore.Web.ViewModels.Product
+﻿@using Microsoft.AspNetCore.Identity
+@using OnlineStore.Web.ViewModels.Product
+@inject UserManager<ApplicationUser> UserManager
 
 @model ProductDetailsViewModel
 
 @{
     ViewData["Title"] = Model.Name;
+    string? userId = this.UserManager.GetUserId(User)?.ToString();
 }
 
 @section Styles {  
@@ -71,47 +74,76 @@
                 {
                     foreach (var review in Model.Reviews)
                     {
-                        <div class="mb-3">
+                        <div class="mb-4 p-3 rounded shadow-sm bg-light">
                             <strong>@review.Publisher</strong>
-                            <p>@review.Content</p>
+
+                            <p class="mt-2">@review.Content</p>
+
+                            @if (review.PublisherId == userId)
+                            {
+                                <div class="mt-2 d-flex gap-2">
+                                    <a asp-action="EditReview" asp-controller="Product" asp-route-id="@review.Id" 
+                                       class="btn btn-outline-primary btn-sm d-flex align-items-center">
+                                        <i class="fas fa-pen me-1"></i> Edit
+                                    </a>
+                                    <form asp-action="RemoveReview" asp-controller="Product" method="post" onsubmit="return confirm('Are you sure you want to remove this review?');">
+                                        <input type="hidden" name="reviewId" value="@review.Id" />
+                                        <button type="submit" class="btn btn-outline-danger btn-sm d-flex align-items-center">
+                                            <i class="fas fa-trash-alt me-1"></i> Remove
+                                        </button>
+                                    </form>
+                                </div>
+                            }
                         </div>
                     }
                 }
                 else
                 {
-                    <p>No reviews yet.</p>
+                    <p class="text-muted">No reviews yet.</p>
                 }
+
             </div>
         </div>
     </div>
 
-    <div id="review-container" data-auth="@User.Identity!.IsAuthenticated.ToString().ToLower()" class="mt-5 mb-5 p-4 border rounded shadow-sm bg-light">
-        <h4 class="mb-4">📝 Leave a Review</h4>
+    @if (Model.IsProductReviewed)
+    {
+        <div class="alert alert-info text-center mt-5 mb-5">
+            You’ve already reviewed this product.
+        </div>
 
-        <form asp-action="AddReview" asp-controller="Product" method="post">
-            <input type="hidden" name="id" value="@Model.Id" />
+    }
+    else
+    {
+        <div id="review-container" data-auth="@User.Identity!.IsAuthenticated.ToString().ToLower()" class="mt-5 mb-5 p-4 border rounded shadow-sm bg-light">
+            <h4 class="mb-4">📝 Leave a Review</h4>
 
-            <div class="mb-3">
-                <label for="Rating" class="form-label">Your Rating</label>
-                <div id="rating-stars" class="d-flex gap-2 fs-4 text-warning" data-selected="0">
-                    @for (int i = 1; i <= 5; i++)
-                    {
-                        <i class="fa-regular fa-star star" data-value="@i" style="cursor: pointer;"></i>
-                    }
+            <form asp-action="AddReview" asp-controller="Product" method="post">
+                <input type="hidden" name="id" value="@Model.Id" />
+
+                <div class="mb-3">
+                    <label for="Rating" class="form-label">Your Rating</label>
+                    <div id="rating-stars" class="d-flex gap-2 fs-4 text-warning" data-selected="0">
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            <i class="fa-regular fa-star star" data-value="@i" style="cursor: pointer;"></i>
+                        }
+                    </div>
+                    <input type="hidden" name="rating" id="rating-input" value="0" />
                 </div>
-                <input type="hidden" name="rating" id="rating-input" value="0" />
-            </div>
 
-            <div class="mb-3">
-                <label for="Content" class="form-label">Your Review</label>
-                <textarea name="content" id="Content" class="form-control" rows="4" placeholder="Tell us what you think..." required></textarea>
-            </div>
+                <div class="mb-3">
+                    <label for="Content" class="form-label">Your Review</label>
+                    <textarea name="content" id="Content" class="form-control" rows="4" placeholder="Tell us what you think..." required></textarea>
+                </div>
 
-            <button type="submit" id="review-submit-button" class="btn btn-primary btn-lg mt-3 w-100">
-                <i class="fa fa-paper-plane"></i> Submit Review
-            </button>
-        </form>
-    </div>
+                <button type="submit" id="review-submit-button" class="btn btn-primary btn-lg mt-3 w-100">
+                    <i class="fa fa-paper-plane"></i> Submit Review
+                </button>
+            </form>
+        </div>
+    }
+    
 
 </div>
 

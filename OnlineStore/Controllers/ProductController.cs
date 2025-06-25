@@ -44,8 +44,10 @@ namespace OnlineStore.Web.Controllers
 		{
 			try
 			{
+				string? userId = this.GetUserId();
+
 				ProductDetailsViewModel? productDetails = await this._productService
-							.GetProductDetailsByIdAsync(id);
+							.GetProductDetailsByIdAsync(id, userId);
 
 				if (productDetails == null)
 				{
@@ -53,6 +55,33 @@ namespace OnlineStore.Web.Controllers
 				}
 
 				return View(productDetails);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+
+				return RedirectToAction("Index", "Home");
+			}
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> AddReview([FromForm]int? id, [FromForm] int? rating, [FromForm]string? content)
+		{
+			try
+			{
+				string userId = this.GetUserId()!;
+
+				bool isAdded = await this._productService
+						.AddProductReviewAsync(id, rating, content, userId);
+
+				if (isAdded)
+				{
+					return this.RedirectToAction(nameof(Details), new { id });
+				}
+				else
+				{
+					return this.RedirectToAction(nameof(Details), new { id });
+				}
 			}
 			catch (Exception ex)
 			{
