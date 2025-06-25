@@ -1,0 +1,72 @@
+﻿.size-option {
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.size-option:hover,
+.size-option.active {
+    background-color: #000;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+.dropdown-section {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-section:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown-section h5 {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.dropdown-section .arrow {
+    margin-right: 0.5rem;
+    transition: transform 0.2s ease;
+    font-size: 1.2rem;
+}
+
+.dropdown-content {
+    margin-top: 1rem;
+    display: none;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.star {
+    font-size: 2rem;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.star.hover,
+.star.selected {
+    color: gold;
+}
+
+.fade-in {
+    opacity: 0;
+    animation: fadeInEffect 0.6s forwards;
+}
+
+@keyframes fadeInEffect {
+    to {
+        opacity: 1;
+    }
+}

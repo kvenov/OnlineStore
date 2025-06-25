@@ -8,59 +8,8 @@
 
 @section Styles {  
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />  
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />  
-    <style>  
-        .size-option {  
-            display: inline-block;  
-            border: 1px solid #ccc;  
-            border-radius: 10px;  
-            padding: 10px 20px;  
-            margin: 5px;  
-            cursor: pointer;  
-            transition: all 0.3s ease-in-out;  
-        }  
-
-        .size-option:hover,  
-        .size-option.active {  
-            background-color: #000;  
-            color: #fff;  
-            transform: scale(1.05);  
-        }  
-
-        .dropdown-section {  
-            border: 1px solid #ddd;  
-            padding: 1rem;  
-            margin-bottom: 1rem;  
-            border-radius: 8px;  
-            background-color: #f9f9f9;  
-            cursor: pointer;  
-            transition: background-color 0.3s ease;  
-        }  
-
-        .dropdown-section:hover {  
-            background-color: #f1f1f1;  
-        }  
-
-        .dropdown-section h5 {  
-            display: flex;  
-            align-items: center;  
-            font-size: 1.2rem;  
-            margin: 0;  
-        }  
-
-        .dropdown-section .arrow {  
-            margin-right: 0.5rem;  
-            transition: transform 0.2s ease;  
-            font-size: 1.2rem;  
-        }  
-
-        .dropdown-content {  
-            margin-top: 1rem;  
-            display: none;  
-            animation: fadeIn 0.4s ease-in-out;  
-        }
-
-    </style>  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/Product/productDetails.css" asp-append-version="true" />
 }
 
 <div class="container mt-5">
@@ -135,44 +84,37 @@
             </div>
         </div>
     </div>
+
+    <div id="review-container" data-auth="@User.Identity!.IsAuthenticated.ToString().ToLower()" class="mt-5 mb-5 p-4 border rounded shadow-sm bg-light">
+        <h4 class="mb-4">📝 Leave a Review</h4>
+
+        <form asp-action="AddReview" asp-controller="Product" method="post">
+            <input type="hidden" name="id" value="@Model.Id" />
+
+            <div class="mb-3">
+                <label for="Rating" class="form-label">Your Rating</label>
+                <div id="rating-stars" class="d-flex gap-2 fs-4 text-warning" data-selected="0">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        <i class="fa-regular fa-star star" data-value="@i" style="cursor: pointer;"></i>
+                    }
+                </div>
+                <input type="hidden" name="rating" id="rating-input" value="0" />
+            </div>
+
+            <div class="mb-3">
+                <label for="Content" class="form-label">Your Review</label>
+                <textarea name="content" id="Content" class="form-control" rows="4" placeholder="Tell us what you think..." required></textarea>
+            </div>
+
+            <button type="submit" id="review-submit-button" class="btn btn-primary btn-lg mt-3 w-100">
+                <i class="fa fa-paper-plane"></i> Submit Review
+            </button>
+        </form>
+    </div>
+
 </div>
 
 @section Scripts {
-    <script>
-        let selectedSize = null;
-
-        document.querySelectorAll('.size-option').forEach(el => {
-            el.addEventListener('click', () => {
-                document.querySelectorAll('.size-option').forEach(btn => btn.classList.remove('active'));
-                el.classList.add('active');
-                selectedSize = el.getAttribute('data-size');
-            });
-        });
-
-        document.getElementById('addToCartBtn').addEventListener('click', () => {
-            if (!selectedSize) {
-                alert('Please select a size before adding to cart.');
-                return;
-            }
-            // Submit logic here (form submission or JS fetch)
-            alert('Product added to cart! Size: ' + selectedSize);
-        });
-
-        function toggleSection(section) {
-            section.classList.toggle('active');
-        }
-    </script>
-
-    <script>
-        function toggleSection(section) {
-            const content = section.querySelector('.dropdown-content');
-            const arrow = section.querySelector('.arrow');
-
-            const isVisible = content.style.display === "block";
-
-            content.style.display = isVisible ? "none" : "block";
-            arrow.textContent = isVisible ? "▶" : "▼";
-        }
-    </script>
-
+    <script src="~/js/Product/productDetails.js" asp-append-version="true"></script>
 }

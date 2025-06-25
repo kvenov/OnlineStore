@@ -3,6 +3,7 @@ using OnlineStore.Services.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using OnlineStore.Web.ViewModels.Product;
 using OnlineStore.Web.ViewModels.Product.Partial;
+using OnlineStore.Data.Models;
 
 namespace OnlineStore.Services.Core
 {
@@ -56,7 +57,7 @@ namespace OnlineStore.Services.Core
 
 			if (productId != null)
 			{
-				
+
 				productDetails = await _context
 					.Products
 					.AsNoTracking()
@@ -66,6 +67,7 @@ namespace OnlineStore.Services.Core
 					.Where(p => p.Id == productId)
 					.Select(p => new ProductDetailsViewModel
 					{
+						Id = p.Id,
 						Name = p.Name,
 						Description = p.Description,
 						Price = p.Price.ToString("C"),
