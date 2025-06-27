@@ -22,9 +22,6 @@ var connectionString = builder.Configuration
 
 builder.Services.AddScoped<SoftDeleteInterceptor>();
 
-//builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//    options.UseSqlServer(connectionString));
-
 builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
 {
 	var interceptor = sp.GetRequiredService<SoftDeleteInterceptor>();
@@ -42,6 +39,7 @@ builder.Services.AddScoped<IAdminProductCategoryService, AdminProductCategorySer
 builder.Services.AddScoped<IAdminBrandService, AdminBrandService>();
 builder.Services.AddScoped<IProductCategoryService, ProductCategoryService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
+builder.Services.AddScoped<IWishlistService, WishlistService>();
 
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
