@@ -1,10 +1,10 @@
-﻿using OnlineStore.Data;
-using OnlineStore.Services.Core.Interfaces;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using OnlineStore.Data;
+using OnlineStore.Data.Models;
+using OnlineStore.Services.Core.Interfaces;
 using OnlineStore.Web.ViewModels.Product;
 using OnlineStore.Web.ViewModels.Product.Partial;
-using OnlineStore.Data.Models;
-using Microsoft.AspNetCore.Identity;
 
 namespace OnlineStore.Services.Core
 {
@@ -81,7 +81,7 @@ namespace OnlineStore.Services.Core
 						Brand = p.Brand!.Name,
 						IsProductReviewed = userId != null && p.ProductReviews.Any(pr => pr.UserId == userId),
 						AvailableSizes = GetSizesForCategory(p.Category.Name),
-						Details = new ProductDetailsPartialViewModel
+						Details = new ProductDetailsPartialViewModel()
 						{
 							Material = p.ProductDetails.Material,
 							Color = p.ProductDetails.Color,
@@ -94,12 +94,19 @@ namespace OnlineStore.Services.Core
 							Style = p.ProductDetails.Style
 						},
 						Reviews = p.ProductReviews
-								  .Select(r => new ProductReviewPartialViewModel
+								  .Select(r => new ProductReviewPartialViewModel()
 								  {
 									  Id = r.Id,
 									  PublisherId = r.UserId,
 									  Publisher = r.User.UserName,
 									  Content = r.Content
+								  }),
+						Ratings = p.ProductRatings
+								  .Select(r => new ProductRatingPartialViewModel()
+								  {
+									  Id = r.Id,
+									  UserId = r.UserId,
+									  Rating = r.Rating
 								  })
 					})
 					.SingleOrDefaultAsync();
@@ -147,7 +154,7 @@ namespace OnlineStore.Services.Core
 					{
 						ProductId = product.Id,
 						UserId = user.Id,
-						Rating = (int)rating,
+						Rating = rating.Value,
 						IsDeleted = false
 					};
 
@@ -162,6 +169,70 @@ namespace OnlineStore.Services.Core
 			return isAdded;
 		}
 
+		public async Task<bool> EditProductReviewAsync(int? reviewId, int? rating, int? ratingId, string? content, string userId)
+		{
+			bool isEdited = false;
+
+			if ((reviewId != null) && (rating != null) && (ratingId != null) && (content != null))
+			{
+				ProductReview? review = await this._context
+					.ProductReviews
+					.FindAsync(reviewId);
+
+				ProductRating? productRating = await this._context
+					.ProductsRatings
+					.FindAsync(ratingId);
+
+				ApplicationUser? user = await this._userManager
+					.FindByIdAsync(userId);
+
+				bool isValidRating = (rating > 0) && (rating <= 5);
+
+				if ((review != null) && (productRating != null) && (user != null) 
+					&& (review.UserId == userId) && (productRating.UserId == userId) && (isValidRating))
+				{
+					review.Content = content;
+					productRating.Rating = rating.Value;
+
+					await this._context.SaveChangesAsync();
+					isEdited = true;
+				}
+			}
+
+			return isEdited;
+		}
+		public async Task<bool> RemoveProductReviewAsync(int? reviewId, int? ratingId, string userId)
+		{
+			bool isRemoved = false;
+
+			if ((reviewId != null) && (ratingId != null))
+			{
+				ProductReview? review = await this._context
+					.ProductReviews
+					.FindAsync(reviewId);
+
+				ProductRating? productRating = await this._context
+					.ProductsRatings
+					.FindAsync(ratingId);
+
+				ApplicationUser? user = await this._userManager
+					.FindByIdAsync(userId);
+
+				if ((review != null) && (productRating != null) && (user != null)
+					 && (review.UserId == user.Id) && (productRating.UserId == user.Id))
+				{
+
+					this._context.ProductReviews.Remove(review);
+					this._context.ProductsRatings.Remove(productRating);
+
+					await this._context.SaveChangesAsync();
+
+					isRemoved = true;
+				}
+			}
+
+			return isRemoved;
+		}
 
 
 		private static IEnumerable<string> GetSizesForCategory(string categoryName)

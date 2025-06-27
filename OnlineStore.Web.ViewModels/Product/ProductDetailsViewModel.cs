@@ -20,5 +20,8 @@ namespace OnlineStore.Web.ViewModels.Product
 					new ProductDetailsPartialViewModel();
 		public IEnumerable<ProductReviewPartialViewModel> Reviews { get; set; } = 
 					new List<ProductReviewPartialViewModel>();
+
+		public IEnumerable<ProductRatingPartialViewModel> Ratings = 
+					new List<ProductRatingPartialViewModel>();
 	}
 }

@@ -85,9 +85,64 @@ namespace OnlineStore.Web.Controllers
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine(ex.Message);
+				Console.WriteLine(ex.InnerException);
 
 				return RedirectToAction("Index", "Home");
+			}
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> EditReview([FromForm]int? reviewId, [FromForm]int id, 
+					[FromForm]int? rating, [FromForm]int? ratingId, [FromForm]string? content)
+		{
+			try
+			{
+				string userId = this.GetUserId()!;
+
+				bool isEdited = await this._productService
+									.EditProductReviewAsync(reviewId, rating, ratingId, content, userId);
+
+				if (isEdited)
+				{
+					return this.RedirectToAction(nameof(Details), new { id });
+				}
+				else
+				{
+					return this.RedirectToAction(nameof(Details), new { id });
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+
+				return this.RedirectToAction("Index", "Home");
+			}
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> RemoveReview([FromForm]int? reviewId, [FromForm]int? ratingId, [FromForm]int productId)
+		{
+			try
+			{
+				string userId = this.GetUserId()!;
+
+				bool isRemoved = await this._productService
+									.RemoveProductReviewAsync(reviewId, ratingId, userId);
+
+				if (isRemoved)
+				{
+					return this.RedirectToAction(nameof(Details), new { id = productId });
+				}
+				else
+				{
+					return this.RedirectToAction(nameof(Details), new { id = productId });
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+
+				return this.RedirectToAction("Index", "Home");
 			}
 		}
 	}

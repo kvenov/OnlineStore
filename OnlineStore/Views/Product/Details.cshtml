@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using OnlineStore.Web.ViewModels.Product
+@using OnlineStore.Web.ViewModels.Product.Partial
 @inject UserManager<ApplicationUser> UserManager
 
 @model ProductDetailsViewModel
@@ -65,35 +66,76 @@
             </div>
         </div>
 
-        <div class="dropdown-section" onclick="toggleSection(this)">
-            <h5>
-                <span class="arrow">▶</span> ⭐ Product Reviews
-            </h5>
+        <div class="dropdown-section">
+            <div class="dropdown-toggle" onclick="toggleSection(this)">
+                <h5>
+                    <span class="arrow">▶</span> ⭐ Product Reviews
+                </h5>
+            </div>
             <div class="dropdown-content">
                 @if (Model.Reviews.Any())
                 {
-                    foreach (var review in Model.Reviews)
+                    ProductReviewPartialViewModel? userReview = Model.Reviews
+                                    .FirstOrDefault(r => r.PublisherId == userId);
+
+                    ProductRatingPartialViewModel? userRating = Model.Ratings
+                                    .FirstOrDefault(r => r.UserId == userId);
+
+                    @if ((userReview != null) && (userRating != null))
+                    {
+                        <div class="mb-4 p-3 rounded shadow-sm bg-light">
+                            <strong>@userReview.Publisher</strong>
+
+                            <p class="mt-2">@userReview.Content</p>
+
+                            <div class="mt-2 d-flex gap-2">
+                                <button class="btn btn-outline-primary btn-sm d-flex align-items-center" onclick="toggleEditReview(@userReview.Id)">
+                                    <i class="fas fa-pen me-1"></i> Edit
+                                </button>
+                                <form asp-action="RemoveReview" asp-controller="Product" method="post" onsubmit="return confirm('Are you sure you want to remove this review?');">
+                                    <input type="hidden" name="reviewId" value="@userReview.Id" />
+                                    <input type="hidden" name="ratingId" value="@userRating.Id" />
+                                    <input type="hidden" name="productId" value="@Model.Id" />
+
+                                    <button type="submit" class="btn btn-outline-danger btn-sm d-flex align-items-center">
+                                        <i class="fas fa-trash-alt me-1"></i> Remove
+                                    </button>
+                                </form>
+                            </div>
+
+                            <div id="edit-review-form-@userReview.Id" class="mt-3" style="display: none;">
+                                <form asp-action="EditReview" asp-controller="Product" method="post">
+                                    <input type="hidden" name="reviewId" value="@userReview.Id" />
+                                    <input type="hidden" name="id" value="@Model.Id" />
+
+                                    <label class="form-label">Your Rating:</label>
+                                    <div class="star-rating mb-3" data-review-id="@userReview.Id">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            var filled = i <= userRating.Rating ? "fas" : "far";
+                                            <i class="@filled fa-star star-input" data-value="@i"></i>
+                                        }
+                                        <input type="hidden" name="rating" id="rating-input-@userReview.Id" value="@userRating.Rating" />
+                                        <input type="hidden" name="ratingId" value="@userRating.Id" />
+                                    </div>
+
+                                    <label for="content" class="form-label">Your Review:</label>
+                                    <textarea name="content" class="form-control mb-3" rows="3">@userReview.Content</textarea>
+
+                                    <button type="submit" class="btn btn-success mt-2 me-2" onclick="toggleEditReview(@userReview.Id)">Save</button>
+                                    <button type="button" class="btn btn-secondary mt-2" onclick="toggleEditReview(@userReview.Id)">Cancel</button>
+                                </form>
+                            </div>
+
+                        </div>
+                    }
+
+                    foreach (var review in Model.Reviews.Where(r => r.PublisherId != userId))
                     {
                         <div class="mb-4 p-3 rounded shadow-sm bg-light">
                             <strong>@review.Publisher</strong>
 
                             <p class="mt-2">@review.Content</p>
-
-                            @if (review.PublisherId == userId)
-                            {
-                                <div class="mt-2 d-flex gap-2">
-                                    <a asp-action="EditReview" asp-controller="Product" asp-route-id="@review.Id" 
-                                       class="btn btn-outline-primary btn-sm d-flex align-items-center">
-                                        <i class="fas fa-pen me-1"></i> Edit
-                                    </a>
-                                    <form asp-action="RemoveReview" asp-controller="Product" method="post" onsubmit="return confirm('Are you sure you want to remove this review?');">
-                                        <input type="hidden" name="reviewId" value="@review.Id" />
-                                        <button type="submit" class="btn btn-outline-danger btn-sm d-flex align-items-center">
-                                            <i class="fas fa-trash-alt me-1"></i> Remove
-                                        </button>
-                                    </form>
-                                </div>
-                            }
                         </div>
                     }
                 }
@@ -115,7 +157,8 @@
     }
     else
     {
-        <div id="review-container" data-auth="@User.Identity!.IsAuthenticated.ToString().ToLower()" class="mt-5 mb-5 p-4 border rounded shadow-sm bg-light">
+        <div id="review-container" data-auth="@User.Identity!.IsAuthenticated.ToString().ToLower()" data-product-id="@Model.Id"
+                    class="mt-5 mb-5 p-4 border rounded shadow-sm bg-light">
             <h4 class="mb-4">📝 Leave a Review</h4>
 
             <form asp-action="AddReview" asp-controller="Product" method="post">

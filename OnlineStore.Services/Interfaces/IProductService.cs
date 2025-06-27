@@ -12,5 +12,8 @@ namespace OnlineStore.Services.Core.Interfaces
 
 		Task<bool> AddProductReviewAsync(int? productId, int? rating, string? content, string userId);
 
+		Task<bool> EditProductReviewAsync(int? reviewId, int? rating, int? ratingId, string? content, string userId);
+
+		Task<bool> RemoveProductReviewAsync(int? reviewId, int? ratingId, string userId);
 	}
 }
