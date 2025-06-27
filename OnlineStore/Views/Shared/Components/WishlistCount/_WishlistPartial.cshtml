@@ -1,0 +1,17 @@
+﻿@model int
+
+<li class="nav-item position-relative">
+    <a class="nav-link text-dark d-flex align-items-center gap-1 fw-semibold position-relative"
+       asp-controller="Wishlist" asp-action="Index">
+        <i class="bi bi-heart-fill text-danger fs-5"></i>
+        <span class="d-none d-md-inline">Wishlist</span>
+
+        @if (Model > 0)
+        {
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow-sm"
+                  style="font-size: 0.65rem; padding: 0.3em 0.45em;">
+                @Model
+            </span>
+        }
+    </a>
+</li>

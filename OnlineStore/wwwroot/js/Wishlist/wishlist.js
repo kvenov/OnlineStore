@@ -59,8 +59,6 @@ function removeFromWishlist() {
     })
 }
 
-
-
 function showAddedToFavorites(productId) {
     const element = document.querySelector(`.js-added-to-cart-${productId}`);
     if (element) {

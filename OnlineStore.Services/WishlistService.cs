@@ -143,14 +143,16 @@ namespace OnlineStore.Services.Core
 
 			if (user != null)
 			{
-
-				count = await this._context
+				Wishlist? wishlist = await this._context
 					.Wishlists
 					.AsNoTracking()
 					.Include(w => w.WishlistItems)
-					.Where(w => w.UserId == user.Id)
-					.Select(w => w.WishlistItems)
-					.CountAsync();
+					.SingleOrDefaultAsync(w => w.UserId == userId);
+
+				if (wishlist != null)
+				{
+					count = wishlist.WishlistItems.Count;
+				}
 			}
 
 			return count;
