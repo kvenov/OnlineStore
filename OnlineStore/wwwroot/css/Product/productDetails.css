@@ -90,7 +90,6 @@
     }
 }
 
-
 .star-rating .fa-star {
     font-size: 1.5rem;
     color: #f5c518;
@@ -100,4 +99,31 @@
 
 .star-rating .fa-star:hover {
     transform: scale(1.2);
+}
+
+.added-to-cart {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(to right, #f43f5e, #ec4899);
+    color: white;
+    padding: 0.75rem 1.25rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    box-shadow: 0 10px 20px rgba(236, 72, 153, 0.4);
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+    transition: all 0.4s ease;
+}
+
+.added-to-cart.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
 }

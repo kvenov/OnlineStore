@@ -39,8 +39,13 @@
             </div>
 
             <div class="my-4">
+                <div class="added-to-cart js-added-to-cart-@Model.Id">
+                    <i class="bi bi-heart-fill me-2"></i>
+                    Added to Favorites
+                </div>
+
                 <button class="btn btn-dark btn-lg" id="addToCartBtn">Add to Cart</button>
-                <button class="btn btn-outline-secondary btn-lg ms-2">
+                <button class="btn btn-outline-secondary btn-lg ms-2" onclick="addToWishlist(@Model.Id)">
                     <i class="fa fa-heart"></i> Favorite
                 </button>
             </div>
@@ -192,4 +197,5 @@
 
 @section Scripts {
     <script src="~/js/Product/productDetails.js" asp-append-version="true"></script>
+    <script src="~/js/Wishlist/wishlist.js" asp-append-version="true"></script>
 }
