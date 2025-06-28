@@ -3,6 +3,33 @@
     editor.classList.toggle("d-none");
 }
 
+async function setWishlistCount() {
+    try {
+        const response = await fetch(`/api/wishlistapi/count`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            const count = result.data;
+            const element = document.getElementById('wishlist-count');
+            if (element) {
+                element.textContent = count;
+            }
+
+        } else {
+            alert(result.message);
+        }
+    } catch (error) {
+        console.error("Occured error while getting the wishlist count", error);
+        alert("Something went wrong.");
+    }
+}
+
 async function addToWishlist(productId) {
     try {
         const response = await fetch(`/api/wishlistapi/add/${productId}`, {
@@ -15,6 +42,7 @@ async function addToWishlist(productId) {
         const data = await response.json();
 
         if (response.ok) {
+            await setWishlistCount();
             showAddedToFavorites(productId);
         } else {
             alert(data.message);
@@ -27,36 +55,45 @@ async function addToWishlist(productId) {
 
 function removeFromWishlist() {
     document.querySelectorAll('.remove-btn').forEach((removeButton) => {
-        removeButton.addEventListener('click', async () => {
-            const itemId = removeButton.getAttribute('data-id');
+        removeButton.removeEventListener('click', handleRemoveClick);
+        removeButton.addEventListener('click', handleRemoveClick);
+    });
+}
 
-            try {
-                const response = await fetch(`/api/wishlistapi/remove/${itemId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
+async function handleRemoveClick(event) {
+    const removeButton = event.currentTarget;
+    const itemId = removeButton.getAttribute('data-id');
 
-                const data = await response.json();
-
-                if (response.ok) {
-                    const card = document.getElementById(`wishlist-item-${itemId}`);
-                    if (card) {
-                        card.classList.add('fade-out');
-                        setTimeout(() => card.remove(), 500);
-                    }
-
-                    showIsRemovedFromWishlist(itemId);
-                } else {
-                    alert(data.message);
-                }
-            } catch (error) {
-                console.error("Error while removing from wishlist", error);
-                alert("Something went wrong.");
+    try {
+        const response = await fetch(`/api/wishlistapi/remove/${itemId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
             }
-        })
-    })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            const card = document.getElementById(`wishlist-item-${itemId}`);
+            if (card) {
+                card.classList.add('fade-out');
+                setTimeout(() => {
+                    showIsRemovedFromWishlist(itemId);
+                    card.remove();
+                },500);
+            }
+
+            await setWishlistCount();
+
+            window.location.href = "/Wishlist/Index";
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error("Error while removing from wishlist", error);
+        alert("Something went wrong.");
+    }
 }
 
 function showAddedToFavorites(productId) {
@@ -73,14 +110,15 @@ function showAddedToFavorites(productId) {
 function showIsRemovedFromWishlist(itemId) {
     const element = document.querySelector(`.js-removed-from-wishlist-${itemId}`);
     if (element) {
-        element.classList.add('show');
+        element.style.display = 'block';
 
         setTimeout(() => {
-            element.classList.remove('show');
-        }, 2000);
+            element.style.display = 'none';
+        }, 2500);
     }
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {
     removeFromWishlist();
+    setWishlistCount();
 })

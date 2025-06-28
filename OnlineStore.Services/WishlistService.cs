@@ -179,15 +179,24 @@ namespace OnlineStore.Services.Core
 
 						WishlistItem? wishlistItem = await this._context
 							.WishlistsItems
+							.IgnoreQueryFilters()
 							.SingleOrDefaultAsync(wi => wi.Id == itemId);
 
 						if (wishlistItem != null && wishlist.WishlistItems.Contains(wishlistItem))
 						{
-							wishlist.WishlistItems.Remove(wishlistItem);
-							this._context.WishlistsItems.Remove(wishlistItem);
+							try
+							{
+								wishlist.WishlistItems.Remove(wishlistItem);
+								this._context.WishlistsItems.Remove(wishlistItem);
+								await _context.SaveChangesAsync();
+								isRemoved = true;
+							}
+							catch (DbUpdateConcurrencyException ex)
+							{
+								Console.WriteLine(ex.Message);
 
-							await this._context.SaveChangesAsync();
-							isRemoved = true;
+								isRemoved = false;
+							}
 						}
 					}
 				}

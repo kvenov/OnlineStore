@@ -1,0 +1,22 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+
+@{
+    bool isUser = SignInManager.IsSignedIn(User) && User.IsInRole("User");
+}
+
+@if (isUser)
+{
+    <li class="nav-item position-relative wishlist-nav">
+        <a class="nav-link d-flex align-items-center gap-2 text-dark fw-semibold" href="/Wishlist/Index">
+            <div class="wishlist-icon-wrapper position-relative">
+                <i class="bi bi-heart-fill wishlist-heart-icon"></i>
+                <span class="wishlist-count-inside" id="wishlist-count">0</span>
+            </div>
+            <span class="d-none d-md-inline">Favorites</span>
+        </a>
+    </li>
+
+}

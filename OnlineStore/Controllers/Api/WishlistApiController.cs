@@ -72,5 +72,25 @@ namespace OnlineStore.Web.Controllers.Api
 				return this.BadRequest();
 			}
 		}
+
+		[HttpGet("count")]
+		public async Task<IActionResult> Count()
+		{
+			try
+			{
+				string userId = GetUserId()!;
+
+				int count = await this._wishlistService
+							.GetWishlistItemsCountAsync(userId);
+
+				return this.Ok(new { data = count , success = true, message = $"{count} products in the wishlist" });
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+
+				return BadRequest();
+			}
+		}
 	}
 }
