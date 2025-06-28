@@ -35,6 +35,9 @@ namespace OnlineStore.Data.Configurations
 				.WithMany(u => u.RecentlyViewedProducts)
 				.HasForeignKey(p => p.UserId)
 				.OnDelete(DeleteBehavior.Cascade);
+
+			entity
+				.HasQueryFilter(wi => wi.Product.IsDeleted == false);
 		}
 	}
 }

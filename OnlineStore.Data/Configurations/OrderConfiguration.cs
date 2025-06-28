@@ -89,6 +89,11 @@ namespace OnlineStore.Data.Configurations
 			entity
 				.HasIndex(o => o.Status);
 
+			entity
+				.HasQueryFilter(wi => wi.BillingAddress.IsDeleted == false);
+
+			entity
+				.HasQueryFilter(wi => wi.ShippingAddress.IsDeleted == false);
 		}
 	}
 }

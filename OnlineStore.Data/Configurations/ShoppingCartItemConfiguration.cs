@@ -39,6 +39,9 @@ namespace OnlineStore.Data.Configurations
 				.WithMany(p => p.ShoppingCartItems)
 				.HasForeignKey(sci => sci.ProductId)
 				.OnDelete(DeleteBehavior.Restrict);
+
+			entity
+				.HasQueryFilter(wi => wi.Product.IsDeleted == false);
 		}
 	}
 }

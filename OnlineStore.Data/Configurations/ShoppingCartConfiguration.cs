@@ -34,6 +34,8 @@ namespace OnlineStore.Data.Configurations
 			entity
 				.HasIndex(sc => sc.CreatedAt);
 
+			entity
+				.HasQueryFilter(wi => wi.User.IsDeleted == false);
 		}
 	}
 }

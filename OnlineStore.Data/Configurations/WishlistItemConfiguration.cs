@@ -43,6 +43,9 @@ namespace OnlineStore.Data.Configurations
 				.WithMany(p => p.WishlistItems)
 				.HasForeignKey(wi => wi.ProductId)
 				.OnDelete(DeleteBehavior.Restrict);
+
+			entity
+				.HasQueryFilter(wi => wi.Product.IsDeleted == false);
 		}
 	}
 }

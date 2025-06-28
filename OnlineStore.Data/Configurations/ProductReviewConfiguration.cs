@@ -29,6 +29,9 @@ namespace OnlineStore.Data.Configurations
 				.WithMany(u => u.ProductReviews)
 				.HasForeignKey(pr => pr.UserId)
 				.OnDelete(DeleteBehavior.Restrict);
+
+			entity
+				.HasQueryFilter(wi => wi.Product.IsDeleted == false);
 		}
 	}
 }

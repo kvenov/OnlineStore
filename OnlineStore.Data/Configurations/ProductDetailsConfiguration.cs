@@ -77,6 +77,8 @@ namespace OnlineStore.Data.Configurations
 				.HasForeignKey<ProductDetails>(pd => pd.ProductId)
 				.OnDelete(DeleteBehavior.Cascade);
 
+			entity
+				.HasQueryFilter(wi => wi.Product.IsDeleted == false);
 		}
 	}
 }
