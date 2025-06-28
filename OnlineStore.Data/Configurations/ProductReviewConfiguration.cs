@@ -19,6 +19,22 @@ namespace OnlineStore.Data.Configurations
 				.IsRequired();
 
 			entity
+				.Property(p => p.UpdatedAt)
+				.HasColumnType("DATETIME2")
+				.IsRequired(false);
+
+			entity
+				.Property(p => p.CreatedOn)
+				.HasColumnType("DATETIME2")
+				.HasDefaultValueSql("GETDATE()")
+				.IsRequired(true);
+
+			entity
+				.Property(pr => pr.IsDeleted)
+				.HasDefaultValue(false)
+				.IsRequired(true);
+
+			entity
 				.HasOne(pr => pr.Product)
 				.WithMany(p => p.ProductReviews)
 				.HasForeignKey(pr => pr.ProductId)
@@ -29,6 +45,10 @@ namespace OnlineStore.Data.Configurations
 				.WithMany(u => u.ProductReviews)
 				.HasForeignKey(pr => pr.UserId)
 				.OnDelete(DeleteBehavior.Restrict);
+
+			entity
+				.HasIndex(pr => new { pr.UserId, pr.ProductId })
+				.IsUnique(true);
 
 			entity
 				.HasQueryFilter(wi => wi.Product.IsDeleted == false);

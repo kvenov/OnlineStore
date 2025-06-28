@@ -19,7 +19,7 @@ namespace OnlineStore.Data.Configurations
 
 			entity
 				.Property(p => p.UserId)
-				.IsRequired(false);
+				.IsRequired(true);
 
 			entity
 				.Property(p => p.Rating)
@@ -28,10 +28,9 @@ namespace OnlineStore.Data.Configurations
 				.IsRequired(true);
 
 			entity
-				.Property(p => p.Review)
-				.HasMaxLength(ProductRatingReviewMaxLength)
-				.IsUnicode(true)
-				.IsRequired(false);
+				.Property(pr => pr.IsDeleted)
+				.HasDefaultValue(false)
+				.IsRequired(true);
 
 			entity
 				.Property(p => p.CreatedAt)
@@ -52,7 +51,10 @@ namespace OnlineStore.Data.Configurations
 				.HasOne(pr => pr.User)
 				.WithMany(u => u.ProductRatings)
 				.HasForeignKey(pr => pr.UserId)
-				.OnDelete(DeleteBehavior.SetNull);
+				.OnDelete(DeleteBehavior.Cascade);
+
+			entity
+				.HasQueryFilter(pr => pr.Product.IsDeleted == false);
 		}
 	}
 }

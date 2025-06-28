@@ -131,7 +131,6 @@ namespace OnlineStore.Data.Seeding
 							ProductId = productId,
 							UserId = userId,
 							Rating = rating,
-							Review = productRatingDto.Review,
 							CreatedAt = createdAt,
 							IsDeleted = isDeleted
 						};

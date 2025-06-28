@@ -53,6 +53,7 @@ namespace OnlineStore.Data.Configurations
 			entity
 				.Property(p => p.Weight)
 				.HasMaxLength(MaxWeightKg)
+				.HasPrecision(18, 2)
 				.IsRequired();
 
 			entity

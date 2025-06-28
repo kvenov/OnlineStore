@@ -16,16 +16,13 @@ namespace OnlineStore.Data.Models
 		[Comment("Product that the rating belongs to")]
 		public virtual Product Product { get; set; } = null!;
 
-		public string? UserId { get; set; }
+		public string UserId { get; set; } = null!;
 
 		[Comment("User that made the current rating")]
-		public virtual ApplicationUser? User { get; set; }
+		public virtual ApplicationUser User { get; set; } = null!;
 
 		[Comment("Rating value")]
 		public int Rating { get; set; }
-
-		[Comment("Rating review")]
-		public string? Review { get; set; }
 
 		[Comment("Rating creation date")]
 		public DateTime CreatedAt { get; set; }

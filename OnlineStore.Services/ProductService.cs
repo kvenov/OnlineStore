@@ -128,38 +128,61 @@ namespace OnlineStore.Services.Core
 				ApplicationUser? user = await this._userManager
 					.FindByIdAsync(userId);
 
-				bool isValidRating = (rating > 0) && (rating <= 5);
+				bool isRatingValid = (rating > 0) && (rating <= 5);
+
+				bool isContentValid = !string.IsNullOrWhiteSpace(content);
 
 				ProductReview? existingProductReview = await this._context
 					.ProductReviews
+					.IgnoreQueryFilters()
 					.SingleOrDefaultAsync(pr => pr.ProductId == productId && pr.UserId == userId);
 
 				ProductRating? existingProductRating = await this._context
 					.ProductsRatings
+					.IgnoreQueryFilters()
 					.SingleOrDefaultAsync(pr => pr.ProductId == productId && pr.UserId == userId);
 
 
 				if ((product != null) && (user != null) && 
-						(isValidRating) && (existingProductReview == null) 
-										&& (existingProductRating == null))
+						(isRatingValid) && (isContentValid))
 				{
-					ProductReview productReview = new ProductReview()
+					if ((existingProductReview == null) && (existingProductRating == null))
 					{
-						ProductId = product.Id,
-						UserId = user.Id,
-						Content = content
-					};
+						ProductReview productReview = new ProductReview()
+						{
+							ProductId = product.Id,
+							UserId = user.Id,
+							Content = content
+						};
 
-					ProductRating productRating = new ProductRating()
+						ProductRating productRating = new ProductRating()
+						{
+							ProductId = product.Id,
+							UserId = user.Id,
+							Rating = rating.Value,
+							IsDeleted = false
+						};
+
+						await this._context.ProductReviews.AddAsync(productReview);
+						await this._context.ProductsRatings.AddAsync(productRating);
+					}
+					else
 					{
-						ProductId = product.Id,
-						UserId = user.Id,
-						Rating = rating.Value,
-						IsDeleted = false
-					};
+						if (existingProductReview != null)
+						{
+							existingProductReview.IsDeleted = false;
+							existingProductReview.Content = content;
+							this._context.ProductReviews.Update(existingProductReview);
+						}
 
-					await this._context.ProductReviews.AddAsync(productReview);
-					await this._context.ProductsRatings.AddAsync(productRating);
+						if (existingProductRating != null)
+						{
+							existingProductRating.IsDeleted = false;
+							existingProductRating.Rating = rating.Value;
+							this._context.ProductsRatings.Update(existingProductRating);
+						}
+					}
+
 
 					await this._context.SaveChangesAsync();
 					isAdded = true;
