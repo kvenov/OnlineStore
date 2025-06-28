@@ -79,7 +79,10 @@ namespace OnlineStore.Services.Core
 						AverageRating = p.AverageRating.ToString("0.0"),
 						Category = p.Category.Name,
 						Brand = p.Brand!.Name,
-						IsProductReviewed = userId != null && p.ProductReviews.Any(pr => pr.UserId == userId),
+						IsProductReviewed = userId != null && p.ProductReviews.Where(pr => pr.IsDeleted == false)
+																.Any(pr => pr.UserId == userId) && 
+															  p.ProductRatings.Where(pr => pr.IsDeleted == false)
+															    .Any(pr => pr.UserId == userId),
 						AvailableSizes = GetSizesForCategory(p.Category.Name),
 						Details = new ProductDetailsPartialViewModel()
 						{
@@ -94,6 +97,7 @@ namespace OnlineStore.Services.Core
 							Style = p.ProductDetails.Style
 						},
 						Reviews = p.ProductReviews
+								  .Where(r => r.IsDeleted == false)
 								  .Select(r => new ProductReviewPartialViewModel()
 								  {
 									  Id = r.Id,
@@ -102,6 +106,7 @@ namespace OnlineStore.Services.Core
 									  Content = r.Content
 								  }),
 						Ratings = p.ProductRatings
+								  .Where(r => r.IsDeleted == false)
 								  .Select(r => new ProductRatingPartialViewModel()
 								  {
 									  Id = r.Id,

@@ -54,6 +54,9 @@ namespace OnlineStore.Data.Configurations
 				.OnDelete(DeleteBehavior.Cascade);
 
 			entity
+				.HasQueryFilter(pr => pr.IsDeleted == false);
+
+			entity
 				.HasQueryFilter(pr => pr.Product.IsDeleted == false);
 		}
 	}

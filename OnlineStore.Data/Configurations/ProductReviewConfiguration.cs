@@ -51,7 +51,10 @@ namespace OnlineStore.Data.Configurations
 				.IsUnique(true);
 
 			entity
-				.HasQueryFilter(wi => wi.Product.IsDeleted == false);
+				.HasQueryFilter(pr => pr.IsDeleted == false);
+
+			entity
+				.HasQueryFilter(pr => pr.Product.IsDeleted == false);
 		}
 	}
 }
