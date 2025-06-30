@@ -1,9 +1,8 @@
-﻿<!-- Updated Admin Layout with Sidebar Navigation -->
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>@ViewData["Title"] - Admin Panel</title>
+    <title>@ViewData["Title"] - Product Panel</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="~/css/adminLayout.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
@@ -12,8 +11,8 @@
 </head>
 <body>
     <div class="sidebar">
-        <h5 class="text-center">Admin Panel</h5>
-        <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index"><i class="bi bi-speedometer2"></i> Dashboard</a>
+        <h5 class="text-center">Product Panel</h5>
+        <a asp-area="Admin" asp-controller="Dashboard" asp-action="ProductIndex"><i class="bi bi-speedometer2"></i> Dashboard</a>
         <a asp-area="Admin" asp-controller="Product" asp-action="All"><i class="bi bi-box"></i> See All Products</a>
         <a asp-area="Admin" asp-controller="Product" asp-action="Add"><i class="bi bi-plus-square"></i> Add Product</a>
         <a asp-area="" asp-controller="Home" asp-action="Index"><i class="bi bi-plus-square"></i> Return to home page</a>
