@@ -12,6 +12,22 @@ async function setWishlistCount() {
             }
         });
 
+        if (!response.ok) {
+            // If unauthorized, just silently skip
+            if (response.status === 401) return;
+
+            // Try to read message if any, otherwise generic message
+            let errorMessage = "Something went wrong.";
+            try {
+                const errorResult = await response.json();
+                errorMessage = errorResult.message || errorMessage;
+            } catch (_) {
+            }
+
+            console.warn(errorMessage);
+            return;
+        }
+
         const result = await response.json();
 
         if (response.ok) {
