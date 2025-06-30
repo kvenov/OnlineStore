@@ -104,7 +104,9 @@
 
                 <div class="col-md-4">
                     <label asp-for="Gender" class="form-label">Gender</label>
-                    <input asp-for="Gender" class="form-control" placeholder="e.g. Unisex / Men / Women" />
+                    <select asp-for="Gender" asp-items="Model.AllowedGenders" class="form-select">
+                        <option value="" selected>Choose a gender</option>
+                    </select>
                     <span asp-validation-for="Gender" class="text-danger"></span>
                 </div>
 

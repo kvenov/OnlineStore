@@ -99,11 +99,8 @@
 
             <div class="col-md-4">
                 <label asp-for="Gender" class="form-label">Gender</label>
-                <select asp-for="Gender" class="form-select">
-                    <option value="">Select Gender</option>
-                    <option value="Men">Men</option>
-                    <option value="Women">Women</option>
-                    <option value="Unisex">Unisex</option>
+                <select asp-for="Gender" asp-items="Model.AllowedGenders" class="form-select">
+                    <option value="" selected>Choose a gender</option>
                 </select>
                 <span asp-validation-for="Gender" class="text-danger"></span>
             </div>

@@ -82,8 +82,9 @@ namespace OnlineStore.Web.Areas.Admin.Controllers
 		{
 			AddProductInputModel model = new AddProductInputModel
 			{
-				Categories = await _productCategoryService.GetAllProductCategoriesIdsAndNamesAsync(),
-				Brands = await _brandService.GetAllBrandsIdsAndNamesAsync()
+				Categories = await this._productCategoryService.GetAllProductCategoriesIdsAndNamesAsync(),
+				Brands = await this._brandService.GetAllBrandsIdsAndNamesAsync(),
+				AllowedGenders = this._productService.GetGendersForProductDetails(),
 			};
 
 			return View(model);
@@ -112,8 +113,9 @@ namespace OnlineStore.Web.Areas.Admin.Controllers
 				{
 					this.ModelState.AddModelError(string.Empty, "Product addition failed. Please try again.");
 
-					model.Categories = await _productCategoryService.GetAllProductCategoriesIdsAndNamesAsync();
-					model.Brands = await _brandService.GetAllBrandsIdsAndNamesAsync();
+					model.Categories = await this._productCategoryService.GetAllProductCategoriesIdsAndNamesAsync();
+					model.Brands = await this._brandService.GetAllBrandsIdsAndNamesAsync();
+					model.AllowedGenders = this._productService.GetGendersForProductDetails();
 
 					return View(model);
 				}
@@ -146,6 +148,7 @@ namespace OnlineStore.Web.Areas.Admin.Controllers
 
 				model.Categories = await this._productCategoryService.GetAllProductCategoriesIdsAndNamesAsync();
 				model.Brands = await this._brandService.GetAllBrandsIdsAndNamesAsync();
+				model.AllowedGenders = this._productService.GetGendersForProductDetails();
 
 				if (!string.IsNullOrWhiteSpace(source))
 				{

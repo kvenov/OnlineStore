@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using OnlineStore.Data;
 using OnlineStore.Data.Models;
 using OnlineStore.Services.Core.Admin.Interfaces;
 using OnlineStore.Web.ViewModels.Admin.Product;
+using static OnlineStore.Data.Common.Constants.EntityConstants.ProductDetails;
 
 namespace OnlineStore.Services.Core.Admin
 {
@@ -32,7 +34,9 @@ namespace OnlineStore.Services.Core.Admin
 					.FirstAsync(b => b.Id == model.BrandId.Value);
 			}
 
-			if (productCategory != null)
+			bool isAvgRatingValid = double.TryParse(model.AverageRating, out var avgRating);
+
+			if ((productCategory != null) && (isAvgRatingValid))
 			{
 				Product product = new Product
 				{
@@ -43,7 +47,7 @@ namespace OnlineStore.Services.Core.Admin
 					DiscountPrice = model.DiscountPrice,
 					IsActive = model.IsActive,
 					StockQuantity = model.StockQuantity,
-					AverageRating = model.AverageRating,
+					AverageRating = avgRating,
 					TotalRatings = model.TotalRatings,
 					CategoryId = productCategory.Id,
 					BrandId = brand == null ? null : brand.Id
@@ -177,7 +181,7 @@ namespace OnlineStore.Services.Core.Admin
 						DiscountPrice = product.DiscountPrice,
 						IsActive = product.IsActive,
 						StockQuantity = product.StockQuantity,
-						AverageRating = product.AverageRating,
+						AverageRating = product.AverageRating.ToString("F1"),
 						TotalRatings = product.TotalRatings,
 						CategoryId = product.CategoryId,
 						BrandId = product.BrandId,
@@ -223,7 +227,9 @@ namespace OnlineStore.Services.Core.Admin
 						.SingleOrDefaultAsync(b => b.Id == model.BrandId.Value);
 				}
 
-				if ((product != null) && (productCategory != null))
+				bool isAvgRatingValid = double.TryParse(model.AverageRating, out var avgRating);
+
+				if ((product != null) && (productCategory != null) && (isAvgRatingValid))
 				{
 					if (product.Brand != null)
 					{
@@ -239,7 +245,7 @@ namespace OnlineStore.Services.Core.Admin
 					product.DiscountPrice = model.DiscountPrice;
 					product.IsActive = model.IsActive;
 					product.StockQuantity = model.StockQuantity;
-					product.AverageRating = model.AverageRating;
+					product.AverageRating = avgRating;
 					product.TotalRatings = model.TotalRatings;
 					product.CategoryId = productCategory.Id;
 					product.Category = productCategory;
@@ -316,6 +322,21 @@ namespace OnlineStore.Services.Core.Admin
 			}
 
 			return productDetails;
+		}
+
+		public IEnumerable<SelectListItem> GetGendersForProductDetails()
+		{
+			List<SelectListItem> genders = new List<SelectListItem>();
+
+			foreach (var gender in AllowedGenders)
+			{
+				genders.Add(new SelectListItem(){
+					Value = gender,
+					Text = gender
+				});
+			}
+
+			return genders;
 		}
 	}
 }

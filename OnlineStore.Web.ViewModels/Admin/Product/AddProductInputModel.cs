@@ -44,7 +44,7 @@ namespace OnlineStore.Web.ViewModels.Admin.Product
 
 		[Required]
 		[Display(Name = "Product AverageRating")]
-		public double AverageRating { get; set; }
+		public string AverageRating { get; set; } = null!;
 
 		[Required]
 		[Display(Name = "Product Total Ratings")]
@@ -71,9 +71,12 @@ namespace OnlineStore.Web.ViewModels.Admin.Product
 		[StringLength(ColorMaxLength, ErrorMessage = "{0} max length is {1}.")]
 		public string Color { get; set; } = null!;
 
+		public IEnumerable<SelectListItem> AllowedGenders { get; set; } = 
+					new List<SelectListItem>();
+
 		[Required]
 		[Display(Name = "ProductDetails Gender")]
-		[AllowedValues("Men", "Women", "Unisex")]
+		[AllowedValues("Male", "Female", "Unisex")]
 		[StringLength(GenderMaxLength, ErrorMessage = "{0} max length is {1}.")]
 		public string Gender { get; set; } = null!;
 

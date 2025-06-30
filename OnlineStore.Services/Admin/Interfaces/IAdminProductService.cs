@@ -1,4 +1,5 @@
-﻿using OnlineStore.Web.ViewModels.Admin.Product;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using OnlineStore.Web.ViewModels.Admin.Product;
 
 namespace OnlineStore.Services.Core.Admin.Interfaces
 {
@@ -17,5 +18,8 @@ namespace OnlineStore.Services.Core.Admin.Interfaces
 		Task<bool> EditProductAsync(EditProductInputModel? model);
 
 		Task<bool> SoftDeleteProductAsync(string? id);
+
+
+		IEnumerable<SelectListItem> GetGendersForProductDetails();
 	}
 }

@@ -205,7 +205,7 @@
 			/// </summary>
 			public const int ColorMaxLength = 50;
 
-			public static readonly string[] AllowedGenders = { "Men", "Women", "Unisex" };
+			public static readonly string[] AllowedGenders = { "Male", "Female", "Unisex" };
 
 			/// <summary>
 			/// The maximum length of the product details' gender.
