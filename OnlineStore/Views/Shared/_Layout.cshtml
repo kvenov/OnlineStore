@@ -1,86 +1,180 @@
-﻿@using System.Security.Claims
+﻿@using Microsoft.AspNetCore.Identity
+@using OnlineStore.Data.Models
+@using System.Security.Claims
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - OnlineStore</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/OnlineStore.Web.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/Wishlist/wishlistPartial.css" asp-append-version="true"/>
-	@await RenderSectionAsync("Styles", required: false)
-
+    <link rel="stylesheet" href="~/css/Wishlist/wishlistPartial.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Cart/cartPartial.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">OnlineStore</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">About</a>
-                        </li>
-                        <partial name="_WishlistPartial"/>
-                    </ul>
+    <div class="top-header px-3 py-1">
+        <div class="auth-links d-flex align-items-center">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button type="submit" style="border: none; background-color: transparent" class="auth-link">Logout</button>
+                </form>
+                <div class="divider"></div>
+                <a href="/Home/Help" class="auth-link">Help</a>
+            }
+            else
+            {
+                <a href="/Identity/Account/Login" class="auth-link">Sign In</a>
+                <div class="divider"></div>
+                <a href="/Identity/Account/Register" class="auth-link">Join Us</a>
+                <div class="divider"></div>
+                <a href="/Home/Help" class="auth-link">Help</a>
+            }
+        </div>
+    </div>
 
-					<ul class="navbar-nav">
-						<partial name="_CartPartial" />
+    <header class="main-header">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
+            <div class="container-fluid justify-content-between">
+                @if (SignInManager.IsSignedIn(User) && User.HasClaim(ClaimTypes.Role, "Admin"))
+                {
+                    <a class="navbar-brand fw-bold fs-4 nav-link text-dark" asp-controller="Home" asp-action="Index">
+                        <i class="bi bi-speedometer2"></i> Admin Panel
+                    </a>
 
-                        @if (User.Identity!.IsAuthenticated && User.HasClaim(ClaimTypes.Role, "Admin"))
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-dark" href="#" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> Account
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="@Url.Action("Profile", "User")">Settings</a></li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li>
+                                <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                    <button type="submit" class="dropdown-item text-danger">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <a class="navbar-brand fw-bold fs-4" asp-controller="Home" asp-action="Index">OnlineStore</a>
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    
+                    <div class="collapse navbar-collapse justify-content-center" id="mainNavbar">
+                        <ul class="navbar-nav mega-dropdown">
+                            @foreach (var category in new[] { "Men", "Women", "Kids", "Unisex" })
+                            {
+                                <li class="nav-item" onmouseover="showMegaMenu('@category')" onmouseout="hideMegaMenu()">
+                                    <a class="nav-link" href="#">@category</a>
+                                </li>
+                            }
+                        </ul>
+
+                        <div class="dropdown-menu mega-menu" id="megaMenu">
+                            <div class="row g-4 px-4 py-3">
+                                <div class="col-md-3">
+                                    <h6>Clothing</h6>
+                                    <ul class="list-unstyled">
+                                        <li><a href="#">Hoodies / Sweatshirts</a></li>
+                                        <li><a href="#">Jackets</a></li>
+                                        <li><a href="#">T-Shirts</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6>Shoes</h6>
+                                    <ul class="list-unstyled">
+                                        <li><a href="#">All Shoes</a></li>
+                                        <li><a href="#">Sporty</a></li>
+                                        <li><a href="#">Lifestyle</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6>Accessories</h6>
+                                    <ul class="list-unstyled">
+                                        <li><a href="#">Bags</a></li>
+                                        <li><a href="#">Hats</a></li>
+                                        <li><a href="#">Socks</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-3">
+                                    <h6>Featured</h6>
+                                    <ul class="list-unstyled">
+                                        <li><a href="#">New Arrivals</a></li>
+                                        <li><a href="#">Best Sellers</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="d-none d-lg-flex align-items-center gap-1">
+                        <div class="search-container">
+                            <input type="text" class="form-control form-control-sm search-input" placeholder="Search..." id="searchInput">
+                            <div class="search-expanded shadow" id="searchExpanded">
+                                <input type="text" class="form-control" placeholder="What are you looking for?">
+                                <div class="popular-searches mt-3">
+                                    <span>Sneakers</span>
+                                    <span>Jackets</span>
+                                    <span>Running Shoes</span>
+                                    <span>Summer Fit</span>
+                                </div>
+                                <button class="search-cancel-btn">Cancel</button>
+                            </div>
+                        </div>
+
+                        <partial name="_WishlistPartial" />
+                        <partial name="_CartPartial" />
+                    
+                        @if (SignInManager.IsSignedIn(User) && User.HasClaim(ClaimTypes.Role, "User"))
                         {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-dark" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark" href="#" data-bs-toggle="dropdown">
                                     <i class="bi bi-person-circle"></i> Account
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
-                                    <li><a class="dropdown-item" href="@Url.Action("Profile", "User")">Account Settings</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item text-danger" href="@Url.Action("Logout", "Account")">Sign Out</a></li>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="@Url.Action("ProductList", "Product")">All Products</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Index", "Wishlist")">Favorites</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Orders", "User")">Orders</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Profile", "User")">Settings</a></li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li>
+                                        <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                            <button type="submit" style="border: none" class="dropdown-item text-danger">Logout</button>
+                                        </form>
+                                    </li>
                                 </ul>
-                            </li>
+                            </div>
                         }
-                        else if (User.Identity!.IsAuthenticated && User.HasClaim(ClaimTypes.Role, "User"))
-                        {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-dark" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-person-circle"></i> Account
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
-                                    <li><a class="dropdown-item" href="@Url.Action("ProductList", "Product")">See All Products</a></li>
-                                    <li><a class="dropdown-item" href="@Url.Action("All", "Wishlist")">See your favorite products</a></li>
-                                    <li><a class="dropdown-item" href="@Url.Action("Orders", "User")">Your Orders</a></li>
-                                    <li><a class="dropdown-item" href="@Url.Action("Profile", "User")">Account Settings</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item text-danger" href="@Url.Action("Logout", "Account")">Sign Out</a></li>
-                                </ul>
-                            </li>
-                        }
-
-                        <partial name="_LoginPartial" />
-                    </ul>
-                </div>
+                    </div>
+                }
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer text-muted border-top py-3">
         <div class="container">
-            &copy; 2025 - OnlineStore - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2025 - OnlineStore - <a asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
 
@@ -88,6 +182,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/Wishlist/wishlist.js" asp-append-version="true"></script>
+    <script src="~/js/layout.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
