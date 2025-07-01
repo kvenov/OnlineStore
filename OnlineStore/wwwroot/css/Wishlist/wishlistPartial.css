@@ -1,6 +1,14 @@
-﻿.wishlist-nav .wishlist-icon-wrapper {
+﻿li {
+    list-style: none;
+}
+
+.wishlist-nav .wishlist-icon-wrapper {
     width: 32px;
     height: 32px;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
     position: relative;
     display: flex;
     align-items: center;
