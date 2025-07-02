@@ -144,6 +144,8 @@ ul {
 
 .search-container {
     position: relative;
+    width: 100%;
+    max-width: 1300px;
 }
 
 .search-input {
@@ -162,8 +164,8 @@ ul {
 .search-expanded {
     position: absolute;
     top: 130%;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0%;
+    transform: translateX(-85%);
     width: 100vw;
     max-width: 1300px;
     background: rgba(255,255,255,0.95);
