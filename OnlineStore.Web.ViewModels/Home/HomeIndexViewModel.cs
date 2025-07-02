@@ -1,16 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using OnlineStore.Web.ViewModels.Product;
+﻿using OnlineStore.Web.ViewModels.Home.Partial;
 
 namespace OnlineStore.Web.ViewModels.Home
 {
 	public class HomeIndexViewModel
 	{
 
-		public IEnumerable<AllProductListViewModel> Products { get; set; } = new List<AllProductListViewModel>();
-		public IEnumerable<SelectListItem> Categories { get; set; } = new List<SelectListItem>();
-		public IEnumerable<SelectListItem> Brands { get; set; } = new List<SelectListItem>();
+		public IEnumerable<ProductPromotionViewModel> Promotions { get; set; } = 
+					new List<ProductPromotionViewModel>();
 
-		public int CategoryId { get; set; }
-		public int? BrandId { get; set; }
+		public IEnumerable<TrendingProductViewModel> Trendings { get; set; } = 
+					new List<TrendingProductViewModel>();
+
+		public IEnumerable<UserReviewViewModel> Reviews { get; set; } =
+					new List<UserReviewViewModel>();
 	}
 }

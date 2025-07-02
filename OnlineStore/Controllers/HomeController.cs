@@ -1,12 +1,10 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using OnlineStore.Models;
 using OnlineStore.Services.Core.Interfaces;
 using OnlineStore.Web.Controllers;
 using OnlineStore.Web.ViewModels.Home;
-using OnlineStore.Web.ViewModels.Product;
 
 namespace OnlineStore.Controllers
 {
@@ -34,39 +32,7 @@ namespace OnlineStore.Controllers
         {
             try
             {
-                IEnumerable<AllProductListViewModel> productList = await this._productService
-                            .GetAllProductsAsync();
-
-                IEnumerable<SelectListItem> categories = await this._productCategoryService
-                            .GetAllProductCategoriesIdsAndNamesAsync();
-
-                IEnumerable<SelectListItem> brands = await this._brandService
-                            .GetAllBrandsIdsAndNamesAsync();
-
-				if ((productList == null) || (categories == null) || (brands == null))
-				{
-                    this._logger.LogWarning("One or more of the required data sets (products, categories, brands) are null.");
-
-                    return RedirectToAction(nameof(Error));
-				}
-
-                IEnumerable<AllProductListViewModel> topNineProducts = productList
-                    .OrderByDescending(p => p.Rating)
-                    .Take(9);
-
-				HomeIndexViewModel model = new HomeIndexViewModel()
-                {
-                    Products = topNineProducts,
-                    Categories = categories,
-                    Brands = brands
-				};
-
-				if (productList == null)
-                {
-                    this._logger.LogWarning("No products found in the database.");
-                    
-					return RedirectToAction(nameof(Error));
-				}
+                HomeIndexViewModel model = new HomeIndexViewModel();
 
                 return View(model);
 			}

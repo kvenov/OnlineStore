@@ -6,115 +6,143 @@
     bool isAdmin = User.IsInRole("Admin");
 }
 
+@section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet" asp-append-version="true">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" asp-append-version="true">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Home/homeIndex.css" asp-append-version="true"/>
+}
+
 @if (isAdmin)
 {
-    <partial name="_AdminDashboard" />
+    <partial name="_AdminDashboard"/>
 }
 else
 {
-    <!-- Hero Banner -->
-    <section class="py-5 text-white bg-dark text-center position-relative">
-        <div class="container">
-            <h1 class="display-4 fw-bold">Welcome to OnlineStore</h1>
-            <p class="lead">Find your style. Shop our latest collections now.</p>
-            <a href="#products" class="btn btn-primary btn-lg mt-3">Shop Now</a>
-        </div>
-    </section>
-
-    <!-- Search Bar & Filters -->
-    <section class="container py-4">
-        <div class="row">
-            <div class="col-md-3">
-                <h5 class="mb-3">Filters</h5>
-                <form method="get" asp-action="Index">
-                    <div class="mb-3">
-                        <label asp-for="CategoryId" class="form-label">Category</label>
-                        <select asp-for="CategoryId" asp-items="@Model.Categories" class="form-select" name="category">
-                            <option value="">Choose a category</option>
-                        </select>
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+        <div class="swiper heroSwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide hero-slide">
+                    <img src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/47b7945e-a379-4c24-b9df-98f4eef178e5/NIKE+AIR+MAX+PLUS.png" alt="Hero 1">
+                    <div class="hero-content animate__animated animate__fadeIn">
+                        <h1 class="display-4 fw-bold">Style That Moves You</h1>
+                        <button class="hero-btn mt-3">Shop Now</button>
                     </div>
-                    <div class="mb-3">
-                        <label asp-for="BrandId" class="form-label">Brand</label>
-                        <select asp-for="BrandId" asp-items="@Model.Brands" class="form-select" name="brand">
-                            <option value="">Choose a brand</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="Price" class="form-label">Min Price</label>
-                        <input type="range" class="form-range" min="0" max="500" step="10" id="Price" name="minPrice">
-                    </div>
-                    <div class="mb-3">
-                        <label for="Price" class="form-label">Max Price</label>
-                        <input type="range" class="form-range" min="0" max="500" step="10" id="Price" name="maxPrice">
-                    </div>
-                    <button type="submit" class="btn btn-outline-dark w-100">Apply</button>
-                </form>
-            </div>
-            <div class="col-md-9">
-                <form class="d-flex mb-3" role="search" asp-action="Index" method="get">
-                    <input class="form-control me-2" type="search" name="search" placeholder="Search products...">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-
-                <!-- Best Products Carousel -->
-                <h3 class="mb-4 text-center">Our Best Products</h3>
-                <div id="bestProductsCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        @for (int i = 0; i < Model.Products.Count(); i += 3)
-                        {
-                            <div class="carousel-item @(i == 0 ? "active" : "")">
-                                <div class="row">
-                                    @foreach (var product in Model.Products.Skip(i).Take(3))
-                                    {
-                                        <div class="col-md-4">
-                                            <div class="card h-100 shadow-sm border-0">
-                                                <img src="@product.ImageUrl" class="card-img-top" style="height: 220px; object-fit: cover;">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">@product.Name</h5>
-                                                    <p class="card-text">@product.Price.ToString("C")</p>
-                                                    <a href="@Url.Action("Details", "Product", new { id = product.Id })" class="btn btn-outline-primary btn-sm">Details</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                        }
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#bestProductsCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#bestProductsCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
                 </div>
-
-                <!-- All Products -->
-                <partial name="_ProductListPartial" model="Model.Products" />
-
-                <!-- See All Products Button -->
-                <div class="text-center mt-4">
-                    <a href="@Url.Action("ProductList", "Product")" class="btn btn-outline-secondary btn-lg">
-                        See All Products
-                    </a>
+                <div class="swiper-slide hero-slide">
+                    <img src="https://img2.ans-media.com/i/542x813/AW24-TSM08L-00X_F1_PRM.jpg" alt="Hero 2">
+                    <div class="hero-content animate__animated animate__fadeIn">
+                        <h1 class="display-4 fw-bold">Gear Up for the Season</h1>
+                        <button class="hero-btn mt-3">Shop Now</button>
+                    </div>
                 </div>
-
             </div>
         </div>
     </section>
 
-    <!-- About Us Preview -->
-    <section class="bg-light py-5 mt-5">
-        <div class="container">
-            <div class="text-center">
-                <h2>About Our Store</h2>
-                <p class="lead mx-auto" style="max-width: 600px;">
-                    OnlineStore is your go-to destination for modern, stylish, and affordable fashion. We blend trend-forward collections with exceptional customer experience.
-                </p>
-                <a href="@Url.Action("About", "Home")" class="btn btn-dark">Learn More</a>
+    <!-- PROMOTIONS -->
+    <section class="container py-5">
+        <h2 class="section-title" data-aos="fade-up">Current Promotions</h2>
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="card promo-card">
+                    <img src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/47b7945e-a379-4c24-b9df-98f4eef178e5/NIKE+AIR+MAX+PLUS.png" class="card-img-top" alt="Promo 1">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">20% Off Sneakers</h5>
+                        <a href="#" class="btn btn-dark btn-sm mt-2">Shop Deals</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="card promo-card">
+                    <img src="https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/e718c47e807b47f2b10352fed9a738be_9366/Backpack_Red_JE4034_01_standard.jpg" class="card-img-top" alt="Promo 2">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">New Jackets Drop</h5>
+                        <a href="#" class="btn btn-dark btn-sm mt-2">Explore</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="card promo-card">
+                    <img src="https://www.sportvision.bg/files/images/slike_proizvoda/media/DV3/DV3853-001/images/DV3853-001.jpg" class="card-img-top" alt="Promo 3">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Accessories from $9.99</h5>
+                        <a href="#" class="btn btn-dark btn-sm mt-2">Shop Now</a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
+
+    <!-- TRENDING PRODUCTS -->
+    <section class="container py-5">
+        <h2 class="section-title" data-aos="fade-up">Trending Products</h2>
+        <div class="row g-4">
+            <!-- Repeat these cards dynamically -->
+            <div class="col-md-3" data-aos="zoom-in">
+                <div class="card border-0 shadow-sm">
+                    <img src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/47b7945e-a379-4c24-b9df-98f4eef178e5/NIKE+AIR+MAX+PLUS.png" class="card-img-top" alt="Product 1">
+                    <div class="card-body">
+                        <h6 class="card-title">Running Shoes</h6>
+                        <p class="text-muted mb-1">$89.99</p>
+                        <button class="btn btn-outline-dark btn-sm w-100">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Add more cards -->
+        </div>
+    </section>
+
+    <!-- USER REVIEWS & ABOUT US -->
+    <section class="container py-5">
+        <h2 class="section-title" data-aos="fade-up">What Our Customers Say</h2>
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-right">
+                <div class="card review-card p-3">
+                    <p>"Absolutely love the quality! Shipping was fast too."</p>
+                    <strong>- Jessica R.</strong>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up">
+                <div class="card review-card p-3">
+                    <p>"These sneakers are a game changer for my workouts."</p>
+                    <strong>- Mike D.</strong>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-left">
+                <div class="card review-card p-3">
+                    <p>"Sleek design and super comfortable. Love them!"</p>
+                    <strong>- Sarah W.</strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section text-center">
+        <h2 class="mb-3" data-aos="fade-up">Who We Are</h2>
+        <p class="mb-4" data-aos="fade-up" data-aos-delay="100">We're a passionate team committed to bringing you the best in streetwear, performance gear, and timeless style. From design to delivery, your satisfaction is our mission.</p>
+        <a href="/About" class="btn btn-dark btn-lg" data-aos="fade-up" data-aos-delay="200">See Our Story</a>
+    </section>
+}
+
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js" asp-append-version="true"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" asp-append-version="true"></script>
+    <script asp-append-version="true">
+        AOS.init();
+
+        const swiper = new Swiper(".heroSwiper", {
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false
+            },
+            loop: true,
+            effect: "fade",
+            speed: 1000
+        });
+    </script>
 }
