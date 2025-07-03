@@ -7,7 +7,8 @@
 	<link rel="stylesheet" href="~/css/adminLayout.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    
+    @await RenderSectionAsync("Styles", required: false)
+
 </head>
 <body>
     <div class="sidebar">
@@ -15,6 +16,7 @@
         <a asp-area="Admin" asp-controller="Dashboard" asp-action="ProductIndex"><i class="bi bi-speedometer2"></i> Dashboard</a>
         <a asp-area="Admin" asp-controller="Product" asp-action="All"><i class="bi bi-box"></i> See All Products</a>
         <a asp-area="Admin" asp-controller="Product" asp-action="Add"><i class="bi bi-plus-square"></i> Add Product</a>
+        <a asp-area="Admin" asp-controller="ProductPromotion" asp-action="Index"><i class="bi bi-tags"></i> Promotions</a>
         <a asp-area="" asp-controller="Home" asp-action="Index"><i class="bi bi-plus-square"></i> Return to home page</a>
         <form asp-area="Identity" asp-page="/Account/Logout" method="post">
             <button type="submit" class="btn btn-link text-white w-100 text-start ps-4">Logout</button>

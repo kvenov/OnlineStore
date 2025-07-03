@@ -1,0 +1,281 @@
+﻿@using OnlineStore.Data.Models
+@using OnlineStore.Web.ViewModels.Admin.ProductPromotion
+@model IEnumerable<PromotionIndexViewModel>
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_ProductLayout.cshtml";
+    ViewData["Title"] = "Manage Product Promotions";
+}
+
+@section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" asp-append-version="true" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" asp-append-version="true" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" asp-append-version="true" rel="stylesheet" />
+    <link href="~/css/ProductPromotion/promotionIndex.css" asp-append-version="true" rel="stylesheet"/>
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">Product Promotions</h1>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPromotionModal">
+            <i class="fas fa-plus me-2"></i> Add Promotion
+        </button>
+    </div>
+
+    <table id="promotionsTable" class="table table-striped table-bordered table-hover" style="width:100%">
+        <thead class="table-primary">
+            <tr>
+                <th>ID</th>
+                <th>Product</th>
+                <th>Label</th>
+                <th>Promotion Price</th>
+                <th>Start Date</th>
+                <th>Expiry Date</th>
+                <th>Status</th>
+                <th class="text-center" style="width:110px;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var promo in Model)
+            {
+                <tr data-id="@promo.Id">
+                    <td>@promo.Id</td>
+                    <td>@promo.ProductName</td>
+                    <td>@promo.Label</td>
+                    <td>$@promo.PromotionPrice.ToString("F2")</td>
+                    <td>@promo.StartDate.ToString("yyyy-MM-dd")</td>
+                    <td>@promo.ExpDate.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        @if (!promo.IsDeleted)
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Deleted</span>
+                        }
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-outline-primary edit-btn" data-id="@promo.Id" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger delete-btn" data-id="@promo.Id" title="Delete">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Add/Edit Promotion Modal -->
+<div class="modal fade" id="addPromotionModal" tabindex="-1" aria-labelledby="addPromotionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content shadow">
+            <form id="promotionForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addPromotionLabel">Add Product Promotion</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="promotionId" name="Id" value="0" />
+
+                    <div class="mb-3">
+                        <label for="productId" class="form-label required">Product</label>
+                        <select id="productId" name="ProductId" class="form-select" required>
+                            <option value="" disabled selected>Select a product</option>
+                            @* Load dynamically from your backend, or via JS *@
+                            @* Example: *@
+                            @* <option value="1">Product A</option> *@
+                        </select>
+                        <div class="invalid-feedback">Please select a product.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="label" class="form-label required">Promotion Label</label>
+                        <input type="text" id="label" name="Label" class="form-control" placeholder="e.g. Summer Sale" required maxlength="100" />
+                        <div class="invalid-feedback">Label is required.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="promotionPrice" class="form-label required">Promotion Price</label>
+                        <input type="number" id="promotionPrice" name="PromotionPrice" class="form-control" min="0" step="0.01" placeholder="0.00" required />
+                        <div class="invalid-feedback">Please enter a valid price.</div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="startDate" class="form-label required">Start Date</label>
+                            <input type="text" id="startDate" name="StartDate" class="form-control flatpickr" placeholder="YYYY-MM-DD" required autocomplete="off" />
+                            <div class="invalid-feedback">Start date is required.</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="expDate" class="form-label required">Expiry Date</label>
+                            <input type="text" id="expDate" name="ExpDate" class="form-control flatpickr" placeholder="YYYY-MM-DD" required autocomplete="off" />
+                            <div class="invalid-feedback">Expiry date is required.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-check form-switch mt-3">
+                        <input class="form-check-input" type="checkbox" id="isDeleted" name="IsDeleted" />
+                        <label class="form-check-label" for="isDeleted">Mark as Deleted</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="savePromotionBtn">
+                        <i class="fas fa-save me-2"></i> Save Promotion
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js" asp-append-version="true"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr" asp-append-version="true"></script>
+    <script src="https://kit.fontawesome.com/a2e6bff0f8.js" crossorigin="anonymous" asp-append-version="true"></script>
+    <script asp-append-version="true">
+        document.addEventListener('DOMContentLoaded', () => {
+            const table = $('#promotionsTable').DataTable({
+                pageLength: 10,
+                lengthMenu: [5, 10, 25, 50],
+                columnDefs: [
+                    { orderable: false, targets: 7 } // disable ordering on Actions col
+                ],
+                language: {
+                    searchPlaceholder: "Search promotions..."
+                }
+            });
+
+            flatpickr('.flatpickr', {
+                dateFormat: "Y-m-d",
+                minDate: "today"
+            });
+
+            // Fetch products list dynamically for the product dropdown
+            async function fetchProducts() {
+                try {
+                    const response = await fetch('/api/productapi/get'); // Adjust your endpoint
+                    const products = await response.json();
+                    const productSelect = document.getElementById('productId');
+                    productSelect.innerHTML = `<option value="" disabled selected>Select a product</option>`;
+                    products.forEach(p => {
+                        productSelect.insertAdjacentHTML('beforeend', `<option value="${p.Id}">${p.Name}</option>`);
+                    });
+                } catch (err) {
+                    console.error('Failed to load products', err);
+                }
+            }
+            fetchProducts();
+
+            // Open modal for adding or editing promotion
+            const promotionModal = new bootstrap.Modal(document.getElementById('addPromotionModal'));
+            const form = document.getElementById('promotionForm');
+            const saveBtn = document.getElementById('savePromotionBtn');
+
+            // Handle Edit button click
+            $('#promotionsTable').on('click', '.edit-btn', async function () {
+                const promoId = $(this).data('id');
+                // Fetch promotion by id (or use data from row)
+                try {
+                    const response = await fetch(`/api/productpromotions/${promoId}`);
+                    if (!response.ok) throw new Error("Failed to load promotion");
+                    const promo = await response.json();
+
+                    form.reset();
+                    form.querySelector('#promotionId').value = promo.id;
+                    form.querySelector('#productId').value = promo.productId;
+                    form.querySelector('#label').value = promo.label;
+                    form.querySelector('#promotionPrice').value = promo.promotionPrice;
+                    form.querySelector('#startDate')._flatpickr.setDate(promo.startDate);
+                    form.querySelector('#expDate')._flatpickr.setDate(promo.expDate);
+                    form.querySelector('#isDeleted').checked = promo.isDeleted;
+
+                    document.getElementById('addPromotionLabel').textContent = "Edit Product Promotion";
+                    saveBtn.innerHTML = `<i class="fas fa-save me-2"></i> Update Promotion`;
+
+                    promotionModal.show();
+                } catch (error) {
+                    alert("Could not load promotion details.");
+                }
+            });
+
+            // Handle Delete button click
+            $('#promotionsTable').on('click', '.delete-btn', function () {
+                const promoId = $(this).data('id');
+                if (confirm('Are you sure you want to delete this promotion?')) {
+                    fetch(`/api/productpromotions/delete/${promoId}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' }
+                    }).then(async res => {
+                        if (res.ok) {
+                            alert('Promotion deleted successfully.');
+                            location.reload();
+                        } else {
+                            const err = await res.json();
+                            alert('Error: ' + err.message);
+                        }
+                    }).catch(() => alert('Failed to delete promotion.'));
+                }
+            });
+
+            // Handle Add Promotion button click to reset form
+            document.querySelector('button[data-bs-target="#addPromotionModal"]').addEventListener('click', () => {
+                form.reset();
+                document.getElementById('promotionId').value = 0;
+                document.getElementById('addPromotionLabel').textContent = "Add Product Promotion";
+                saveBtn.innerHTML = `<i class="fas fa-plus me-2"></i> Add Promotion`;
+            });
+
+            // Form validation & submit
+            form.addEventListener('submit', async e => {
+                e.preventDefault();
+                if (!form.checkValidity()) {
+                    form.classList.add('was-validated');
+                    return;
+                }
+
+                const formData = {
+                    Id: Number(form.promotionId.value),
+                    ProductId: Number(form.productId.value),
+                    Label: form.label.value.trim(),
+                    PromotionPrice: parseFloat(form.promotionPrice.value),
+                    StartDate: form.startDate.value,
+                    ExpDate: form.expDate.value,
+                    IsDeleted: form.isDeleted.checked
+                };
+
+                try {
+                    const url = formData.Id === 0 ? '/api/productpromotions/create' : `/api/productpromotions/update/${formData.Id}`;
+                    const method = 'POST';
+
+                    const response = await fetch(url, {
+                        method,
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(formData)
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        alert('Error: ' + errorData.message);
+                        return;
+                    }
+
+                    alert(`Promotion ${formData.Id === 0 ? 'added' : 'updated'} successfully.`);
+                    promotionModal.hide();
+                    location.reload();
+
+                } catch (error) {
+                    alert('Failed to save promotion.');
+                    console.error(error);
+                }
+            });
+        });
+    </script>
+}
