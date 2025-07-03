@@ -6,5 +6,7 @@ namespace OnlineStore.Services.Core.Admin.Interfaces
 	{
 
 		Task<IEnumerable<PromotionIndexViewModel>> GetProductsPromotionsAsync();
+
+		Task<bool> CreateProductPromotion(AddPromotionInputModel? model);
 	}
 }
