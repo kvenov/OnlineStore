@@ -45,8 +45,6 @@
             if (!response.ok) throw new Error("Failed to load promotion");
             const promo = await response.json();
 
-            console.log("StartDate:", promo.startDate); // Debug
-
             form.reset();
             form.querySelector('#promotionId').value = promo.id;
             form.querySelector('#productId').value = promo.productId;
@@ -67,9 +65,9 @@
 
     // Handle Delete button click
     $('#promotionsTable').on('click', '.delete-btn', function () {
-        const promoId = $(this).data('id');
+        const promotionId = $(this).data('id');
         if (confirm('Are you sure you want to delete this promotion?')) {
-            fetch(`/api/productpromotions/delete/${promoId}`, {
+            fetch(`/api/productpromotionapi/delete/${promotionId}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' }
             }).then(async res => {

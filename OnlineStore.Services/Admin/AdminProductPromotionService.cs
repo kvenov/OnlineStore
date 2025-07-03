@@ -72,7 +72,38 @@ namespace OnlineStore.Services.Core.Admin
 			return isCreated;
 		}
 
-		public async Task<bool> EditPromotion(EditPromotionInputModel? model)
+		public async Task<bool> DeletePromotionAsync(int? promotionId)
+		{
+			bool isDeleted = false;
+
+			if (promotionId != null)
+			{
+				ProductPromotion? promotionToDelete = await this._context
+							.ProductsPromotions
+							.FindAsync(promotionId);
+
+				if (promotionToDelete != null)
+				{
+					Product? product = await this._context
+								.Products
+								.SingleOrDefaultAsync(p => p.Id == promotionToDelete.ProductId);
+
+					if (product != null)
+					{
+						product.DiscountPrice = product.Price;
+					}
+
+					promotionToDelete.IsDeleted = true;
+
+					int affectedRows = await this._context.SaveChangesAsync();
+					isDeleted = affectedRows > 0;
+				}
+			}
+
+			return isDeleted;
+		}
+
+		public async Task<bool> EditPromotionAsync(EditPromotionInputModel? model)
 		{
 			bool isEdited = false;
 

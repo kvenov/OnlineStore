@@ -91,7 +91,7 @@ namespace OnlineStore.Web.Areas.Admin.Controllers.Api
 				}
 
 				bool isEdited = await this._productPromotionService
-							.EditPromotion(model);
+							.EditPromotionAsync(model);
 
 				if (isEdited)
 				{
@@ -110,5 +110,29 @@ namespace OnlineStore.Web.Areas.Admin.Controllers.Api
 			}
 		}
 
+		[HttpPost("delete/{promotionId}")]
+		public async Task<IActionResult> Delete(int? promotionId)
+		{
+			try
+			{
+				bool isDeleted = await this._productPromotionService
+							.DeletePromotionAsync(promotionId);
+
+				if (isDeleted)
+				{
+					return Ok();
+				}
+				else
+				{
+					return BadRequest("The process of the promotion deletion has failed!");
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+
+				return BadRequest(new { message = "Something went wrong" });
+			}
+		}
 	}
 }

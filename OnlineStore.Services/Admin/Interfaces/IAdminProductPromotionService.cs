@@ -11,6 +11,8 @@ namespace OnlineStore.Services.Core.Admin.Interfaces
 
 		Task<PromotionGetViewModel?> GetPromotionByIdAsync(int? promotionId);
 
-		Task<bool> EditPromotion(EditPromotionInputModel? model);
+		Task<bool> EditPromotionAsync(EditPromotionInputModel? model);
+
+		Task<bool> DeletePromotionAsync(int? promotionId);
 	}
 }
