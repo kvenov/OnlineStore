@@ -5,6 +5,7 @@ using OnlineStore.Models;
 using OnlineStore.Services.Core.Interfaces;
 using OnlineStore.Web.Controllers;
 using OnlineStore.Web.ViewModels.Home;
+using OnlineStore.Web.ViewModels.Home.Partial;
 
 namespace OnlineStore.Controllers
 {
@@ -33,6 +34,10 @@ namespace OnlineStore.Controllers
             try
             {
                 HomeIndexViewModel model = new HomeIndexViewModel();
+                IEnumerable<TrendingProductViewModel> trendings = await this._productService
+                            .GetBestProductsAsync();
+
+                model.Trendings = trendings;
 
                 return View(model);
 			}

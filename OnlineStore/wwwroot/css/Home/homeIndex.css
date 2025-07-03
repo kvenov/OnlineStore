@@ -57,6 +57,28 @@
     transform: scale(1.05);
 }
 
+.product-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+.product-card img {
+    height: 250px;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.product-card img:hover {
+    transform: scale(1.03);
+}
+
+
 .review-card {
     border: none;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);

@@ -11,12 +11,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet" asp-append-version="true">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" asp-append-version="true">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/Home/homeIndex.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/Home/homeIndex.css" asp-append-version="true" />
 }
 
 @if (isAdmin)
 {
-    <partial name="_AdminDashboard"/>
+    <partial name="_AdminDashboard" />
 }
 else
 {
@@ -46,33 +46,18 @@ else
     <section class="container py-5">
         <h2 class="section-title" data-aos="fade-up">Current Promotions</h2>
         <div class="row g-4">
-            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                <div class="card promo-card">
-                    <img src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/47b7945e-a379-4c24-b9df-98f4eef178e5/NIKE+AIR+MAX+PLUS.png" class="card-img-top" alt="Promo 1">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">20% Off Sneakers</h5>
-                        <a href="#" class="btn btn-dark btn-sm mt-2">Shop Deals</a>
+            @foreach (var promo in Model.Promotions)
+            {
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card promo-card shadow-sm border-0">
+                        <img src="@promo.ImageUrl" class="card-img-top" alt="@promo.ProductName">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">@promo.ProductName</h5>
+                            <a href="/Products/Details/@promo.ProductId" class="btn btn-dark btn-sm mt-2">Shop Deals</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                <div class="card promo-card">
-                    <img src="https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/e718c47e807b47f2b10352fed9a738be_9366/Backpack_Red_JE4034_01_standard.jpg" class="card-img-top" alt="Promo 2">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">New Jackets Drop</h5>
-                        <a href="#" class="btn btn-dark btn-sm mt-2">Explore</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                <div class="card promo-card">
-                    <img src="https://www.sportvision.bg/files/images/slike_proizvoda/media/DV3/DV3853-001/images/DV3853-001.jpg" class="card-img-top" alt="Promo 3">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Accessories from $9.99</h5>
-                        <a href="#" class="btn btn-dark btn-sm mt-2">Shop Now</a>
-                    </div>
-                </div>
-            </div>
+            }
         </div>
     </section>
 
@@ -80,18 +65,19 @@ else
     <section class="container py-5">
         <h2 class="section-title" data-aos="fade-up">Trending Products</h2>
         <div class="row g-4">
-            <!-- Repeat these cards dynamically -->
-            <div class="col-md-3" data-aos="zoom-in">
-                <div class="card border-0 shadow-sm">
-                    <img src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/47b7945e-a379-4c24-b9df-98f4eef178e5/NIKE+AIR+MAX+PLUS.png" class="card-img-top" alt="Product 1">
-                    <div class="card-body">
-                        <h6 class="card-title">Running Shoes</h6>
-                        <p class="text-muted mb-1">$89.99</p>
-                        <button class="btn btn-outline-dark btn-sm w-100">Add to Cart</button>
+            @foreach (var product in Model.Trendings)
+            {
+                <div class="col-md-3" data-aos="zoom-in">
+                    <div class="card border-0 shadow product-card h-100">
+                        <img src="@product.ImageUrl" class="card-img-top" alt="@product.ProductName">
+                        <div class="card-body text-center">
+                            <h6 class="card-title">@product.ProductName</h6>
+                            <p class="text-muted mb-2">@product.Price</p>
+                            <a href="/Products/Details/@product.ProductId" class="btn btn-outline-dark btn-sm w-100">View Product</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- Add more cards -->
+            }
         </div>
     </section>
 
@@ -99,34 +85,24 @@ else
     <section class="container py-5">
         <h2 class="section-title" data-aos="fade-up">What Our Customers Say</h2>
         <div class="row g-4">
-            <div class="col-md-4" data-aos="fade-right">
-                <div class="card review-card p-3">
-                    <p>"Absolutely love the quality! Shipping was fast too."</p>
-                    <strong>- Jessica R.</strong>
+            @foreach (var review in Model.Reviews)
+            {
+                <div class="col-md-4" data-aos="fade-up">
+                    <div class="card review-card p-3 border-0 shadow-sm h-100">
+                        <p>"@review.Content"</p>
+                        <strong>- @review.Username</strong>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4" data-aos="fade-up">
-                <div class="card review-card p-3">
-                    <p>"These sneakers are a game changer for my workouts."</p>
-                    <strong>- Mike D.</strong>
-                </div>
-            </div>
-            <div class="col-md-4" data-aos="fade-left">
-                <div class="card review-card p-3">
-                    <p>"Sleek design and super comfortable. Love them!"</p>
-                    <strong>- Sarah W.</strong>
-                </div>
-            </div>
+            }
         </div>
     </section>
 
-    <section class="about-section text-center">
+    <section class="about-section text-center py-5 bg-light">
         <h2 class="mb-3" data-aos="fade-up">Who We Are</h2>
         <p class="mb-4" data-aos="fade-up" data-aos-delay="100">We're a passionate team committed to bringing you the best in streetwear, performance gear, and timeless style. From design to delivery, your satisfaction is our mission.</p>
         <a href="/About" class="btn btn-dark btn-lg" data-aos="fade-up" data-aos-delay="200">See Our Story</a>
     </section>
 }
-
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>

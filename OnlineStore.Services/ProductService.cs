@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using OnlineStore.Data;
 using OnlineStore.Data.Models;
 using OnlineStore.Services.Core.Interfaces;
+using OnlineStore.Web.ViewModels.Home.Partial;
 using OnlineStore.Web.ViewModels.Product;
 using OnlineStore.Web.ViewModels.Product.Partial;
 
@@ -229,6 +230,7 @@ namespace OnlineStore.Services.Core
 
 			return isEdited;
 		}
+
 		public async Task<bool> RemoveProductReviewAsync(int? reviewId, int? ratingId, string userId)
 		{
 			bool isRemoved = false;
@@ -262,6 +264,28 @@ namespace OnlineStore.Services.Core
 			return isRemoved;
 		}
 
+		public async Task<IEnumerable<TrendingProductViewModel>> GetBestProductsAsync()
+		{
+			IEnumerable<TrendingProductViewModel> trendings = await this._context
+						.Products
+						.AsNoTracking()
+						.Where(p => p.IsActive && p.StockQuantity > 0)
+						.OrderByDescending(p =>
+								(p.AverageRating * 3) +
+								 p.OrderItems.Sum(oi => oi.Quantity))
+						.Select(p => new TrendingProductViewModel()
+						{
+							ProductId = p.Id,
+							ImageUrl = p.ImageUrl,
+							ProductName = p.Name,
+							Price = p.Price.ToString("F2")
+						})
+						.Take(6)
+						.ToListAsync();
+
+			return trendings;
+
+		}
 
 		private static IEnumerable<string> GetSizesForCategory(string categoryName)
 		{

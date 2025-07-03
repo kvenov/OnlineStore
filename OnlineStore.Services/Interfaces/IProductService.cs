@@ -1,4 +1,5 @@
-﻿using OnlineStore.Web.ViewModels.Product;
+﻿using OnlineStore.Web.ViewModels.Home.Partial;
+using OnlineStore.Web.ViewModels.Product;
 
 namespace OnlineStore.Services.Core.Interfaces
 {
@@ -15,5 +16,7 @@ namespace OnlineStore.Services.Core.Interfaces
 		Task<bool> EditProductReviewAsync(int? reviewId, int? rating, int? ratingId, string? content, string userId);
 
 		Task<bool> RemoveProductReviewAsync(int? reviewId, int? ratingId, string userId);
+
+		Task<IEnumerable<TrendingProductViewModel>> GetBestProductsAsync();
 	}
 }
