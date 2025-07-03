@@ -42,6 +42,7 @@ builder.Services.AddScoped<IAdminBrandService, AdminBrandService>();
 builder.Services.AddScoped<IProductCategoryService, ProductCategoryService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<IWishlistService, WishlistService>();
+builder.Services.AddScoped<IArticleService, ArticleService>();
 
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
