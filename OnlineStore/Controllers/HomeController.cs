@@ -13,18 +13,14 @@ namespace OnlineStore.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IProductService _productService;
-        private readonly IProductCategoryService _productCategoryService;
-        private readonly IBrandService _brandService;
+        private readonly IProductPromotionService _productPromotionService;
 
 		public HomeController(ILogger<HomeController> logger, 
-                              IProductService productService, 
-                              IProductCategoryService productCategoryService, 
-                              IBrandService brandService)
+                              IProductService productService, IProductPromotionService productPromotionService)
         {
             this._logger = logger;
             this._productService = productService;
-            this._productCategoryService = productCategoryService;
-            this._brandService = brandService;
+            this._productPromotionService = productPromotionService;
 		}
 
         [HttpGet]
@@ -37,7 +33,11 @@ namespace OnlineStore.Controllers
                 IEnumerable<TrendingProductViewModel> trendings = await this._productService
                             .GetBestProductsAsync();
 
+                IEnumerable<ProductPromotionViewModel> promotions = await this._productPromotionService
+                            .GetProductsPromotionsAsync();
+
                 model.Trendings = trendings;
+                model.Promotions = promotions;
 
                 return View(model);
 			}

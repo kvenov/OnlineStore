@@ -34,6 +34,7 @@ builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
 builder.Services.AddSingleton<IXmlHelper, XMLHelper>();
 builder.Services.AddScoped<IDbSeeder, ApplicationDbContextSeeder>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductPromotionService, ProductPromotionService>();
 builder.Services.AddScoped<IAdminProductService, AdminProductService>();
 builder.Services.AddScoped<IAdminProductPromotionService, AdminProductPromotionService>();
 builder.Services.AddScoped<IAdminProductCategoryService, AdminProductCategoryService>();

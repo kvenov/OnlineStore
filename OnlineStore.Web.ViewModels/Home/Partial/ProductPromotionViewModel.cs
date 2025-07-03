@@ -8,7 +8,10 @@
 
 		public string ProductName { get; set; } = null!;
 
-		public string? PromotionTagline { get; set; }
+		public string Label { get; set; } = null!;
 
+		public string ExpDate { get; set; } = null!;
+
+		public string Percent { get; set; } = null!;
 	}
 }
