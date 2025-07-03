@@ -4,6 +4,7 @@ using OnlineStore.Data;
 using OnlineStore.Data.Models;
 using OnlineStore.Services.Core.Admin.Interfaces;
 using OnlineStore.Web.ViewModels.Admin.Product;
+using OnlineStore.Web.ViewModels.Admin.ProductPromotion;
 using static OnlineStore.Data.Common.Constants.EntityConstants.ProductDetails;
 
 namespace OnlineStore.Services.Core.Admin
@@ -322,6 +323,21 @@ namespace OnlineStore.Services.Core.Admin
 			}
 
 			return productDetails;
+		}
+
+		public async Task<IEnumerable<PromotionProductViewModel>> GetProductsIdsAndNamesAsync()
+		{
+			IEnumerable<PromotionProductViewModel> products = await this._context
+				.Products
+				.AsNoTracking()
+				.Select(p => new PromotionProductViewModel()
+				{
+					Id = p.Id,
+					Name = p.Name
+				})
+				.ToListAsync();
+
+			return products;
 		}
 
 		public IEnumerable<SelectListItem> GetGendersForProductDetails()

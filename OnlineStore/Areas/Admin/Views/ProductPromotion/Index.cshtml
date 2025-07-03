@@ -166,7 +166,7 @@
                     const productSelect = document.getElementById('productId');
                     productSelect.innerHTML = `<option value="" disabled selected>Select a product</option>`;
                     products.forEach(p => {
-                        productSelect.insertAdjacentHTML('beforeend', `<option value="${p.Id}">${p.Name}</option>`);
+                        productSelect.insertAdjacentHTML('beforeend', `<option value="${p.id}">${p.name}</option>`);
                     });
                 } catch (err) {
                     console.error('Failed to load products', err);
