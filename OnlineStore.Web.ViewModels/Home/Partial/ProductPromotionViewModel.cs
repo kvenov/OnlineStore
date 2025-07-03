@@ -8,5 +8,7 @@
 
 		public string ProductName { get; set; } = null!;
 
+		public string? PromotionTagline { get; set; }
+
 	}
 }
