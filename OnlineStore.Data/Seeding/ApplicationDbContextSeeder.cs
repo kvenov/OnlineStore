@@ -52,8 +52,9 @@ namespace OnlineStore.Data.Seeding
 											ILogger<PaymentMethodSeeder> paymentMethodLogger, ILogger<AddressSeeder> addressLogger, ILogger<ShoppingCartSeeder> shoppingCartLogger, 
 											ILogger<WishlistSeeder> wishlistLogger)
 		{
-			//Think how to optize this part.Use reflection to get all entity seeders and add them to the list
-
+			//Here we add the Seeders classes that seed data into the database.
+			//Everything of the data is seeded, so no new entity data to seed!
+			/*
 			this.entitySeeders.Add(new WishlistSeeder(wishlistLogger, this._context));
 			this.entitySeeders.Add(new ShoppingCartSeeder(shoppingCartLogger, this._context, this._xmlHelper));
 			this.entitySeeders.Add(new AddressSeeder(addressLogger, this._context, this._xmlHelper));
@@ -65,6 +66,7 @@ namespace OnlineStore.Data.Seeding
 			this.entitySeeders.Add(new BrandSeeder(this._context, brandLogger));
 			this.entitySeeders.Add(new ProductCategorySeeder(this._context, productCategoryLogger));
 			this.entitySeeders.Add(new IdentitySeeder(this._context, this.userManager, this.roleManager, identityLogger));
+			*/
 		}
 	}
 }
