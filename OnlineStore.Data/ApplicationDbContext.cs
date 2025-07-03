@@ -38,6 +38,7 @@ namespace OnlineStore.Data
 		public virtual DbSet<Address> Addresses { get; set; } = null!;
 		public virtual DbSet<RecentlyViewedProduct> RecentlyViewedProducts { get; set; } = null!;
 		public virtual DbSet<Checkout> Checkouts { get; set; } = null!;
+		public virtual DbSet<ProductPromotion> ProductsPromotions { get; set; } = null!;
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{

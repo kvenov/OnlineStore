@@ -139,6 +139,29 @@
 
 		}
 
+		public static class ProductPromotion
+		{
+			/// <summary>
+			/// Minimum length for the promotion label/title.
+			/// </summary>
+			public const int LabelMinLength = 3;
+
+			/// <summary>
+			/// Maximum length for the promotion label/title.
+			/// </summary>
+			public const int LabelMaxLength = 100;
+
+			/// <summary>
+			/// The type of the promotion's price.
+			/// </summary>
+			public const string PromotionPriceType = "DECIMAL(18,2)";
+
+			/// <summary>
+			/// The default value of the promotion's IsDeleted.
+			/// </summary>
+			public const bool IsDeletedDefaultValue = false;
+		}
+
 		public static class ProductCategory
 		{
 			/// <summary>

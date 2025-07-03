@@ -76,6 +76,10 @@ namespace OnlineStore.Data.Models
 		public virtual ICollection<ProductReview> ProductReviews { get; set; } =
 					new HashSet<ProductReview>();
 
+		[Comment("Product promotions")]
+		public virtual ICollection<ProductPromotion> Promotions { get; set; } = 
+					new HashSet<ProductPromotion>();
+
 		public bool IsDeleted { get; set; }
 	}
 }
