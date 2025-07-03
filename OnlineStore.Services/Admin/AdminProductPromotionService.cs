@@ -45,7 +45,9 @@ namespace OnlineStore.Services.Core.Admin
 						.Include(p => p.Product)
 						.AnyAsync(p => p.Product.Name == product.Name && p.PromotionPrice == promotionPrice);
 
-					if (!isPromotionValid)
+					bool isDateRangeValid = startDate < expDate;
+
+					if ((!isPromotionValid) && (isDateRangeValid))
 					{
 						ProductPromotion promotion = new ProductPromotion()
 						{
@@ -70,6 +72,59 @@ namespace OnlineStore.Services.Core.Admin
 			return isCreated;
 		}
 
+		public async Task<bool> EditPromotion(EditPromotionInputModel? model)
+		{
+			bool isEdited = false;
+
+			if (model != null)
+			{
+
+				Product? product = await this._context
+						.Products
+						.FindAsync(model.ProductId);
+
+				bool isPromotionPriceValid = decimal.TryParse(model.PromotionPrice, out var promotionPrice);
+
+				bool isStartDateValid = DateTime.TryParse(model.StartDate, CultureInfo.InvariantCulture, out var startDate);
+				bool isExpDateValid = DateTime.TryParse(model.ExpDate, CultureInfo.InvariantCulture, out var expDate);
+
+
+				bool isDeletedValid = bool.TryParse(model.IsDeleted, out var isDeleted);
+
+				if ((product != null) && (isPromotionPriceValid) &&
+					(isStartDateValid) && (isExpDateValid) && (isDeletedValid))
+				{
+					bool isDateRangeValid = startDate < expDate;
+
+					if (isDateRangeValid)
+					{
+						ProductPromotion? promotionToEdit = await this
+							._context
+							.ProductsPromotions
+							.Include(p => p.Product)
+							.SingleOrDefaultAsync(p => p.Id == model.Id);
+
+						if (promotionToEdit != null)
+						{
+							promotionToEdit.ProductId = product.Id;
+							promotionToEdit.PromotionPrice = promotionPrice;
+							promotionToEdit.Label = model.Label;
+							promotionToEdit.StartDate = startDate;
+							promotionToEdit.ExpDate = expDate;
+							promotionToEdit.IsDeleted = isDeleted;
+
+							product.DiscountPrice = promotionToEdit.PromotionPrice;
+
+							await this._context.SaveChangesAsync();
+							isEdited = true;
+						}
+					}
+				}
+			}
+
+			return isEdited;
+		}
+
 		public async Task<IEnumerable<PromotionIndexViewModel>> GetProductsPromotionsAsync()
 		{
 			IEnumerable<PromotionIndexViewModel> promotions = await this._context
@@ -90,6 +145,36 @@ namespace OnlineStore.Services.Core.Admin
 							.ToListAsync();
 
 			return promotions;
+		}
+
+		public async Task<PromotionGetViewModel?> GetPromotionByIdAsync(int? promotionId)
+		{
+			PromotionGetViewModel? promotionModel = null;
+
+			if (promotionId != null)
+			{
+				ProductPromotion? promotion = await this._context
+					.ProductsPromotions
+					.AsNoTracking()
+					.Include(p => p.Product)
+					.SingleOrDefaultAsync(p => p.Id == promotionId);
+
+				if (promotion != null)
+				{
+					promotionModel = new PromotionGetViewModel()
+					{
+						Id = promotion.Id,
+						ProductId = promotion.ProductId,
+						Label = promotion.Label,
+						PromotionPrice = promotion.PromotionPrice.ToString("F2"),
+						StartDate = promotion.StartDate.ToString("yyyy-MM-dd"),
+						ExpDate = promotion.ExpDate.ToString("yyyy-MM-dd"),
+						IsDeleted = promotion.IsDeleted,
+					};
+				}
+			}
+
+			return promotionModel;
 		}
 	}
 }

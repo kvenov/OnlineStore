@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
 using static OnlineStore.Data.Common.Constants.EntityConstants.ProductPromotion;
 
 namespace OnlineStore.Web.ViewModels.Admin.ProductPromotion

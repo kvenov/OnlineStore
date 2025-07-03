@@ -50,5 +50,65 @@ namespace OnlineStore.Web.Areas.Admin.Controllers.Api
 				return BadRequest(new { message = "Something went wrong"});
 			}
 		}
+
+
+		[HttpGet("get/{promotionId}")]
+		public async Task<IActionResult> Get(int promotionId)
+		{
+			try
+			{
+				PromotionGetViewModel? model = await this._productPromotionService
+									.GetPromotionByIdAsync(promotionId);
+
+				if (model == null)
+				{
+					return BadRequest(new { error = "Something went wrong while getting the promotion" });
+				}
+
+
+				return Ok(model);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+
+				return BadRequest(new {message = "Something went wrong"});
+			}
+		}
+
+		[HttpPost("edit")]
+		public async Task<IActionResult> Edit([FromBody]EditPromotionInputModel? model)
+		{
+			try
+			{
+				if (!ModelState.IsValid)
+				{
+					var errorMessages = ModelState.Values
+								.SelectMany(v => v.Errors)
+								.Select(e => e.ErrorMessage);
+
+					return BadRequest(new { message = "Validation failed", errors = errorMessages });
+				}
+
+				bool isEdited = await this._productPromotionService
+							.EditPromotion(model);
+
+				if (isEdited)
+				{
+					return Ok();
+				}
+				else
+				{
+					return BadRequest("The process of the promotion edit has failed!");
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+
+				return BadRequest(new { message = "Something went wrong" });
+			}
+		}
+
 	}
 }

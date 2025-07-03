@@ -38,20 +38,22 @@
 
     // Handle Edit button click
     $('#promotionsTable').on('click', '.edit-btn', async function () {
-        const promoId = $(this).data('id');
+        const promotionId = $(this).data('id');
         // Fetch promotion by id (or use data from row)
         try {
-            const response = await fetch(`/api/productpromotions/${promoId}`);
+            const response = await fetch(`/api/productpromotionapi/get/${promotionId}`);
             if (!response.ok) throw new Error("Failed to load promotion");
             const promo = await response.json();
+
+            console.log("StartDate:", promo.startDate); // Debug
 
             form.reset();
             form.querySelector('#promotionId').value = promo.id;
             form.querySelector('#productId').value = promo.productId;
             form.querySelector('#label').value = promo.label;
             form.querySelector('#promotionPrice').value = promo.promotionPrice;
-            form.querySelector('#startDate')._flatpickr.setDate(promo.startDate);
-            form.querySelector('#expDate')._flatpickr.setDate(promo.expDate);
+            form.querySelector('#startDate')._flatpickr.setDate(new Date(promo.startDate));
+            form.querySelector('#expDate')._flatpickr.setDate(new Date(promo.expDate));
             form.querySelector('#isDeleted').checked = promo.isDeleted;
 
             document.getElementById('addPromotionLabel').textContent = "Edit Product Promotion";
@@ -114,7 +116,7 @@
         }
 
         try {
-            const url = isEdit ? `/api/productpromotionapi/update/${formData.Id}` : '/api/productpromotionapi/create';
+            const url = isEdit ? `/api/productpromotionapi/edit` : '/api/productpromotionapi/create';
             const method = 'POST';
 
             const response = await fetch(url, {
