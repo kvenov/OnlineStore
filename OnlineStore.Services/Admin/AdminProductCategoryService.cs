@@ -1,23 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OnlineStore.Data;
 using OnlineStore.Services.Core.Admin.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using OnlineStore.Data.Repository.Interfaces;
 
 namespace OnlineStore.Services.Core.Admin
 {
 	public class AdminProductCategoryService : IAdminProductCategoryService
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly IProductCategoryRepository _repository;
 
-		public AdminProductCategoryService(ApplicationDbContext context)
+		public AdminProductCategoryService(IProductCategoryRepository repository)
 		{
-			this._context = context;
+			this._repository = repository;
 		}
 
 		public async Task<IEnumerable<SelectListItem>> GetAllProductCategoriesIdsAndNamesAsync()
 		{
-			IEnumerable<SelectListItem> productCategories = await this._context
-				.ProductCategories
+			IEnumerable<SelectListItem> productCategories = await this._repository
+				.GetAllAttached()
 				.AsNoTracking()
 				.Select(c => new SelectListItem
 				{

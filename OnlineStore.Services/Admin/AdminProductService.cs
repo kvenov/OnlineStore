@@ -14,18 +14,22 @@ namespace OnlineStore.Services.Core.Admin
 	{
 		private readonly ApplicationDbContext _context;
 		private readonly IProductRepository _repository;
+		private readonly IProductCategoryRepository _categoryRepository;
 
-		public AdminProductService(ApplicationDbContext context, IProductRepository repository)
+		public AdminProductService(ApplicationDbContext context, 
+								  IProductRepository repository, 
+								  IProductCategoryRepository categoryRepository)
 		{
 			this._context = context;
 			this._repository = repository;
+			this._categoryRepository = categoryRepository;
 		}
 
 		public async Task<bool> AddProductAsync(AddProductInputModel model)
 		{
 			bool isAdded = false;
-			ProductCategory productCategory = await this._context
-				.ProductCategories
+			ProductCategory productCategory = await this._categoryRepository
+				.GetAllAttached()
 				.Include(pc => pc.Products)
 				.FirstAsync(pc => pc.Id == model.CategoryId);
 
@@ -215,8 +219,7 @@ namespace OnlineStore.Services.Core.Admin
 					.Include(p => p.Brand)
 					.SingleOrDefaultAsync(p => p.Id == model.Id);
 
-				ProductCategory? productCategory = await this._context
-					.ProductCategories
+				ProductCategory? productCategory = await this._categoryRepository
 					.SingleOrDefaultAsync(pc => pc.Id == model.CategoryId);
 
 				Brand? brand = null;
