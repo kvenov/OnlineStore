@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using OnlineStore.Data;
 using OnlineStore.Data.Interceptors;
 using OnlineStore.Data.Models;
+using OnlineStore.Data.Repository;
+using OnlineStore.Data.Repository.Interfaces;
 using OnlineStore.Data.Seeding;
 using OnlineStore.Data.Seeding.Interfaces;
 using OnlineStore.Data.Utilities;
@@ -29,6 +31,10 @@ builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
 		.UseSqlServer(connectionString)
 		.AddInterceptors(interceptor);
 });
+
+//Here we add the required repositories for the Application Services
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
 
 //Here we add the required services for the Application
 builder.Services.AddSingleton<IXmlHelper, XMLHelper>();

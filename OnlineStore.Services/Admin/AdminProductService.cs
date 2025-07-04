@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using OnlineStore.Data;
 using OnlineStore.Data.Models;
+using OnlineStore.Data.Repository.Interfaces;
 using OnlineStore.Services.Core.Admin.Interfaces;
 using OnlineStore.Web.ViewModels.Admin.Product;
 using OnlineStore.Web.ViewModels.Admin.ProductPromotion;
@@ -12,10 +13,12 @@ namespace OnlineStore.Services.Core.Admin
 	public class AdminProductService : IAdminProductService
 	{
 		private readonly ApplicationDbContext _context;
+		private readonly IProductRepository _repository;
 
-		public AdminProductService(ApplicationDbContext context)
+		public AdminProductService(ApplicationDbContext context, IProductRepository repository)
 		{
 			this._context = context;
+			this._repository = repository;
 		}
 
 		public async Task<bool> AddProductAsync(AddProductInputModel model)
@@ -74,8 +77,7 @@ namespace OnlineStore.Services.Core.Admin
 					brand.Products.Add(product);
 				}
 
-				await this._context.Products.AddAsync(product);
-				await this._context.SaveChangesAsync();
+				await this._repository.AddAsync(product);
 
 				isAdded = true;
 			}
@@ -89,17 +91,14 @@ namespace OnlineStore.Services.Core.Admin
 
 			if (string.IsNullOrWhiteSpace(id))
 			{
-				Product? productToDelete = await this._context
-				.Products
-				.SingleOrDefaultAsync(p => p.Id.ToString() == id);
+				Product? productToDelete = await this._repository
+					.SingleOrDefaultAsync(p => p.Id.ToString().ToLower() == id!.ToLower());
 
 				if (productToDelete != null)
 				{
 
-					productToDelete.IsDeleted = true;
-					await this._context.SaveChangesAsync();
-
-					isRemoved = true;
+					//This method will set the IsDeleted prop to true and SaveChanges: All Async!
+					isRemoved = await this._repository.DeleteAsync(productToDelete);
 				}
 			}
 
@@ -108,8 +107,8 @@ namespace OnlineStore.Services.Core.Admin
 
 		public async Task<IEnumerable<AllProductsViewModel>> GetAllProductsAsync()
 		{
-			IEnumerable<AllProductsViewModel> productList = await _context
-				.Products
+			IEnumerable<AllProductsViewModel> productList = await this._repository
+				.GetAllAttached()
 				.Include(p => p.Brand)
 				.Include(p => p.Category)
 				.AsNoTracking()
@@ -136,8 +135,8 @@ namespace OnlineStore.Services.Core.Admin
 
 			if (isValidId)
 			{
-				productDetails = await _context
-					.Products
+				productDetails = await this._repository
+					.GetAllAttached()
 					.AsNoTracking()
 					.Where(p => p.Id == productId)
 					.Select(p => new ProductDetailsForDeleteViewModel
@@ -163,8 +162,8 @@ namespace OnlineStore.Services.Core.Admin
 			if (id != null)
 			{
 
-				Product? product = await this._context
-					.Products
+				Product? product = await this._repository
+					.GetAllAttached()
 					.Include(p => p.Category)
 					.Include(p => p.Brand)
 					.Include(p => p.ProductDetails)
@@ -209,12 +208,12 @@ namespace OnlineStore.Services.Core.Admin
 
 			if (model != null)
 			{
-				Product? product = this._context
-					.Products
+				Product? product = await this._repository
+					.GetAllAttached()
 					.Include(p => p.ProductDetails)
 					.Include(p => p.Category)
 					.Include(p => p.Brand)
-					.SingleOrDefault(p => p.Id == model.Id);
+					.SingleOrDefaultAsync(p => p.Id == model.Id);
 
 				ProductCategory? productCategory = await this._context
 					.ProductCategories
@@ -268,9 +267,7 @@ namespace OnlineStore.Services.Core.Admin
 					}
 					productCategory.Products.Add(product);
 
-					await this._context.SaveChangesAsync();
-
-					isEdited = true;
+					isEdited = await this._repository.UpdateAsync(product);
 				}
 			}
 
@@ -283,8 +280,8 @@ namespace OnlineStore.Services.Core.Admin
 
 			if (id != null)
 			{
-				Product? product = await this._context
-					.Products
+				Product? product = await this._repository
+					.GetAllAttached()
 					.Include(p => p.Category)
 					.Include(p => p.Brand)
 					.Include(p => p.ProductDetails)
@@ -327,8 +324,8 @@ namespace OnlineStore.Services.Core.Admin
 
 		public async Task<IEnumerable<PromotionProductViewModel>> GetProductsIdsAndNamesAsync()
 		{
-			IEnumerable<PromotionProductViewModel> products = await this._context
-				.Products
+			IEnumerable<PromotionProductViewModel> products = await this._repository
+				.GetAllAttached()
 				.AsNoTracking()
 				.Select(p => new PromotionProductViewModel()
 				{

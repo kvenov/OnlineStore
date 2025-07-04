@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using OnlineStore.Data;
 using OnlineStore.Data.Models;
+using OnlineStore.Data.Repository.Interfaces;
 using OnlineStore.Services.Core.Interfaces;
 using OnlineStore.Web.ViewModels.Home.Partial;
 using OnlineStore.Web.ViewModels.Product;
@@ -11,19 +12,21 @@ namespace OnlineStore.Services.Core
 {
 	public class ProductService : IProductService
 	{
+		private readonly IProductRepository _repository;
 		private readonly ApplicationDbContext _context;
 		private readonly UserManager<ApplicationUser> _userManager;
 
-		public ProductService(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+		public ProductService(ApplicationDbContext context, IProductRepository repository, UserManager<ApplicationUser> userManager)
 		{
 			this._context = context;
+			this._repository = repository;
 			this._userManager = userManager;
 		}
 
 		public async Task<IEnumerable<AllProductListViewModel>> GetAllProductsAsync()
 		{
-			IEnumerable<AllProductListViewModel> productList = await _context
-			  .Products
+			IEnumerable<AllProductListViewModel> productList = await this._repository
+			  .GetAllAttached()
 			  .AsNoTracking()
 			  .Select(p => new AllProductListViewModel
 			  {
@@ -41,8 +44,8 @@ namespace OnlineStore.Services.Core
 
 		public async Task<AllProductListViewModel> GetProductByIdAsync(int id)
 		{
-			return await _context
-				.Products
+			return await this._repository
+				.GetAllAttached()
 				.AsNoTracking()
 				.Select(p => new AllProductListViewModel
 				{
@@ -62,8 +65,8 @@ namespace OnlineStore.Services.Core
 			if (productId != null)
 			{
 
-				productDetails = await _context
-					.Products
+				productDetails = await this._repository
+					.GetAllAttached()
 					.AsNoTracking()
 					.Include(p => p.Category)
 					.Include(p => p.Brand)
@@ -127,9 +130,8 @@ namespace OnlineStore.Services.Core
 
 			if ((productId != null) && (rating != null) && (content != null))
 			{
-				Product? product = await this._context
-					.Products
-					.FindAsync(productId);
+				Product? product = await this._repository
+							.GetByIdAsync(productId.Value);
 
 				ApplicationUser? user = await this._userManager
 					.FindByIdAsync(userId);
@@ -190,7 +192,7 @@ namespace OnlineStore.Services.Core
 					}
 
 
-					await this._context.SaveChangesAsync();
+					await this._repository.SaveChangesAsync();
 					isAdded = true;
 				}
 			}
@@ -266,8 +268,8 @@ namespace OnlineStore.Services.Core
 
 		public async Task<IEnumerable<TrendingProductViewModel>> GetBestProductsAsync()
 		{
-			IEnumerable<TrendingProductViewModel> trendings = await this._context
-						.Products
+			IEnumerable<TrendingProductViewModel> trendings = await this._repository
+						.GetAllAttached()
 						.AsNoTracking()
 						.Where(p => p.IsActive && p.StockQuantity > 0)
 						.OrderByDescending(p =>
