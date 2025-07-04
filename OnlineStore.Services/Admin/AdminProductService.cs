@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using OnlineStore.Data;
 using OnlineStore.Data.Models;
 using OnlineStore.Data.Repository.Interfaces;
 using OnlineStore.Services.Core.Admin.Interfaces;
@@ -12,17 +11,17 @@ namespace OnlineStore.Services.Core.Admin
 {
 	public class AdminProductService : IAdminProductService
 	{
-		private readonly ApplicationDbContext _context;
 		private readonly IProductRepository _repository;
 		private readonly IProductCategoryRepository _categoryRepository;
+		private readonly IBrandRepository _brandRepository;
 
-		public AdminProductService(ApplicationDbContext context, 
-								  IProductRepository repository, 
-								  IProductCategoryRepository categoryRepository)
+		public AdminProductService(IProductRepository repository, 
+								  IProductCategoryRepository categoryRepository,
+								  IBrandRepository brandRepository)
 		{
-			this._context = context;
 			this._repository = repository;
 			this._categoryRepository = categoryRepository;
+			this._brandRepository = brandRepository;
 		}
 
 		public async Task<bool> AddProductAsync(AddProductInputModel model)
@@ -36,8 +35,8 @@ namespace OnlineStore.Services.Core.Admin
 			Brand? brand = null;
 			if (model.BrandId.HasValue)
 			{
-				brand = await this._context
-					.Brands
+				brand = await this._brandRepository
+					.GetAllAttached()
 					.Include(b => b.Products)
 					.FirstAsync(b => b.Id == model.BrandId.Value);
 			}
@@ -225,8 +224,7 @@ namespace OnlineStore.Services.Core.Admin
 				Brand? brand = null;
 				if (model.BrandId.HasValue)
 				{
-					brand = await this._context
-						.Brands
+					brand = await this._brandRepository
 						.SingleOrDefaultAsync(b => b.Id == model.BrandId.Value);
 				}
 

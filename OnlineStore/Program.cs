@@ -35,6 +35,7 @@ builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
 //Here we add the required repositories for the Application Services
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
+builder.Services.AddScoped<IBrandRepository, BrandRepository>();
 
 
 //Here we add the required services for the Application

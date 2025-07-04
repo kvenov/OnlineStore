@@ -1,23 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
-using OnlineStore.Data;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using OnlineStore.Data.Repository.Interfaces;
 using OnlineStore.Services.Core.Admin.Interfaces;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace OnlineStore.Services.Core.Admin
 {
 	public class AdminBrandService : IAdminBrandService
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly IBrandRepository _repository;
 
-		public AdminBrandService(ApplicationDbContext context)
+		public AdminBrandService(IBrandRepository repository)
 		{
-			this._context = context;
+			this._repository = repository;
 		}
 
 		public async Task<IEnumerable<SelectListItem>> GetAllBrandsIdsAndNamesAsync()
 		{
-			IEnumerable<SelectListItem> brands = await this._context
-				.Brands
+			IEnumerable<SelectListItem> brands = await this._repository
+				.GetAllAttached()
 				.AsNoTracking()
 				.Select(c => new SelectListItem
 				{
