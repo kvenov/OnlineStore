@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using OnlineStore.Data;
 using OnlineStore.Data.Models;
 using OnlineStore.Data.Repository.Interfaces;
 using OnlineStore.Services.Core.Interfaces;
@@ -13,14 +12,19 @@ namespace OnlineStore.Services.Core
 	public class ProductService : IProductService
 	{
 		private readonly IProductRepository _repository;
-		private readonly ApplicationDbContext _context;
+		private readonly IProductRatingRepository _productRatingRepository;
+		private readonly IProductReviewRepository _productReviewRepository;
 		private readonly UserManager<ApplicationUser> _userManager;
 
-		public ProductService(ApplicationDbContext context, IProductRepository repository, UserManager<ApplicationUser> userManager)
+		public ProductService(IProductRepository repository,
+							  UserManager<ApplicationUser> userManager,
+							  IProductRatingRepository productRatingRepository,
+							  IProductReviewRepository productReviewRepository)
 		{
-			this._context = context;
 			this._repository = repository;
 			this._userManager = userManager;
+			this._productRatingRepository = productRatingRepository;
+			this._productReviewRepository = productReviewRepository;
 		}
 
 		public async Task<IEnumerable<AllProductListViewModel>> GetAllProductsAsync()
@@ -71,6 +75,8 @@ namespace OnlineStore.Services.Core
 					.Include(p => p.Category)
 					.Include(p => p.Brand)
 					.Include(p => p.ProductDetails)
+					.Include(p => p.ProductReviews)
+					.Include(p => p.ProductRatings)
 					.Where(p => p.Id == productId)
 					.Select(p => new ProductDetailsViewModel
 					{
@@ -140,13 +146,13 @@ namespace OnlineStore.Services.Core
 
 				bool isContentValid = !string.IsNullOrWhiteSpace(content);
 
-				ProductReview? existingProductReview = await this._context
-					.ProductReviews
+				ProductReview? existingProductReview = await this._productReviewRepository
+					.GetAllAttached()
 					.IgnoreQueryFilters()
 					.SingleOrDefaultAsync(pr => pr.ProductId == productId && pr.UserId == userId);
 
-				ProductRating? existingProductRating = await this._context
-					.ProductsRatings
+				ProductRating? existingProductRating = await this._productRatingRepository
+					.GetAllAttached()
 					.IgnoreQueryFilters()
 					.SingleOrDefaultAsync(pr => pr.ProductId == productId && pr.UserId == userId);
 
@@ -171,8 +177,8 @@ namespace OnlineStore.Services.Core
 							IsDeleted = false
 						};
 
-						await this._context.ProductReviews.AddAsync(productReview);
-						await this._context.ProductsRatings.AddAsync(productRating);
+						await this._productReviewRepository.AddAsync(productReview);
+						await this._productRatingRepository.AddAsync(productRating);
 					}
 					else
 					{
@@ -180,19 +186,17 @@ namespace OnlineStore.Services.Core
 						{
 							existingProductReview.IsDeleted = false;
 							existingProductReview.Content = content;
-							this._context.ProductReviews.Update(existingProductReview);
+							await this._productReviewRepository.UpdateAsync(existingProductReview);
 						}
 
 						if (existingProductRating != null)
 						{
 							existingProductRating.IsDeleted = false;
 							existingProductRating.Rating = rating.Value;
-							this._context.ProductsRatings.Update(existingProductRating);
+							await this._productRatingRepository.UpdateAsync(existingProductRating);
 						}
 					}
 
-
-					await this._repository.SaveChangesAsync();
 					isAdded = true;
 				}
 			}
@@ -206,13 +210,11 @@ namespace OnlineStore.Services.Core
 
 			if ((reviewId != null) && (rating != null) && (ratingId != null) && (content != null))
 			{
-				ProductReview? review = await this._context
-					.ProductReviews
-					.FindAsync(reviewId);
+				ProductReview? review = await this._productReviewRepository
+					.GetByIdAsync(reviewId.Value);
 
-				ProductRating? productRating = await this._context
-					.ProductsRatings
-					.FindAsync(ratingId);
+				ProductRating? productRating = await this._productRatingRepository
+					.GetByIdAsync(ratingId.Value);
 
 				ApplicationUser? user = await this._userManager
 					.FindByIdAsync(userId);
@@ -225,7 +227,8 @@ namespace OnlineStore.Services.Core
 					review.Content = content;
 					productRating.Rating = rating.Value;
 
-					await this._context.SaveChangesAsync();
+					await this._productReviewRepository.UpdateAsync(review);
+					await this._productRatingRepository.UpdateAsync(productRating);
 					isEdited = true;
 				}
 			}
@@ -239,13 +242,11 @@ namespace OnlineStore.Services.Core
 
 			if ((reviewId != null) && (ratingId != null))
 			{
-				ProductReview? review = await this._context
-					.ProductReviews
-					.FindAsync(reviewId);
+				ProductReview? review = await this._productReviewRepository
+					.GetByIdAsync(reviewId.Value);
 
-				ProductRating? productRating = await this._context
-					.ProductsRatings
-					.FindAsync(ratingId);
+				ProductRating? productRating = await this._productRatingRepository
+					.GetByIdAsync(ratingId.Value);
 
 				ApplicationUser? user = await this._userManager
 					.FindByIdAsync(userId);
@@ -254,12 +255,10 @@ namespace OnlineStore.Services.Core
 					 && (review.UserId == user.Id) && (productRating.UserId == user.Id))
 				{
 
-					this._context.ProductReviews.Remove(review);
-					this._context.ProductsRatings.Remove(productRating);
+					bool isReviewSucceed = await this._productReviewRepository.DeleteAsync(review);
+					bool isRatingSucceed = await this._productRatingRepository.DeleteAsync(productRating);
 
-					await this._context.SaveChangesAsync();
-
-					isRemoved = true;
+					isRemoved = (isReviewSucceed) && (isRatingSucceed);
 				}
 			}
 
