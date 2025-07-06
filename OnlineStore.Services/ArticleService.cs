@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OnlineStore.Data;
+using OnlineStore.Data.Models;
+using OnlineStore.Data.Repository;
+using OnlineStore.Data.Repository.Interfaces;
 using OnlineStore.Services.Core.Interfaces;
 using OnlineStore.Web.ViewModels.Home.Partial;
 
@@ -7,17 +9,17 @@ namespace OnlineStore.Services.Core
 {
 	public class ArticleService : IArticleService
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly IRepository<Article, int> _repository;
 
-		public ArticleService(ApplicationDbContext context)
+		public ArticleService(IRepository<Article, int> repository)
 		{
-			this._context = context;
+			this._repository = repository;
 		}
 
 		public async Task<IEnumerable<UserReviewViewModel>> GetUserReviewsAsync()
 		{
-			IEnumerable<UserReviewViewModel> articles = await this._context
-							.Articles
+			IEnumerable<UserReviewViewModel> articles = await this._repository
+							.GetAllAttached()
 							.AsNoTracking()
 							.Include(a => a.Author)
 							.Select(a => new UserReviewViewModel()

@@ -40,6 +40,7 @@ builder.Services.AddScoped<IProductRatingRepository, ProductRatingRepository>();
 builder.Services.AddScoped<IProductReviewRepository, ProductReviewRepository>();
 builder.Services.AddScoped<IProductPromotionRepository, ProductPromotionRepository>();
 builder.Services.AddScoped<IWishlistRepository, WishlistRepository>();
+builder.Services.AddScoped(typeof(IRepository<,>), typeof(GenericRepository<,>));
 
 
 //Here we add the required services for the Application
