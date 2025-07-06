@@ -34,13 +34,12 @@ builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
 
 //Here we add the required repositories for the Application Services
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
-builder.Services.AddScoped<IBrandRepository, BrandRepository>();
 builder.Services.AddScoped<IProductRatingRepository, ProductRatingRepository>();
 builder.Services.AddScoped<IProductReviewRepository, ProductReviewRepository>();
 builder.Services.AddScoped<IProductPromotionRepository, ProductPromotionRepository>();
 builder.Services.AddScoped<IWishlistRepository, WishlistRepository>();
 builder.Services.AddScoped(typeof(IRepository<,>), typeof(GenericRepository<,>));
+builder.Services.AddScoped(typeof(IAsyncRepository<,>), typeof(GenericRepository<,>));
 
 
 //Here we add the required services for the Application

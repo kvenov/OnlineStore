@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using OnlineStore.Data.Models;
 using OnlineStore.Data.Repository.Interfaces;
 using OnlineStore.Services.Core.Interfaces;
 
@@ -7,9 +8,9 @@ namespace OnlineStore.Services.Core
 {
 	public class ProductCategoryService : IProductCategoryService
 	{
-		private readonly IProductCategoryRepository _repository;
+		private readonly IRepository<ProductCategory, int> _repository;
 
-		public ProductCategoryService(IProductCategoryRepository repository)
+		public ProductCategoryService(IRepository<ProductCategory, int> repository)
 		{
 			this._repository = repository;
 		}

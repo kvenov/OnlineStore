@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using OnlineStore.Data.Models;
 using OnlineStore.Data.Repository.Interfaces;
 using OnlineStore.Services.Core.Admin.Interfaces;
 
@@ -7,9 +8,9 @@ namespace OnlineStore.Services.Core.Admin
 {
 	public class AdminBrandService : IAdminBrandService
 	{
-		private readonly IBrandRepository _repository;
+		private readonly IRepository<Brand, int> _repository;
 
-		public AdminBrandService(IBrandRepository repository)
+		public AdminBrandService(IRepository<Brand, int> repository)
 		{
 			this._repository = repository;
 		}

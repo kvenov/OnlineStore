@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using OnlineStore.Data.Models;
 using OnlineStore.Data.Repository.Interfaces;
 using OnlineStore.Services.Core.Interfaces;
 
@@ -7,9 +8,9 @@ namespace OnlineStore.Services.Core
 {
 	public class BrandService : IBrandService
 	{
-		private readonly IBrandRepository _repository;
+		private readonly IRepository<Brand, int> _repository;
 
-		public BrandService(IBrandRepository repository)
+		public BrandService(IRepository<Brand, int> repository)
 		{
 			this._repository = repository;
 		}

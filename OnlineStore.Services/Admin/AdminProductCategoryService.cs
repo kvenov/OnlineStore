@@ -2,14 +2,15 @@
 using OnlineStore.Services.Core.Admin.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OnlineStore.Data.Repository.Interfaces;
+using OnlineStore.Data.Models;
 
 namespace OnlineStore.Services.Core.Admin
 {
 	public class AdminProductCategoryService : IAdminProductCategoryService
 	{
-		private readonly IProductCategoryRepository _repository;
+		private readonly IRepository<ProductCategory, int> _repository;
 
-		public AdminProductCategoryService(IProductCategoryRepository repository)
+		public AdminProductCategoryService(IRepository<ProductCategory, int> repository)
 		{
 			this._repository = repository;
 		}

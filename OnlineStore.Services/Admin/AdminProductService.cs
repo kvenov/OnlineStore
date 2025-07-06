@@ -12,14 +12,22 @@ namespace OnlineStore.Services.Core.Admin
 	public class AdminProductService : IAdminProductService
 	{
 		private readonly IProductRepository _repository;
-		private readonly IProductCategoryRepository _categoryRepository;
-		private readonly IBrandRepository _brandRepository;
 
-		public AdminProductService(IProductRepository repository, 
-								  IProductCategoryRepository categoryRepository,
-								  IBrandRepository brandRepository)
+		//TODO: Think of a better idea to use this repositories!!!
+		private readonly IAsyncRepository<ProductCategory, int> _asyncCategoryRepository;
+		private readonly IAsyncRepository<Brand, int> _asyncBrandRepository;
+		private readonly IRepository<ProductCategory, int> _categoryRepository;
+		private readonly IRepository<Brand, int> _brandRepository;
+
+		public AdminProductService(IProductRepository repository,
+								  IAsyncRepository<ProductCategory, int> asyncCategoryRepository,
+								  IAsyncRepository<Brand, int> asyncBrandRepository,
+								  IRepository<ProductCategory, int> categoryRepository,
+								  IRepository<Brand, int> brandRepository)
 		{
 			this._repository = repository;
+			this._asyncCategoryRepository = asyncCategoryRepository;
+			this._asyncBrandRepository = asyncBrandRepository;
 			this._categoryRepository = categoryRepository;
 			this._brandRepository = brandRepository;
 		}
@@ -218,13 +226,13 @@ namespace OnlineStore.Services.Core.Admin
 					.Include(p => p.Brand)
 					.SingleOrDefaultAsync(p => p.Id == model.Id);
 
-				ProductCategory? productCategory = await this._categoryRepository
+				ProductCategory? productCategory = await this._asyncCategoryRepository
 					.SingleOrDefaultAsync(pc => pc.Id == model.CategoryId);
 
 				Brand? brand = null;
 				if (model.BrandId.HasValue)
 				{
-					brand = await this._brandRepository
+					brand = await this._asyncBrandRepository
 						.SingleOrDefaultAsync(b => b.Id == model.BrandId.Value);
 				}
 
