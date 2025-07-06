@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OnlineStore.Data;
+using OnlineStore.Data.Repository.Interfaces;
 using OnlineStore.Services.Core.Interfaces;
 using OnlineStore.Web.ViewModels.Home.Partial;
 
@@ -7,17 +7,17 @@ namespace OnlineStore.Services.Core
 {
 	public class ProductPromotionService : IProductPromotionService
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly IProductPromotionRepository _productPromotionRepository;
 
-		public ProductPromotionService(ApplicationDbContext context)
+		public ProductPromotionService(IProductPromotionRepository productPromotionRepository)
 		{
-			this._context = context;
+			this._productPromotionRepository = productPromotionRepository;
 		}
 
 		public async Task<IEnumerable<ProductPromotionViewModel>> GetProductsPromotionsAsync()
 		{
-			IEnumerable<ProductPromotionViewModel> promotions = await this._context
-								.ProductsPromotions
+			IEnumerable<ProductPromotionViewModel> promotions = await this._productPromotionRepository
+								.GetAllAttached()
 								.AsNoTracking()
 								.Include(p => p.Product)
 								.Select(p => new ProductPromotionViewModel()

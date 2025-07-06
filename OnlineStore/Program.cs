@@ -38,6 +38,7 @@ builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository
 builder.Services.AddScoped<IBrandRepository, BrandRepository>();
 builder.Services.AddScoped<IProductRatingRepository, ProductRatingRepository>();
 builder.Services.AddScoped<IProductReviewRepository, ProductReviewRepository>();
+builder.Services.AddScoped<IProductPromotionRepository, ProductPromotionRepository>();
 
 
 //Here we add the required services for the Application

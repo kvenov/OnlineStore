@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OnlineStore.Data;
 using OnlineStore.Data.Models;
+using OnlineStore.Data.Repository.Interfaces;
 using OnlineStore.Services.Core.Admin.Interfaces;
 using OnlineStore.Web.ViewModels.Admin.ProductPromotion;
 using System.Globalization;
@@ -9,11 +9,13 @@ namespace OnlineStore.Services.Core.Admin
 {
 	public class AdminProductPromotionService : IAdminProductPromotionService
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly IProductRepository _productRepository;
+		private readonly IProductPromotionRepository _productPromotionRepository;
 
-		public AdminProductPromotionService(ApplicationDbContext context)
+		public AdminProductPromotionService(IProductRepository productRepository, IProductPromotionRepository productPromotionRepository)
 		{
-			this._context = context;
+			this._productRepository = productRepository;
+			this._productPromotionRepository = productPromotionRepository;
 		}
 
 		public async Task<bool> CreateProductPromotion(AddPromotionInputModel? model)
@@ -23,9 +25,8 @@ namespace OnlineStore.Services.Core.Admin
 			if (model != null)
 			{
 
-				Product? product = await this._context
-						.Products
-						.FindAsync(model.ProductId);
+				Product? product = await this._productRepository
+					.GetByIdAsync(model.ProductId);
 
 				bool isPromotionPriceValid = decimal.TryParse(model.PromotionPrice, out var promotionPrice);
 
@@ -38,8 +39,8 @@ namespace OnlineStore.Services.Core.Admin
 				if ((product != null) && (isPromotionPriceValid) && 
 				    (isStartDateValid) && (isExpDateValid) && (isDeletedValid))
 				{
-					bool isPromotionValid = await this._context
-						.ProductsPromotions
+					bool isPromotionValid = await this._productPromotionRepository
+						.GetAllAttached()
 						.AsNoTracking()
 						.Where(p => p.IsDeleted == false)
 						.Include(p => p.Product)
@@ -61,10 +62,8 @@ namespace OnlineStore.Services.Core.Admin
 
 						product.DiscountPrice = promotion.PromotionPrice;
 
-						await this._context.ProductsPromotions.AddAsync(promotion);
-						int affectedRows = await this._context.SaveChangesAsync();
-
-						isCreated = affectedRows > 0;
+						await this._productPromotionRepository.AddAsync(promotion);
+						isCreated = true;
 					}
 				}
 			}
@@ -78,14 +77,12 @@ namespace OnlineStore.Services.Core.Admin
 
 			if (promotionId != null)
 			{
-				ProductPromotion? promotionToDelete = await this._context
-							.ProductsPromotions
-							.FindAsync(promotionId);
+				ProductPromotion? promotionToDelete = await this._productPromotionRepository
+						.GetByIdAsync(promotionId.Value);
 
 				if (promotionToDelete != null)
 				{
-					Product? product = await this._context
-								.Products
+					Product? product = await this._productRepository
 								.SingleOrDefaultAsync(p => p.Id == promotionToDelete.ProductId);
 
 					if (product != null)
@@ -93,10 +90,7 @@ namespace OnlineStore.Services.Core.Admin
 						product.DiscountPrice = product.Price;
 					}
 
-					promotionToDelete.IsDeleted = true;
-
-					int affectedRows = await this._context.SaveChangesAsync();
-					isDeleted = affectedRows > 0;
+					isDeleted = await this._productPromotionRepository.DeleteAsync(promotionToDelete);
 				}
 			}
 
@@ -110,9 +104,8 @@ namespace OnlineStore.Services.Core.Admin
 			if (model != null)
 			{
 
-				Product? product = await this._context
-						.Products
-						.FindAsync(model.ProductId);
+				Product? product = await this._productRepository
+						.GetByIdAsync(model.ProductId);
 
 				bool isPromotionPriceValid = decimal.TryParse(model.PromotionPrice, out var promotionPrice);
 
@@ -129,9 +122,8 @@ namespace OnlineStore.Services.Core.Admin
 
 					if (isDateRangeValid)
 					{
-						ProductPromotion? promotionToEdit = await this
-							._context
-							.ProductsPromotions
+						ProductPromotion? promotionToEdit = await this._productPromotionRepository
+							.GetAllAttached()
 							.Include(p => p.Product)
 							.SingleOrDefaultAsync(p => p.Id == model.Id);
 
@@ -146,8 +138,7 @@ namespace OnlineStore.Services.Core.Admin
 
 							product.DiscountPrice = promotionToEdit.PromotionPrice;
 
-							await this._context.SaveChangesAsync();
-							isEdited = true;
+							isEdited = await this._productPromotionRepository.UpdateAsync(promotionToEdit);
 						}
 					}
 				}
@@ -158,8 +149,8 @@ namespace OnlineStore.Services.Core.Admin
 
 		public async Task<IEnumerable<PromotionIndexViewModel>> GetProductsPromotionsAsync()
 		{
-			IEnumerable<PromotionIndexViewModel> promotions = await this._context
-							.ProductsPromotions
+			IEnumerable<PromotionIndexViewModel> promotions = await this._productPromotionRepository
+							.GetAllAttached()
 							.IgnoreQueryFilters()
 							.AsNoTracking()
 							.Include(p => p.Product)
@@ -184,8 +175,8 @@ namespace OnlineStore.Services.Core.Admin
 
 			if (promotionId != null)
 			{
-				ProductPromotion? promotion = await this._context
-					.ProductsPromotions
+				ProductPromotion? promotion = await this._productPromotionRepository
+					.GetAllAttached()
 					.AsNoTracking()
 					.Include(p => p.Product)
 					.SingleOrDefaultAsync(p => p.Id == promotionId);
