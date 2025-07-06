@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using OnlineStore.Data;
 using OnlineStore.Data.Models;
+using OnlineStore.Data.Repository.Interfaces;
 using OnlineStore.Services.Core.Interfaces;
 using OnlineStore.Web.ViewModels.Wishlist;
 using OnlineStore.Web.ViewModels.Wishlist.Partial;
@@ -10,34 +10,37 @@ namespace OnlineStore.Services.Core
 {
 	public class WishlistService : IWishlistService
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly IProductRepository _productRepository;
+		private readonly IWishlistRepository _wishlistRepository;
 		private readonly UserManager<ApplicationUser> _userManager;
 
-		public WishlistService(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+		public WishlistService(UserManager<ApplicationUser> userManager, 
+							   IWishlistRepository wishlistRepository, 
+							   IProductRepository productRepository)
 		{
-			this._context = context;
 			this._userManager = userManager;
+			this._wishlistRepository = wishlistRepository;
+			this._productRepository = productRepository;
 		}
 
 		public async Task<bool> AddProductToWishlist(int? productId, string userId)
 		{
 			bool isAdded = false;
 
-			if ((productId != null))
+			if (productId != null)
 			{
-				Product? product = await this._context
-					.Products
-					.FindAsync(productId);
+				Product? product = await this._productRepository
+						.GetByIdAsync(productId.Value);
 
 				ApplicationUser? user = await this._userManager
-					.FindByIdAsync(userId);
+						.FindByIdAsync(userId);
 
 				if ((product != null) && (user != null))
 				{
-					Wishlist? wishlist = await this._context
-					.Wishlists
-					.Include(w => w.WishlistItems)
-					.SingleOrDefaultAsync(w => w.UserId == user.Id);
+					Wishlist? wishlist = await this._wishlistRepository
+						.GetAllAttached()
+						.Include(w => w.WishlistItems)
+						.SingleOrDefaultAsync(w => w.UserId == user.Id);
 
 					if (wishlist != null)
 					{
@@ -55,8 +58,7 @@ namespace OnlineStore.Services.Core
 							};
 
 							wishlist.WishlistItems.Add(newWishlistItem);
-							await this._context.WishlistsItems.AddAsync(newWishlistItem);
-							await this._context.SaveChangesAsync();
+							await this._wishlistRepository.AddWishlistItemAsync(newWishlistItem);
 
 							isAdded = true;
 						}
@@ -80,23 +82,22 @@ namespace OnlineStore.Services.Core
 
 				if (user != null)
 				{
-					Wishlist? wishlist = await this._context
-						.Wishlists
+					Wishlist? wishlist = await this._wishlistRepository
+						.GetAllAttached()
 						.Include(w => w.WishlistItems)
 						.SingleOrDefaultAsync(w => w.UserId == user.Id);
 
 					if (wishlist != null)
 					{
 
-						WishlistItem? wishlistItem = await this._context
-							.WishlistsItems
-							.SingleOrDefaultAsync(wi => wi.Id == itemId);
+						WishlistItem? wishlistItem = await this._wishlistRepository
+								.GetWishlistItemByIdAsync(itemId);
 
 						if (wishlistItem != null && wishlist.WishlistItems.Contains(wishlistItem))
 						{
 							wishlistItem.Notes = note;
 
-							await this._context.SaveChangesAsync();
+							await this._wishlistRepository.SaveChangesAsync();
 							isEdited = true;
 						}
 					}
@@ -108,8 +109,8 @@ namespace OnlineStore.Services.Core
 
 		public async Task<WishlistIndexViewModel> GetUserWishlist(string userId)
 		{
-			WishlistIndexViewModel wishlist = await this._context
-					.Wishlists
+			WishlistIndexViewModel wishlist = await this._wishlistRepository
+					.GetAllAttached()
 					.AsNoTracking()
 					.Include(w => w.WishlistItems)
 					.ThenInclude(wi => wi.Product)
@@ -143,8 +144,8 @@ namespace OnlineStore.Services.Core
 
 			if (user != null)
 			{
-				Wishlist? wishlist = await this._context
-					.Wishlists
+				Wishlist? wishlist = await this._wishlistRepository
+					.GetAllAttached()
 					.AsNoTracking()
 					.Include(w => w.WishlistItems)
 					.SingleOrDefaultAsync(w => w.UserId == userId);
@@ -169,16 +170,16 @@ namespace OnlineStore.Services.Core
 
 				if (user != null)
 				{
-					Wishlist? wishlist = await this._context
-						.Wishlists
+					Wishlist? wishlist = await this._wishlistRepository
+						.GetAllAttached()
 						.Include(w => w.WishlistItems)
 						.SingleOrDefaultAsync(w => w.UserId == user.Id);
 
 					if (wishlist != null)
 					{
 
-						WishlistItem? wishlistItem = await this._context
-							.WishlistsItems
+						WishlistItem? wishlistItem = await this._wishlistRepository
+							.GetAllWishlistItemsAttached()
 							.IgnoreQueryFilters()
 							.SingleOrDefaultAsync(wi => wi.Id == itemId);
 
@@ -187,8 +188,8 @@ namespace OnlineStore.Services.Core
 							try
 							{
 								wishlist.WishlistItems.Remove(wishlistItem);
-								this._context.WishlistsItems.Remove(wishlistItem);
-								await _context.SaveChangesAsync();
+								this._wishlistRepository.DeleteWishlistItem(wishlistItem);
+								await this._wishlistRepository.SaveChangesAsync();
 								isRemoved = true;
 							}
 							catch (DbUpdateConcurrencyException ex)
