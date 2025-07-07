@@ -137,7 +137,7 @@
                         </div>
 
                         <partial name="_WishlistPartial" />
-                        <partial name="_CartPartial" />
+                        @await Component.InvokeAsync("CartSummary")
                     
                         @if (SignInManager.IsSignedIn(User) && User.HasClaim(ClaimTypes.Role, "User"))
                         {
@@ -182,6 +182,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/Wishlist/wishlist.js" asp-append-version="true"></script>
     <script src="~/js/layout.js" asp-append-version="true"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

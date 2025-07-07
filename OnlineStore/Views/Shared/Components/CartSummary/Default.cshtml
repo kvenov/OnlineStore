@@ -1,0 +1,23 @@
+﻿@using OnlineStore.Web.ViewModels.Layout
+@model CartSummaryViewModel
+
+@if (!User.IsInRole("Admin"))
+{
+    <div class="relative" x-data="{ cartOpen: false }">
+        <button @@click="cartOpen = true" class="cart-button">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m0 0h14m-14 0a1 1 0 001 1h12a1 1 0 001-1m-14 0h14" />
+            </svg>
+
+            <span class="cart-badge">
+                @Model.CartItemsCount
+            </span>
+        </button>
+
+
+        @await Component.InvokeAsync("CartFlyout")
+    </div>
+}
+

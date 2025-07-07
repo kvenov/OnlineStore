@@ -1,4 +1,5 @@
-﻿using OnlineStore.Web.ViewModels.ShoppingCart;
+﻿using OnlineStore.Web.ViewModels.Layout;
+using OnlineStore.Web.ViewModels.ShoppingCart;
 
 namespace OnlineStore.Services.Core.Interfaces
 {
@@ -6,5 +7,9 @@ namespace OnlineStore.Services.Core.Interfaces
 	{
 
 		Task<ShoppingCartViewModel?> GetShoppingCartForUserAsync(string? userId);
+
+		Task<CartInfoViewModel?> GetUserShoppingCartDataAsync(string? userId);
+
+		Task<int> GetUserShoppingCartItemsCountAsync(string? userId);
 	}
 }
