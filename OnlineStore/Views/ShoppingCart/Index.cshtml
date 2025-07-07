@@ -1,0 +1,109 @@
+﻿@using OnlineStore.Web.ViewModels.ShoppingCart
+@model ShoppingCartViewModel
+@{
+    ViewData["Title"] = "Your Cart";
+}
+
+@section Styles {
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" asp-append-version="true">
+}
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" data-aos="fade-up">
+    <h2 class="text-4xl font-extrabold mb-8 tracking-tight text-gray-900">
+        Shopping Cart
+    </h2>
+
+    <div class="grid md:grid-cols-3 gap-10">
+        <!-- Cart Items -->
+        <div class="md:col-span-2 space-y-6" data-aos="fade-right" data-aos-delay="100">
+            @if (!Model.Items.Any())
+            {
+                <div class="p-6 bg-white rounded-xl shadow-md border border-dashed border-gray-300 text-center text-gray-600">
+                    <p class="text-xl font-medium mb-4">🛒 Your cart is empty</p>
+                    <a href="/products" class="text-blue-600 underline hover:text-blue-800 transition">
+                        Browse Products
+                    </a>
+                </div>
+            }
+            else
+            {
+                @foreach (var item in Model.Items)
+                {
+                    <div class="flex gap-5 items-center border-b pb-6 hover:shadow-md transition-all duration-300 rounded-lg p-4 bg-white" data-aos="fade-up" data-aos-delay="100">
+                        <img src="@item.ProductImageUrl" class="w-28 h-28 object-cover rounded-lg shadow-sm" />
+
+                        <div class="flex-1 space-y-1">
+                            <h4 class="text-xl font-semibold">
+                                <a asp-action="Details" asp-controller="Product" asp-route-id="@item.ProductId" class="hover:text-indigo-600 transition">
+                                    @item.ProductName
+                                </a>
+                            </h4>
+                            <p class="text-gray-500 text-sm">Price: $@item.UnitPrice</p>
+
+                            <form asp-action="UpdateQuantity" method="post" class="flex items-center gap-2 mt-2">
+                                <input type="hidden" name="itemId" value="@item.Id" />
+                                <input type="number" name="quantity" value="@item.Quantity"
+                                       min="1"
+                                       class="w-20 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-center" />
+                                <button type="submit" class="text-indigo-600 text-sm font-medium hover:underline">
+                                    Update
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="text-right">
+                            <p class="text-lg font-semibold text-gray-800">$@item.TotalPrice</p>
+                            <form asp-action="RemoveItem" method="post" class="mt-2">
+                                <input type="hidden" name="itemId" value="@item.Id" />
+                                <button type="submit" class="text-red-500 text-sm hover:underline">
+                                    Remove
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+        <!-- Summary Box -->
+        <div class="p-8 bg-gray-100 rounded-xl shadow-lg sticky top-10 h-fit transition-all duration-300"
+             data-aos="fade-left" data-aos-delay="200">
+
+            <h3 class="text-2xl font-bold mb-6 border-b pb-2">Order Summary</h3>
+
+            <div class="space-y-3 text-lg">
+                <div class="flex justify-between">
+                    <span>Subtotal</span>
+                    <span class="font-medium text-gray-700">$@Model.SubTotal</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Shipping</span>
+                    <span class="font-medium text-gray-700">$@Model.Shipping</span>
+                </div>
+                <hr class="my-3" />
+                <div class="flex justify-between text-xl font-bold">
+                    <span>Total</span>
+                    <span>$@Model.Total</span>
+                </div>
+            </div>
+
+            <button class="w-full mt-8 py-3 rounded-lg text-white text-lg font-semibold transition
+                           bg-black hover:bg-gray-800 shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                    @(Model.Items.Any() ? "" : "disabled")>
+                Proceed to Checkout
+            </button>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="https://cdn.tailwindcss.com" asp-append-version="true"></script>
+    <script src="https://unpkg.com/alpinejs" defer asp-append-version="true"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" asp-append-version="true"></script>
+    <script asp-append-version="true">
+        document.addEventListener("DOMContentLoaded", function () {
+            AOS.init();
+        });
+    </script>
+}
