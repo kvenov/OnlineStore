@@ -12,19 +12,12 @@ namespace OnlineStore.Services.Core
 	public class ProductService : IProductService
 	{
 		private readonly IProductRepository _repository;
-		private readonly IProductRatingRepository _productRatingRepository;
-		private readonly IProductReviewRepository _productReviewRepository;
 		private readonly UserManager<ApplicationUser> _userManager;
 
-		public ProductService(IProductRepository repository,
-							  UserManager<ApplicationUser> userManager,
-							  IProductRatingRepository productRatingRepository,
-							  IProductReviewRepository productReviewRepository)
+		public ProductService(IProductRepository repository, UserManager<ApplicationUser> userManager)
 		{
 			this._repository = repository;
 			this._userManager = userManager;
-			this._productRatingRepository = productRatingRepository;
-			this._productReviewRepository = productReviewRepository;
 		}
 
 		public async Task<IEnumerable<AllProductListViewModel>> GetAllProductsAsync()
@@ -146,13 +139,13 @@ namespace OnlineStore.Services.Core
 
 				bool isContentValid = !string.IsNullOrWhiteSpace(content);
 
-				ProductReview? existingProductReview = await this._productReviewRepository
-					.GetAllAttached()
+				ProductReview? existingProductReview = await this._repository
+					.GetAllReviewsAttached()
 					.IgnoreQueryFilters()
 					.SingleOrDefaultAsync(pr => pr.ProductId == productId && pr.UserId == userId);
 
-				ProductRating? existingProductRating = await this._productRatingRepository
-					.GetAllAttached()
+				ProductRating? existingProductRating = await this._repository
+					.GetAllRatingsAttached()
 					.IgnoreQueryFilters()
 					.SingleOrDefaultAsync(pr => pr.ProductId == productId && pr.UserId == userId);
 
@@ -177,8 +170,8 @@ namespace OnlineStore.Services.Core
 							IsDeleted = false
 						};
 
-						await this._productReviewRepository.AddAsync(productReview);
-						await this._productRatingRepository.AddAsync(productRating);
+						await this._repository.AddProductReviewAsync(productReview);
+						await this._repository.AddProductRatingAsync(productRating);
 					}
 					else
 					{
@@ -186,17 +179,16 @@ namespace OnlineStore.Services.Core
 						{
 							existingProductReview.IsDeleted = false;
 							existingProductReview.Content = content;
-							await this._productReviewRepository.UpdateAsync(existingProductReview);
 						}
 
 						if (existingProductRating != null)
 						{
 							existingProductRating.IsDeleted = false;
 							existingProductRating.Rating = rating.Value;
-							await this._productRatingRepository.UpdateAsync(existingProductRating);
 						}
 					}
 
+					await this._repository.SaveChangesAsync();
 					isAdded = true;
 				}
 			}
@@ -210,11 +202,11 @@ namespace OnlineStore.Services.Core
 
 			if ((reviewId != null) && (rating != null) && (ratingId != null) && (content != null))
 			{
-				ProductReview? review = await this._productReviewRepository
-					.GetByIdAsync(reviewId.Value);
+				ProductReview? review = await this._repository
+					.GetProductReviewByIdAsync(reviewId);
 
-				ProductRating? productRating = await this._productRatingRepository
-					.GetByIdAsync(ratingId.Value);
+				ProductRating? productRating = await this._repository
+					.GetProductRatingByIdAsync(ratingId);
 
 				ApplicationUser? user = await this._userManager
 					.FindByIdAsync(userId);
@@ -227,8 +219,7 @@ namespace OnlineStore.Services.Core
 					review.Content = content;
 					productRating.Rating = rating.Value;
 
-					await this._productReviewRepository.UpdateAsync(review);
-					await this._productRatingRepository.UpdateAsync(productRating);
+					await this._repository.SaveChangesAsync();
 					isEdited = true;
 				}
 			}
@@ -242,11 +233,11 @@ namespace OnlineStore.Services.Core
 
 			if ((reviewId != null) && (ratingId != null))
 			{
-				ProductReview? review = await this._productReviewRepository
-					.GetByIdAsync(reviewId.Value);
+				ProductReview? review = await this._repository
+					.GetProductReviewByIdAsync(reviewId);
 
-				ProductRating? productRating = await this._productRatingRepository
-					.GetByIdAsync(ratingId.Value);
+				ProductRating? productRating = await this._repository
+					.GetProductRatingByIdAsync(ratingId);
 
 				ApplicationUser? user = await this._userManager
 					.FindByIdAsync(userId);
@@ -255,8 +246,8 @@ namespace OnlineStore.Services.Core
 					 && (review.UserId == user.Id) && (productRating.UserId == user.Id))
 				{
 
-					bool isReviewSucceed = await this._productReviewRepository.DeleteAsync(review);
-					bool isRatingSucceed = await this._productRatingRepository.DeleteAsync(productRating);
+					bool isReviewSucceed = await this._repository.DeleteReviewAsync(review);
+					bool isRatingSucceed = await this._repository.DeleteRatingAsync(productRating);
 
 					isRemoved = (isReviewSucceed) && (isRatingSucceed);
 				}
