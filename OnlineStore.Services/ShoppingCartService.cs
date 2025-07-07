@@ -186,5 +186,41 @@ namespace OnlineStore.Services.Core
 
 			return isAdded;
 		}
+
+		public async Task<bool> UpdateCartItemAsync(string? userId, int? quantity, int? itemId)
+		{
+			bool isEdited = false;
+
+			if ((itemId != null) && (userId != null) && (quantity != null))
+			{
+				ApplicationUser? user = await this._userManager
+							.FindByIdAsync(userId);
+
+				if (user != null)
+				{
+					ShoppingCart? shoppingCart = await this._context.ShoppingCarts
+								.Include(w => w.ShoppingCartItems)
+								.SingleOrDefaultAsync(sc => sc.UserId == user.Id);
+
+					if (shoppingCart != null)
+					{
+						ShoppingCartItem? existingShoppingCartItem = await this._context.ShoppingCartsItems
+										.Include(sci => sci.Product)
+										.SingleOrDefaultAsync(sci => sci.Id == itemId);
+
+						if (existingShoppingCartItem != null)
+						{
+							existingShoppingCartItem.Quantity = quantity.Value;
+							existingShoppingCartItem.TotalPrice = existingShoppingCartItem.Price * quantity.Value;
+						}
+
+						int affectedRows = await this._context.SaveChangesAsync();
+						isEdited = affectedRows > 0;
+					}
+				}
+			}
+
+			return isEdited;
+		}
 	}
 }

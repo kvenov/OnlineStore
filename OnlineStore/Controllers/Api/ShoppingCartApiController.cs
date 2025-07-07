@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineStore.Services.Core.Interfaces;
+using OnlineStore.Web.DTO.ShoppingCart;
 
 namespace OnlineStore.Web.Controllers.Api
 {
@@ -38,6 +39,35 @@ namespace OnlineStore.Web.Controllers.Api
 			{
 				Console.WriteLine(ex.Message);
 
+				return BadRequest();
+			}
+		}
+
+		[HttpPost("update")]
+		public async Task<IActionResult> UpdateCartItem([FromBody]UpdateCartItemDto? model)
+		{
+			try
+			{
+				string? userId = this.GetUserId();
+				int? quantity = model.Quantity;
+				int? itemId = model.ItemId;
+
+				bool isEdited = await this._shoppingCartService
+									.UpdateCartItemAsync(userId, quantity, itemId);
+
+				if (isEdited)
+				{
+					return Ok(new { result = "The cart item has been sucssecfully updated" });
+				}
+				else
+				{
+					return BadRequest(new { message = "Something went wrong while updateing the cart item!" });
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				
 				return BadRequest();
 			}
 		}

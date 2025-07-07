@@ -40,15 +40,13 @@
                             </h4>
                             <p class="text-gray-500 text-sm">Price: $@item.UnitPrice</p>
 
-                            <form asp-action="UpdateQuantity" method="post" class="flex items-center gap-2 mt-2">
-                                <input type="hidden" name="itemId" value="@item.Id" />
-                                <input type="number" name="quantity" value="@item.Quantity"
-                                       min="1"
-                                       class="w-20 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-center" />
-                                <button type="submit" class="text-indigo-600 text-sm font-medium hover:underline">
-                                    Update
-                                </button>
-                            </form>
+                            <input type="hidden" name="itemId" id="input-itemId-@item.Id" value="@item.Id" />
+                            <input type="number" name="quantity" id="input-quantity-@item.Id" value="@item.Quantity"
+                                    min="1"
+                                   class="w-20 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-center" />
+                            <button type="submit" data-item-id="@item.Id" class="update-cartItem-button text-indigo-600 text-sm font-medium hover:underline">
+                                Update
+                            </button>
                         </div>
 
                         <div class="text-right">
@@ -101,6 +99,7 @@
     <script src="https://cdn.tailwindcss.com" asp-append-version="true"></script>
     <script src="https://unpkg.com/alpinejs" defer asp-append-version="true"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" asp-append-version="true"></script>
+    <script src="~/js/ShoppingCart/shoppingCart.js" asp-append-version="true"></script>
     <script asp-append-version="true">
         document.addEventListener("DOMContentLoaded", function () {
             AOS.init();

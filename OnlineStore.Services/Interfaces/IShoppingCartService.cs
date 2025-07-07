@@ -13,5 +13,7 @@ namespace OnlineStore.Services.Core.Interfaces
 		Task<int> GetUserShoppingCartItemsCountAsync(string? userId);
 
 		Task<bool> AddToCartAsync(int? productId, string? userId);
+
+		Task<bool> UpdateCartItemAsync(string? userId, int? quantity, int? itemId);
 	}
 }
