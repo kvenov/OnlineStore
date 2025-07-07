@@ -9,6 +9,7 @@
         });
     });
 
+    //Adding to cart
     const addToCartButton = document.getElementById('addToCartBtn');
     if (addToCartButton) {
         addToCartButton.addEventListener('click', () => {
@@ -24,7 +25,7 @@
         })
     }
 
-
+    //Updating Cart Item
     document.querySelectorAll('.update-cartItem-button').forEach(button => {
         const itemId = button.dataset.itemId;
 
@@ -40,7 +41,22 @@
             }
         })
     })
-   
+
+    //Removing cart Item
+    document.querySelectorAll('.remove-cartItem-button').forEach(button => {
+        const itemId = button.dataset.itemId;
+
+        button.addEventListener('click', () => {
+            const itemIdInput = document.getElementById(`remove-input-itemId-${itemId}`);
+
+            if (itemIdInput) {
+                const itemId = itemIdInput.value;
+
+                RemoveCartItem(itemId)
+            }
+        })
+    })
+
 })
 
 async function addToCart(productId) {
@@ -88,6 +104,29 @@ async function UpdateCartItem(quantity, itemId) {
         }
     } catch (error) {
         console.error("Error while updating the cart item", error);
+        alert("Something went wrong.");
+    }
+}
+
+async function RemoveCartItem(itemId) {
+    try {
+        const response = await fetch(`/api/shoppingcartapi/remove/${itemId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            alert(data.result)
+            location.reload();
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error("Error while removing the cart item", error);
         alert("Something went wrong.");
     }
 }

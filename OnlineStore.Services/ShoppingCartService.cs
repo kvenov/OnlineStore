@@ -222,5 +222,42 @@ namespace OnlineStore.Services.Core
 
 			return isEdited;
 		}
+
+		public async Task<bool> RemoveCartItemAsync(string? userId, int? itemId)
+		{
+			bool isRemoved = false;
+
+			if ((itemId != null) && (userId != null))
+			{
+				ApplicationUser? user = await this._userManager
+							.FindByIdAsync(userId);
+
+				if (user != null)
+				{
+					ShoppingCart? shoppingCart = await this._context.ShoppingCarts
+								.Include(w => w.ShoppingCartItems)
+								.SingleOrDefaultAsync(sc => sc.UserId == user.Id);
+
+					if (shoppingCart != null)
+					{
+						ShoppingCartItem? cartItemToRemove = await this._context.ShoppingCartsItems
+										.Include(sci => sci.Product)
+										.SingleOrDefaultAsync(sci => sci.Id == itemId);
+
+						if (cartItemToRemove != null)
+						{
+
+							shoppingCart.ShoppingCartItems.Remove(cartItemToRemove);
+							this._context.ShoppingCartsItems.Remove(cartItemToRemove);
+						}
+
+						int affectedRows = await this._context.SaveChangesAsync();
+						isRemoved = affectedRows > 0;
+					}
+				}
+			}
+
+			return isRemoved;
+		}
 	}
 }

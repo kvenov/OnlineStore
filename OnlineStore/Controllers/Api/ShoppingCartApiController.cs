@@ -44,7 +44,7 @@ namespace OnlineStore.Web.Controllers.Api
 		}
 
 		[HttpPost("update")]
-		public async Task<IActionResult> UpdateCartItem([FromBody]UpdateCartItemDto? model)
+		public async Task<IActionResult> UpdateCartItem([FromBody]UpdateCartItemDto model)
 		{
 			try
 			{
@@ -68,6 +68,33 @@ namespace OnlineStore.Web.Controllers.Api
 			{
 				Console.WriteLine(ex.Message);
 				
+				return BadRequest();
+			}
+		}
+
+		[HttpPost("remove/{itemId}")]
+		public async Task<IActionResult> RemoveCartItem(int? itemId)
+		{
+			try
+			{
+				string? userId = this.GetUserId();
+
+				bool isRemoved = await this._shoppingCartService
+									.RemoveCartItemAsync(userId, itemId);
+
+				if (isRemoved)
+				{
+					return Ok(new { result = "The cart item has been sucssecfully removed!" });
+				}
+				else
+				{
+					return BadRequest(new { message = "Something went wrong while removing the cart item!" });
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+
 				return BadRequest();
 			}
 		}
