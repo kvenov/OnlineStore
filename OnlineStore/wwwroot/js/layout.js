@@ -36,3 +36,27 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll('.account-menu-toggle').forEach(toggle => {
+        toggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            const container = this.closest('.account-menu-container');
+            container.classList.toggle('show');
+
+            // Optional: Close others
+            document.querySelectorAll('.account-menu-container').forEach(other => {
+                if (other !== container) other.classList.remove('show');
+            });
+        });
+    });
+
+    // Close on outside click
+    document.addEventListener('click', function (e) {
+            if (!e.target.closest('.account-menu-container')) {
+                document.querySelectorAll('.account-menu-container').forEach(container => {
+                container.classList.remove('show');
+                });
+            }
+    });
+});

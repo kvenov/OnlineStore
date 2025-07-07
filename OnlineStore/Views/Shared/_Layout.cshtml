@@ -51,20 +51,19 @@
                         <i class="bi bi-speedometer2"></i> Admin Panel
                     </a>
 
-                    <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-dark" href="#" data-bs-toggle="dropdown">
-                            <i class="bi bi-person-circle"></i> Account
+                    <div class="account-menu-container">
+                        <a href="#" class="account-menu-toggle">
+                            <span class="account-label">Account</span> <span class="account-arrow">▼</span>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="@Url.Action("Profile", "User")">Settings</a></li>
-                            <li><hr class="dropdown-divider" /></li>
-                            <li>
-                                <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                                    <button type="submit" class="dropdown-item text-danger">Logout</button>
-                                </form>
-                            </li>
-                        </ul>
+                        <div class="account-menu-list">
+                            <a href="@Url.Action("Profile", "User")" class="account-menu-item">Settings</a>
+                            <hr class="account-menu-divider" />
+                            <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                <button type="submit" class="account-menu-item text-danger">Logout</button>
+                            </form>
+                        </div>
                     </div>
+
                 }
                 else
                 {
@@ -142,23 +141,23 @@
                     
                         @if (SignInManager.IsSignedIn(User) && User.HasClaim(ClaimTypes.Role, "User"))
                         {
-                            <div class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-dark" href="#" data-bs-toggle="dropdown">
-                                    <i class="bi bi-person-circle"></i> Account
+                            <div class="account-menu-container">
+                                <a href="#" class="account-menu-toggle">
+                                    <span class="account-label">Account</span> <span class="account-arrow">▼</span>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="@Url.Action("ProductList", "Product")">All Products</a></li>
-                                    <li><a class="dropdown-item" href="@Url.Action("Index", "Wishlist")">Favorites</a></li>
-                                    <li><a class="dropdown-item" href="@Url.Action("Orders", "User")">Orders</a></li>
-                                    <li><a class="dropdown-item" href="@Url.Action("Profile", "User")">Settings</a></li>
-                                    <li><hr class="dropdown-divider" /></li>
-                                    <li>
-                                        <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                                            <button type="submit" style="border: none" class="dropdown-item text-danger">Logout</button>
-                                        </form>
-                                    </li>
-                                </ul>
+                                <div class="account-menu-list">
+                                    <a href="@Url.Action("ProductList", "Product")" class="account-menu-item">All Products</a>
+                                    <a href="@Url.Action("Index", "Wishlist")" class="account-menu-item">Favorites</a>
+                                    <a href="@Url.Action("Orders", "User")" class="account-menu-item">Orders</a>
+                                    <a href="@Url.Action("Profile", "User")" class="account-menu-item">Settings</a>
+                                    <hr class="account-menu-divider" />
+                                    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                        <button type="submit" class="account-menu-item text-danger">Logout</button>
+                                    </form>
+                                </div>
                             </div>
+
+
                         }
                     </div>
                 }

@@ -141,9 +141,7 @@ ul {
     border-radius: 4px;
 }
 
-
 .search-container {
-    position: relative;
     width: 100%;
     max-width: 1300px;
 }
@@ -162,12 +160,11 @@ ul {
 }
 
 .search-expanded {
-    position: absolute;
-    top: 130%;
-    left: 0%;
-    transform: translateX(-85%);
-    width: 100vw;
-    max-width: 1300px;
+    position: fixed;
+    top: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1100px;
     background: rgba(255,255,255,0.95);
     border-radius: 12px;
     padding: 2rem;
@@ -175,6 +172,19 @@ ul {
     z-index: 9999;
     box-shadow: 0 6px 30px rgba(0,0,0,0.15);
     backdrop-filter: blur(6px);
+    animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0px);
+    }
 }
 
 .search-expanded.active {
@@ -213,12 +223,83 @@ ul {
     cursor: pointer;
 }
 
-.footer {
-    font-size: 0.9rem;
-    text-align: center;
+.account-menu-container {
+    position: relative;
+    display: inline-block;
 }
 
-@keyframes fadeIn {
+.account-menu-toggle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: #000;
+}
+
+.account-label {
+    color: #000;
+}
+
+.account-arrow {
+    color: #000; 
+    font-size: 0.75rem;
+    transition: transform 0.2s ease;
+}
+
+.account-menu-container.show .account-arrow {
+    transform: rotate(180deg);
+}
+
+.account-menu-list {
+    position: absolute;
+    top: 110%;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    min-width: 180px;
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    animation: anime 0.2s ease-in-out;
+}
+
+.account-menu-container.show .account-menu-list {
+    display: flex;
+}
+
+.account-menu-item {
+    display: block;
+    padding: 10px 16px;
+    color: #333;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: background 0.2s ease;
+    background: none;
+    border: none;
+    text-align: left;
+    width: 100%;
+    white-space: nowrap;
+}
+
+.account-menu-item:hover {
+    background-color: #f1f1f1;
+}
+
+.account-menu-divider {
+    margin: 4px 0;
+    border-color: #eee;
+}
+
+.text-danger {
+    color: #dc3545 !important;
+}
+
+@keyframes anime {
     from {
         opacity: 0;
         transform: translateY(10px);
@@ -228,6 +309,11 @@ ul {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.footer {
+    font-size: 0.9rem;
+    text-align: center;
 }
 
 @media (max-width: 991px) {
