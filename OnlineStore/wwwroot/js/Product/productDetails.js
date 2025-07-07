@@ -1,23 +1,4 @@
-﻿let selectedSize = null;
-
-document.querySelectorAll('.size-option').forEach(el => {
-    el.addEventListener('click', () => {
-        document.querySelectorAll('.size-option').forEach(btn => btn.classList.remove('active'));
-        el.classList.add('active');
-        selectedSize = el.getAttribute('data-size');
-    });
-});
-
-document.getElementById('addToCartBtn').addEventListener('click', () => {
-    if (!selectedSize) {
-        alert('Please select a size before adding to cart.');
-        return;
-    }
-    // Submit logic here (form submission or JS fetch)
-    alert('Product added to cart! Size: ' + selectedSize);
-});
-
-function toggleSection(section) {
+﻿function toggleSection(section) {
     section.classList.toggle('active');
 }
 

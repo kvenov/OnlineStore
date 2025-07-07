@@ -11,5 +11,7 @@ namespace OnlineStore.Services.Core.Interfaces
 		Task<CartInfoViewModel?> GetUserShoppingCartDataAsync(string? userId);
 
 		Task<int> GetUserShoppingCartItemsCountAsync(string? userId);
+
+		Task<bool> AddToCartAsync(int? productId, string? userId);
 	}
 }

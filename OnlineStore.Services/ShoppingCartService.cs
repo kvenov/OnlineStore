@@ -49,7 +49,8 @@ namespace OnlineStore.Services.Core
 												UnitPrice = sci.Price,
 												Quantity = sci.Quantity,
 											})
-											.ToList()
+											.ToList(),
+								Total = sc.ShoppingCartItems.Sum(sci => sci.TotalPrice)
 							})
 							.FirstOrDefaultAsync();
 				}
@@ -129,6 +130,61 @@ namespace OnlineStore.Services.Core
 			}
 
 			return 0;
+		}
+
+		public async Task<bool> AddToCartAsync(int? productId, string? userId)
+		{
+			bool isAdded = false;
+
+			if ((productId != null) && (userId != null))
+			{
+				Product? product = await this._context.Products
+							.FindAsync(productId);
+
+				ApplicationUser? user = await this._userManager
+							.FindByIdAsync(userId);
+
+				if ((product != null) && (user != null))
+				{
+					ShoppingCart? shoppingCart = await this._context.ShoppingCarts
+								.Include(w => w.ShoppingCartItems)
+								.SingleOrDefaultAsync(sc => sc.UserId == user.Id);
+
+					if (shoppingCart != null)
+					{
+						ShoppingCartItem? existingShoppingCartItem = await this._context.ShoppingCartsItems
+									.SingleOrDefaultAsync(sci => sci.ShoppingCartId == shoppingCart.Id && sci.ProductId == product.Id);
+
+						if (existingShoppingCartItem != null)
+						{
+							existingShoppingCartItem.Quantity += 1;
+						}
+						else
+						{
+							int defaultProductQuantity = 1;
+							decimal totalPrice = defaultProductQuantity * product.Price;
+
+							ShoppingCartItem newItem = new ShoppingCartItem()
+							{
+								Quantity = defaultProductQuantity,
+								Price = product.Price,
+								TotalPrice = totalPrice,
+								ShoppingCartId = shoppingCart.Id,
+								ProductId = product.Id
+							};
+
+							await this._context.ShoppingCartsItems.AddAsync(newItem);
+							shoppingCart.ShoppingCartItems.Add(newItem);
+						}
+
+						int affectedRows = await this._context.SaveChangesAsync();
+						isAdded = affectedRows > 0;
+					}
+				}
+			}
+
+
+			return isAdded;
 		}
 	}
 }
