@@ -154,10 +154,14 @@ namespace OnlineStore.Data.Repository
 		{
 			try
 			{
-				DbSet.Attach(item);
-				DbSet.Entry(item).State = EntityState.Modified;
-				DbContext.SaveChanges();
+				var entry = DbContext.Entry(item);
+				if (entry.State == EntityState.Detached)
+				{
+					DbSet.Attach(item);
+					entry.State = EntityState.Modified;
+				}
 
+				DbContext.SaveChanges();
 				return true;
 			}
 			catch (Exception)
@@ -170,10 +174,14 @@ namespace OnlineStore.Data.Repository
 		{
 			try
 			{
-				DbSet.Attach(item);
-				DbSet.Entry(item).State = EntityState.Modified;
-				await DbContext.SaveChangesAsync();
+				var entry = DbContext.Entry(item);
+				if (entry.State == EntityState.Detached)
+				{
+					DbSet.Attach(item);
+					entry.State = EntityState.Modified;
+				}
 
+				await DbContext.SaveChangesAsync();
 				return true;
 			}
 			catch (Exception)
