@@ -28,6 +28,7 @@ builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
 {
 	var interceptor = sp.GetRequiredService<SoftDeleteInterceptor>();
 	options
+		.UseLazyLoadingProxies()
 		.UseSqlServer(connectionString)
 		.AddInterceptors(interceptor);
 });
