@@ -9,11 +9,9 @@ using OnlineStore.Data.Seeding;
 using OnlineStore.Data.Seeding.Interfaces;
 using OnlineStore.Data.Utilities;
 using OnlineStore.Data.Utilities.Interfaces;
-using OnlineStore.Services.Core;
-using OnlineStore.Services.Core.Admin;
-using OnlineStore.Services.Core.Admin.Interfaces;
 using OnlineStore.Services.Core.Identity;
 using OnlineStore.Services.Core.Interfaces;
+using static OnlineStore.Web.Infrastructure.Extensions.ServiceCollectionExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,20 +39,12 @@ builder.Services.AddScoped(typeof(IRepository<,>), typeof(GenericRepository<,>))
 builder.Services.AddScoped(typeof(IAsyncRepository<,>), typeof(GenericRepository<,>));
 
 
-//Here we add the required services for the Application
+//These services are only used for a development seeding purposes.
 builder.Services.AddSingleton<IXmlHelper, XMLHelper>();
 builder.Services.AddScoped<IDbSeeder, ApplicationDbContextSeeder>();
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IProductPromotionService, ProductPromotionService>();
-builder.Services.AddScoped<IAdminProductService, AdminProductService>();
-builder.Services.AddScoped<IAdminProductPromotionService, AdminProductPromotionService>();
-builder.Services.AddScoped<IAdminProductCategoryService, AdminProductCategoryService>();
-builder.Services.AddScoped<IAdminBrandService, AdminBrandService>();
-builder.Services.AddScoped<IProductCategoryService, ProductCategoryService>();
-builder.Services.AddScoped<IBrandService, BrandService>();
-builder.Services.AddScoped<IWishlistService, WishlistService>();
-builder.Services.AddScoped<IArticleService, ArticleService>();
-builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
+
+//Here we add the required services for the Application via extension method!
+builder.Services.AddUserDefinedScopedServices(typeof(IProductService).Assembly);
 
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
