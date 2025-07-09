@@ -108,5 +108,28 @@ namespace OnlineStore.Web.Controllers.Api
 				return BadRequest();
 			}
 		}
+
+		[HttpGet("count")]
+		public async Task<IActionResult> GetCartItemsCount()
+		{
+			try
+			{
+				string? userId = this.GetUserId();
+
+				int cartItemsCount = await this._shoppingCartService
+								.GetUserShoppingCartItemsCountAsync(userId);
+
+				return Ok(new
+				{
+					count = cartItemsCount
+				});
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+
+				return BadRequest("Something went wrong!");
+			}
+		}
 	}
 }

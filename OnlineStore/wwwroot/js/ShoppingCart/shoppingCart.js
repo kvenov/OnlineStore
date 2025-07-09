@@ -37,7 +37,7 @@
                 const quatity = quantityInput.value;
                 const itemId = itemIdInput.value;
 
-                UpdateCartItem(quatity, itemId)
+                updateCartItem(quatity, itemId)
             }
         })
     })
@@ -52,7 +52,7 @@
             if (itemIdInput) {
                 const itemId = itemIdInput.value;
 
-                RemoveCartItem(itemId)
+                removeCartItem(itemId)
             }
         })
     })
@@ -72,6 +72,7 @@ async function addToCart(productId) {
 
         if (response.ok) {
             alert(data.result);
+            setCartItemsCount();
         } else {
             alert(data.message);
         }
@@ -81,7 +82,7 @@ async function addToCart(productId) {
     }
 }
 
-async function UpdateCartItem(quantity, itemId) {
+async function updateCartItem(quantity, itemId) {
     try {
         const response = await fetch(`/api/shoppingcartapi/update`, {
             method: 'POST',
@@ -112,7 +113,7 @@ async function UpdateCartItem(quantity, itemId) {
     }
 }
 
-async function RemoveCartItem(itemId) {
+async function removeCartItem(itemId) {
     try {
         const response = await fetch(`/api/shoppingcartapi/remove/${itemId}`, {
             method: 'POST',
@@ -140,6 +141,8 @@ async function RemoveCartItem(itemId) {
                 itemToRemove.remove();
             }
 
+            setCartItemsCount();
+
             document.querySelector('.summary-subtotal').textContent = `$${data.subTotal.toFixed(2)}`;
             document.querySelector('.summary-shipping').textContent = `$${data.shipping.toFixed(2)}`;
             document.querySelector('.summary-total').textContent = `$${data.total.toFixed(2)}`;
@@ -152,10 +155,10 @@ async function RemoveCartItem(itemId) {
     }
 }
 
-async function GetCartItemsCount() {
+async function setCartItemsCount() {
     try {
-        const response = await fetch(`/api/shoppingcartapi/`, {
-            method: 'POST',
+        const response = await fetch(`/api/shoppingcartapi/count`, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -164,7 +167,9 @@ async function GetCartItemsCount() {
         const data = await response.json();
 
         if (response.ok) {
-            alert(data.result);
+            const cartItemsCountBadge = document.querySelector('.cart-items-count');
+
+            cartItemsCountBadge.textContent = `${data.count.toFixed()}`;
         } else {
             alert(data.message);
         }
