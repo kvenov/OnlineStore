@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using OnlineStore.Data;
 using OnlineStore.Data.Models;
+using OnlineStore.Data.Repository.Interfaces;
 using OnlineStore.Services.Core.Interfaces;
 using OnlineStore.Web.ViewModels.Layout;
 using OnlineStore.Web.ViewModels.ShoppingCart;
@@ -10,13 +10,17 @@ namespace OnlineStore.Services.Core
 {
 	public class ShoppingCartService : IShoppingCartService
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly IShoppingCartRepository _shoppingCartRepository;
+		private readonly IProductRepository _productRepository;
 		private readonly UserManager<ApplicationUser> _userManager;
 
-		public ShoppingCartService(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+		public ShoppingCartService(UserManager<ApplicationUser> userManager,
+								   IShoppingCartRepository shoppingCartRepository,
+								   IProductRepository productRepository)
 		{
-			this._context = context;
 			this._userManager = userManager;
+			this._shoppingCartRepository = shoppingCartRepository;
+			this._productRepository = productRepository;
 		}
 
 		public async Task<CartInfoViewModel?> GetUserShoppingCartDataAsync(string? userId)
@@ -32,7 +36,8 @@ namespace OnlineStore.Services.Core
 				if (user != null)
 				{
 
-					cartModel = await this._context.ShoppingCarts
+					cartModel = await this._shoppingCartRepository
+							.GetAllAttached()
 							.AsNoTracking()
 							.Include(sc => sc.ShoppingCartItems)
 							.ThenInclude(sci => sci.Product)
@@ -76,7 +81,8 @@ namespace OnlineStore.Services.Core
 				if (user != null)
 				{
 
-					cartModel = await this._context.ShoppingCarts
+					cartModel = await this._shoppingCartRepository
+							.GetAllAttached()
 							.AsNoTracking()
 							.Include(sc => sc.ShoppingCartItems)
 							.ThenInclude(sci => sci.Product)
@@ -117,7 +123,8 @@ namespace OnlineStore.Services.Core
 				if (user != null)
 				{
 
-					ShoppingCart? shoppingCart = await this._context.ShoppingCarts
+					ShoppingCart? shoppingCart = await this._shoppingCartRepository
+								.GetAllAttached()
 								.AsNoTracking()
 								.Include(sc => sc.ShoppingCartItems)
 								.SingleOrDefaultAsync(sc => sc.UserId == user.Id);
@@ -138,22 +145,23 @@ namespace OnlineStore.Services.Core
 
 			if ((productId != null) && (userId != null))
 			{
-				Product? product = await this._context.Products
-							.FindAsync(productId);
+				Product? product = await this._productRepository
+							.GetByIdAsync(productId.Value);
 
 				ApplicationUser? user = await this._userManager
 							.FindByIdAsync(userId);
 
 				if ((product != null) && (user != null))
 				{
-					ShoppingCart? shoppingCart = await this._context.ShoppingCarts
+					ShoppingCart? shoppingCart = await this._shoppingCartRepository
+								.GetAllAttached()
 								.Include(w => w.ShoppingCartItems)
 								.SingleOrDefaultAsync(sc => sc.UserId == user.Id);
 
 					if (shoppingCart != null)
 					{
-						ShoppingCartItem? existingShoppingCartItem = await this._context.ShoppingCartsItems
-									.SingleOrDefaultAsync(sci => sci.ShoppingCartId == shoppingCart.Id && sci.ProductId == product.Id);
+						ShoppingCartItem? existingShoppingCartItem = await this._shoppingCartRepository
+									.GetShoppingCartItemAsync(sci => sci.ShoppingCartId == shoppingCart.Id && sci.ProductId == product.Id);
 
 						if (existingShoppingCartItem != null)
 						{
@@ -173,12 +181,12 @@ namespace OnlineStore.Services.Core
 								ProductId = product.Id
 							};
 
-							await this._context.ShoppingCartsItems.AddAsync(newItem);
+							await this._shoppingCartRepository.AddShoppingCartItemAsync(newItem);
 							shoppingCart.ShoppingCartItems.Add(newItem);
 						}
 
-						int affectedRows = await this._context.SaveChangesAsync();
-						isAdded = affectedRows > 0;
+						await this._shoppingCartRepository.SaveChangesAsync();
+						isAdded = true;
 					}
 				}
 			}
@@ -198,13 +206,15 @@ namespace OnlineStore.Services.Core
 
 				if (user != null)
 				{
-					ShoppingCart? shoppingCart = await this._context.ShoppingCarts
+					ShoppingCart? shoppingCart = await this._shoppingCartRepository
+								.GetAllAttached()
 								.Include(w => w.ShoppingCartItems)
 								.SingleOrDefaultAsync(sc => sc.UserId == user.Id);
 
 					if (shoppingCart != null)
 					{
-						ShoppingCartItem? existingShoppingCartItem = await this._context.ShoppingCartsItems
+						ShoppingCartItem? existingShoppingCartItem = await this._shoppingCartRepository
+										.GetAllShoppingCartItemsAttached()
 										.Include(sci => sci.Product)
 										.SingleOrDefaultAsync(sci => sci.Id == itemId);
 
@@ -220,8 +230,7 @@ namespace OnlineStore.Services.Core
 							};
 						}
 
-						await this._context.SaveChangesAsync();
-						
+						await this._shoppingCartRepository.SaveChangesAsync();
 					}
 				}
 			}
@@ -240,13 +249,15 @@ namespace OnlineStore.Services.Core
 
 				if (user != null)
 				{
-					ShoppingCart? shoppingCart = await this._context.ShoppingCarts
+					ShoppingCart? shoppingCart = await this._shoppingCartRepository
+								.GetAllAttached()
 								.Include(w => w.ShoppingCartItems)
 								.SingleOrDefaultAsync(sc => sc.UserId == user.Id);
 
 					if (shoppingCart != null)
 					{
-						ShoppingCartItem? cartItemToRemove = await this._context.ShoppingCartsItems
+						ShoppingCartItem? cartItemToRemove = await this._shoppingCartRepository
+										.GetAllShoppingCartItemsAttached()
 										.Include(sci => sci.Product)
 										.SingleOrDefaultAsync(sci => sci.Id == itemId);
 
@@ -254,10 +265,10 @@ namespace OnlineStore.Services.Core
 						{
 
 							shoppingCart.ShoppingCartItems.Remove(cartItemToRemove);
-							this._context.ShoppingCartsItems.Remove(cartItemToRemove);
+							this._shoppingCartRepository.RemoveShoppingCartItem(cartItemToRemove);
 						}
 
-						await this._context.SaveChangesAsync();
+						await this._shoppingCartRepository.SaveChangesAsync();
 
 						summaryModel = new ShoppingCartSummaryViewModel()
 						{
