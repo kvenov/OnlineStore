@@ -1,0 +1,52 @@
+﻿@using OnlineStore.Web.ViewModels.Layout
+@model CartInfoViewModel
+
+
+@if (!User.IsInRole("Admin"))
+{
+    <div x-show="cartOpen" @@click.away="cartOpen = false"
+         class="cart-flyout-overlay"></div>
+
+    <div x-show="cartOpen"
+         class="cart-flyout-panel"
+         x-transition:enter="transform transition ease-in-out duration-300"
+         x-transition:enter-start="translate-x-full"
+         x-transition:enter-end="translate-x-0"
+         x-transition:leave="transform transition ease-in-out duration-300"
+         x-transition:leave-start="translate-x-0"
+         x-transition:leave-end="translate-x-full">
+
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button @@click="cartOpen = false">✕</button>
+        </div>
+
+        <div class="cart-items">
+            @foreach (var item in Model.Items.Take(5))
+            {
+                <div class="cart-item">
+                    <img src="@item.ProductImageUrl" alt="@item.ProductName" />
+                    <div class="cart-item-details">
+                        <p class="fw-semibold mb-1">@item.ProductName</p>
+                        <p class="text-muted small mb-0">Qty: @item.Quantity</p>
+                        <p class="fw-bold small">$@item.TotalPrice</p>
+                    </div>
+                </div>
+            }
+
+            @if (!Model.Items.Any())
+            {
+                <p class="text-muted">Your cart is empty.</p>
+            }
+        </div>
+
+        <div class="cart-total">
+            <div class="summary">
+                <span>Total:</span>
+                <span>$@Model.Total</span>
+            </div>
+            <a href="/ShoppingCart">Go to Cart</a>
+        </div>
+    </div>
+
+}

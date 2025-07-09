@@ -72,7 +72,9 @@ async function addToCart(productId) {
 
         if (response.ok) {
             alert(data.result);
+
             setCartItemsCount();
+            updateCartFlyout();
         } else {
             alert(data.message);
         }
@@ -104,6 +106,7 @@ async function updateCartItem(quantity, itemId) {
             document.querySelector('.summary-shipping').textContent = `$${data.shipping.toFixed(2)}`;
             document.querySelector('.summary-total').textContent = `$${data.total.toFixed(2)}`;
 
+            updateCartFlyout();
         } else {
             alert(data.message);
         }
@@ -142,6 +145,7 @@ async function removeCartItem(itemId) {
             }
 
             setCartItemsCount();
+            updateCartFlyout()
 
             document.querySelector('.summary-subtotal').textContent = `$${data.subTotal.toFixed(2)}`;
             document.querySelector('.summary-shipping').textContent = `$${data.shipping.toFixed(2)}`;
@@ -175,6 +179,21 @@ async function setCartItemsCount() {
         }
     } catch (error) {
         console.error("Error while adding to shoppingCart", error);
+        alert("Something went wrong.");
+    }
+}
+
+async function updateCartFlyout() {
+    try {
+        const response = await fetch('/cartFlyout');
+        if (response.ok) {
+            const html = await response.text();
+            document.getElementById('cart-flyout-container').innerHTML = html;
+        } else {
+            console.error('Failed to refresh cart flyout');
+        }
+    } catch (error) {
+        console.error("Error while updating the cartFlyout", error);
         alert("Something went wrong.");
     }
 }

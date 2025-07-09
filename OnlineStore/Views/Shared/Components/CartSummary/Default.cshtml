@@ -17,7 +17,9 @@
         </button>
 
 
-        @await Component.InvokeAsync("CartFlyout")
+        <div id="cart-flyout-container">
+            @await Component.InvokeAsync("CartFlyout")
+        </div>
     </div>
 }
 
