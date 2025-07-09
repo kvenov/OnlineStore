@@ -1,5 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using OnlineStore.Data;
+using OnlineStore.Data.Interceptors;
 using OnlineStore.Data.Repository.Interfaces;
+using System.Diagnostics.Contracts;
 using System.Reflection;
 
 namespace OnlineStore.Web.Infrastructure.Extensions
@@ -12,8 +16,6 @@ namespace OnlineStore.Web.Infrastructure.Extensions
 
 		private static readonly string RepositoryInterfacePrefix = "I";
 		private static readonly string RepositoryTypeSuffix = "Repository";
-
-		private static readonly string GenericRepositoryDefaultName = "GenericRepository";
 
 
 		public static IServiceCollection AddUserDefinedScopedServices(this IServiceCollection serviceCollection, Assembly serviceAssembly)
@@ -89,6 +91,20 @@ namespace OnlineStore.Web.Infrastructure.Extensions
 				serviceCollection.AddScoped(openInterfaceType, repositoryType);
 			}
 
+
+			return serviceCollection;
+		}
+
+		public static IServiceCollection AddUserDefinedApplicationDbContext(this IServiceCollection serviceCollection, string connectionString)
+		{
+			serviceCollection.AddDbContext<ApplicationDbContext>((sp, options) =>
+			{
+				var interceptor = sp.GetRequiredService<SoftDeleteInterceptor>();
+				options
+					.UseLazyLoadingProxies()
+					.UseSqlServer(connectionString)
+					.AddInterceptors(interceptor);
+			});
 
 			return serviceCollection;
 		}

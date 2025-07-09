@@ -21,14 +21,7 @@ var connectionString = builder.Configuration
 //This interceptor is used to ovveride the default EF Core delete behaviour.
 builder.Services.AddScoped<SoftDeleteInterceptor>();
 
-builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
-{
-	var interceptor = sp.GetRequiredService<SoftDeleteInterceptor>();
-	options
-		.UseLazyLoadingProxies()
-		.UseSqlServer(connectionString)
-		.AddInterceptors(interceptor);
-});
+builder.Services.AddUserDefinedApplicationDbContext(connectionString);
 
 builder.Services.AddUserDefinedScopedGenericRepositories(typeof(GenericRepository<,>));
 builder.Services.AddUserDefinedScopedRepositories(typeof(IProductRepository).Assembly);
