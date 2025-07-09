@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using OnlineStore.Data;
 using OnlineStore.Data.Interceptors;
+using OnlineStore.Data.Models;
 using OnlineStore.Data.Repository.Interfaces;
-using System.Diagnostics.Contracts;
 using System.Reflection;
 
 namespace OnlineStore.Web.Infrastructure.Extensions
@@ -105,6 +106,25 @@ namespace OnlineStore.Web.Infrastructure.Extensions
 					.UseSqlServer(connectionString)
 					.AddInterceptors(interceptor);
 			});
+
+			return serviceCollection;
+		}
+
+		public static IServiceCollection AddCustomIdentity(this IServiceCollection serviceCollection)
+		{
+			serviceCollection
+				.AddIdentity<ApplicationUser, IdentityRole>(options =>
+				{
+					options.SignIn.RequireConfirmedAccount = false;
+					options.Password.RequireDigit = true;
+					options.Password.RequireLowercase = true;
+					options.Password.RequireUppercase = true;
+					options.Password.RequireNonAlphanumeric = false;
+					options.Password.RequiredLength = 6;
+				})
+				.AddSignInManager<SignInManager<ApplicationUser>>()
+				.AddEntityFrameworkStores<ApplicationDbContext>()
+				.AddDefaultTokenProviders();
 
 			return serviceCollection;
 		}

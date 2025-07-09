@@ -9,6 +9,7 @@ using OnlineStore.Data.Seeding;
 using OnlineStore.Data.Seeding.Interfaces;
 using OnlineStore.Services.Core.Identity;
 using OnlineStore.Services.Core.Interfaces;
+using OnlineStore.Web.Infrastructure.Extensions;
 using static OnlineStore.Web.Infrastructure.Extensions.ServiceCollectionExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,19 +34,9 @@ builder.Services.AddScoped<IDbSeeder, ApplicationDbContextSeeder>();
 builder.Services.AddUserDefinedScopedServices(typeof(IProductService).Assembly);
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services
-    .AddIdentity<ApplicationUser, IdentityRole>(options =>
-    {
-        options.SignIn.RequireConfirmedAccount = false;
-		options.Password.RequireDigit = true;
-		options.Password.RequireLowercase = true;
-		options.Password.RequireUppercase = true;
-		options.Password.RequireNonAlphanumeric = false;
-		options.Password.RequiredLength = 6;
-	})
-	.AddSignInManager<SignInManager<ApplicationUser>>()
-	.AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+
+//Here we add the application identity via extension method!
+builder.Services.AddCustomIdentity();
 
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, CustomClaimsPrincipalFactory>();
 
