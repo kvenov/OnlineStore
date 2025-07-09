@@ -97,8 +97,12 @@ async function UpdateCartItem(quantity, itemId) {
         const data = await response.json();
 
         if (response.ok) {
-            alert(data.result)
-            location.reload();
+
+            document.querySelector('.item-totalprice').textContent = `$${data.itemTotalPrice.toFixed(2)}`;
+            document.querySelector('.summary-subtotal').textContent = `$${data.subTotal.toFixed(2)}`;
+            document.querySelector('.summary-shipping').textContent = `$${data.shipping.toFixed(2)}`;
+            document.querySelector('.summary-total').textContent = `$${data.total.toFixed(2)}`;
+
         } else {
             alert(data.message);
         }

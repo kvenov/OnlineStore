@@ -187,9 +187,9 @@ namespace OnlineStore.Services.Core
 			return isAdded;
 		}
 
-		public async Task<bool> UpdateCartItemAsync(string? userId, int? quantity, int? itemId)
+		public async Task<ShoppingCartSummaryViewModel?> UpdateCartItemAsync(string? userId, int? quantity, int? itemId)
 		{
-			bool isEdited = false;
+			ShoppingCartSummaryViewModel? summaryModel = null;
 
 			if ((itemId != null) && (userId != null) && (quantity != null))
 			{
@@ -212,15 +212,21 @@ namespace OnlineStore.Services.Core
 						{
 							existingShoppingCartItem.Quantity = quantity.Value;
 							existingShoppingCartItem.TotalPrice = existingShoppingCartItem.Price * quantity.Value;
+
+							summaryModel = new ShoppingCartSummaryViewModel()
+							{
+								ItemTotalPrice = existingShoppingCartItem.TotalPrice,
+								SubTotal = shoppingCart.ShoppingCartItems.Sum(sci => sci.TotalPrice)
+							};
 						}
 
-						int affectedRows = await this._context.SaveChangesAsync();
-						isEdited = affectedRows > 0;
+						await this._context.SaveChangesAsync();
+						
 					}
 				}
 			}
 
-			return isEdited;
+			return summaryModel;
 		}
 
 		public async Task<bool> RemoveCartItemAsync(string? userId, int? itemId)
@@ -259,5 +265,6 @@ namespace OnlineStore.Services.Core
 
 			return isRemoved;
 		}
+
 	}
 }

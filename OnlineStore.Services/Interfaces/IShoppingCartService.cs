@@ -14,7 +14,7 @@ namespace OnlineStore.Services.Core.Interfaces
 
 		Task<bool> AddToCartAsync(int? productId, string? userId);
 
-		Task<bool> UpdateCartItemAsync(string? userId, int? quantity, int? itemId);
+		Task<ShoppingCartSummaryViewModel?> UpdateCartItemAsync(string? userId, int? quantity, int? itemId);
 
 		Task<bool> RemoveCartItemAsync(string? userId, int? itemId);
 	}

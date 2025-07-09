@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineStore.Services.Core.Interfaces;
 using OnlineStore.Web.DTO.ShoppingCart;
+using OnlineStore.Web.ViewModels.ShoppingCart;
 
 namespace OnlineStore.Web.Controllers.Api
 {
@@ -52,12 +53,17 @@ namespace OnlineStore.Web.Controllers.Api
 				int? quantity = model.Quantity;
 				int? itemId = model.ItemId;
 
-				bool isEdited = await this._shoppingCartService
+				ShoppingCartSummaryViewModel? summaryModel = await this._shoppingCartService
 									.UpdateCartItemAsync(userId, quantity, itemId);
 
-				if (isEdited)
+				if (summaryModel != null)
 				{
-					return Ok(new { result = "The cart item has been sucssecfully updated" });
+					return Ok(new {
+						itemTotalPrice = summaryModel.ItemTotalPrice,
+						subTotal = summaryModel.SubTotal,
+						shipping = summaryModel.Shipping,
+						total = summaryModel.Total
+					});
 				}
 				else
 				{
