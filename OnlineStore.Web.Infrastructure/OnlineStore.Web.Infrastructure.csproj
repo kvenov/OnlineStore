@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OnlineStore.Common\OnlineStore.Common.csproj" />
+    <ProjectReference Include="..\OnlineStore.Data\OnlineStore.Data.csproj" />
   </ItemGroup>
 
 </Project>

@@ -30,23 +30,14 @@ builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
 		.AddInterceptors(interceptor);
 });
 
-//Here we add the required repositories for the Application Services
-/*builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IProductPromotionRepository, ProductPromotionRepository>();
-builder.Services.AddScoped<IWishlistRepository, WishlistRepository>();*/
-builder.Services.AddScoped(typeof(IRepository<,>), typeof(GenericRepository<,>));
-builder.Services.AddScoped(typeof(IAsyncRepository<,>), typeof(GenericRepository<,>));
-
+builder.Services.AddUserDefinedScopedGenericRepositories(typeof(GenericRepository<,>));
 builder.Services.AddUserDefinedScopedRepositories(typeof(IProductRepository).Assembly);
 
 
 //This service is only used for the development seeding purposes.
 builder.Services.AddScoped<IDbSeeder, ApplicationDbContextSeeder>();
 
-//Here we add the required services for the Application via extension method!
 builder.Services.AddUserDefinedScopedServices(typeof(IProductService).Assembly);
-
-
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using OnlineStore.Data.Repository.Interfaces;
 using System.Reflection;
 
 namespace OnlineStore.Web.Infrastructure.Extensions
@@ -11,6 +12,8 @@ namespace OnlineStore.Web.Infrastructure.Extensions
 
 		private static readonly string RepositoryInterfacePrefix = "I";
 		private static readonly string RepositoryTypeSuffix = "Repository";
+
+		private static readonly string GenericRepositoryDefaultName = "GenericRepository";
 
 
 		public static IServiceCollection AddUserDefinedScopedServices(this IServiceCollection serviceCollection, Assembly serviceAssembly)
@@ -68,6 +71,24 @@ namespace OnlineStore.Web.Infrastructure.Extensions
 				}
 
 			}
+
+			return serviceCollection;
+		}
+
+		public static IServiceCollection AddUserDefinedScopedGenericRepositories(this IServiceCollection serviceCollection, Type repositoryType)
+		{
+			Type[] interfaceTypes = repositoryType.GetInterfaces()
+				.Where(i => i.IsGenericType &&
+							(i.GetGenericTypeDefinition() == typeof(IRepository<,>) ||
+							 i.GetGenericTypeDefinition() == typeof(IAsyncRepository<,>)))
+				.ToArray();
+
+			foreach (var interfaceType in interfaceTypes)
+			{
+				var openInterfaceType = interfaceType.GetGenericTypeDefinition();
+				serviceCollection.AddScoped(openInterfaceType, repositoryType);
+			}
+
 
 			return serviceCollection;
 		}
