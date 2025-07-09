@@ -7,8 +7,6 @@ using OnlineStore.Data.Repository;
 using OnlineStore.Data.Repository.Interfaces;
 using OnlineStore.Data.Seeding;
 using OnlineStore.Data.Seeding.Interfaces;
-using OnlineStore.Data.Utilities;
-using OnlineStore.Data.Utilities.Interfaces;
 using OnlineStore.Services.Core.Identity;
 using OnlineStore.Services.Core.Interfaces;
 using static OnlineStore.Web.Infrastructure.Extensions.ServiceCollectionExtensions;
@@ -20,6 +18,7 @@ var connectionString = builder.Configuration
             .GetConnectionString("DbConnectionString") ?? 
                     throw new InvalidOperationException("Connection string 'DbConnectionString' not found.");
 
+//This interceptor is used to ovveride the default EF Core delete behaviour.
 builder.Services.AddScoped<SoftDeleteInterceptor>();
 
 builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
@@ -39,8 +38,7 @@ builder.Services.AddScoped(typeof(IRepository<,>), typeof(GenericRepository<,>))
 builder.Services.AddScoped(typeof(IAsyncRepository<,>), typeof(GenericRepository<,>));
 
 
-//These services are only used for a development seeding purposes.
-builder.Services.AddSingleton<IXmlHelper, XMLHelper>();
+//This service is only used for the development seeding purposes.
 builder.Services.AddScoped<IDbSeeder, ApplicationDbContextSeeder>();
 
 //Here we add the required services for the Application via extension method!

@@ -13,8 +13,6 @@ namespace OnlineStore.Data.Seeding
 		private readonly UserManager<ApplicationUser> userManager;
 		private readonly RoleManager<IdentityRole> roleManager;
 
-		private readonly IXmlHelper _xmlHelper;
-
 		private readonly ICollection<IEntitySeeder> entitySeeders;
 
 		public ApplicationDbContextSeeder(ApplicationDbContext context, UserManager<ApplicationUser> userManager, 
@@ -22,14 +20,12 @@ namespace OnlineStore.Data.Seeding
 			ILogger<ProductCategorySeeder> productCategoryLogger, ILogger<BrandSeeder> brandLogger, ILogger<ProductSeeder> productLogger,
 			ILogger<ArticleCategorySeeder> articleCategoryLogger, ILogger<ArticleSeeder> articleLogger, ILogger<ProductRatingSeeder> productRatingLogger, 
 			ILogger<PaymentMethodSeeder> paymentMethodLogger, ILogger<AddressSeeder> addressLogger, ILogger<ShoppingCartSeeder> shoppingCartLogger, 
-			ILogger<WishlistSeeder> wishlistLogger, IXmlHelper xmlHelper)
+			ILogger<WishlistSeeder> wishlistLogger)
 		{
 			this._context = context;
 
 			this.userManager = userManager;
 			this.roleManager = roleManager;
-
-			this._xmlHelper = xmlHelper;
 
 			this.entitySeeders = new List<IEntitySeeder>();
 			this.InitializeDbSeeders(identityLogger, productCategoryLogger, brandLogger, productLogger, 
@@ -55,7 +51,6 @@ namespace OnlineStore.Data.Seeding
 			//Here we add the Seeders classes that seed data into the database.
 			//Everything of the data is seeded, so no new entity data to seed!
 			/*
-			this.entitySeeders.Add(new WishlistSeeder(wishlistLogger, this._context));
 			this.entitySeeders.Add(new AddressSeeder(addressLogger, this._context, this._xmlHelper));
 			this.entitySeeders.Add(new PaymentMethodSeeder(paymentMethodLogger, this._context));
 			this.entitySeeders.Add(new ProductRatingSeeder(productRatingLogger, this._context, this._xmlHelper));
@@ -67,6 +62,7 @@ namespace OnlineStore.Data.Seeding
 			this.entitySeeders.Add(new IdentitySeeder(this._context, this.userManager, this.roleManager, identityLogger));
 			*/
 
+			this.entitySeeders.Add(new WishlistSeeder(wishlistLogger, this._context));
 			this.entitySeeders.Add(new ShoppingCartSeeder(shoppingCartLogger, this._context, this.userManager));
 		}
 	}
