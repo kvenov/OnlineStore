@@ -15,7 +15,7 @@
 
     <div class="grid md:grid-cols-3 gap-10">
         <!-- Cart Items -->
-        <div class="md:col-span-2 space-y-6" data-aos="fade-right" data-aos-delay="100">
+        <div class="cart-container md:col-span-2 space-y-6" data-aos="fade-right" data-aos-delay="100">
             @if (!Model.Items.Any())
             {
                 <div class="p-6 bg-white rounded-xl shadow-md border border-dashed border-gray-300 text-center text-gray-600">
@@ -29,7 +29,7 @@
             {
                 @foreach (var item in Model.Items)
                 {
-                    <div class="flex gap-5 items-center border-b pb-6 hover:shadow-md transition-all duration-300 rounded-lg p-4 bg-white" data-aos="fade-up" data-aos-delay="100">
+                    <div id="cart-item-@item.Id" class="flex gap-5 items-center border-b pb-6 hover:shadow-md transition-all duration-300 rounded-lg p-4 bg-white" data-aos="fade-up" data-aos-delay="100">
                         <img src="@item.ProductImageUrl" class="w-28 h-28 object-cover rounded-lg shadow-sm" />
 
                         <div class="flex-1 space-y-1">
@@ -50,7 +50,7 @@
                         </div>
 
                         <div class="text-right">
-                            <p class="item-totalprice text-lg font-semibold text-gray-800">$@item.TotalPrice</p>
+                            <p class="item-totalprice-@item.Id text-lg font-semibold text-gray-800">$@item.TotalPrice</p>
                             <input type="hidden" name="itemId" id="remove-input-itemId-@item.Id" value="@item.Id" />
                             <button type="submit" data-item-id="@item.Id" class="remove-cartItem-button text-red-500 text-sm hover:underline">
                                 Remove
@@ -83,7 +83,7 @@
                 </div>
             </div>
 
-            <button class="w-full mt-8 py-3 rounded-lg text-white text-lg font-semibold transition
+            <button class="checkout-button w-full mt-8 py-3 rounded-lg text-white text-lg font-semibold transition
                            bg-black hover:bg-gray-800 shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
                     @(Model.Items.Any() ? "" : "disabled")>
                 Proceed to Checkout

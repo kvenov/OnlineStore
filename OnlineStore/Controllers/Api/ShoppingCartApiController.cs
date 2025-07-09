@@ -85,12 +85,16 @@ namespace OnlineStore.Web.Controllers.Api
 			{
 				string? userId = this.GetUserId();
 
-				bool isRemoved = await this._shoppingCartService
+				ShoppingCartSummaryViewModel? summaryModel = await this._shoppingCartService
 									.RemoveCartItemAsync(userId, itemId);
 
-				if (isRemoved)
+				if (summaryModel != null)
 				{
-					return Ok(new { result = "The cart item has been sucssecfully removed!" });
+					return Ok(new {
+						subTotal = summaryModel.SubTotal,
+						shipping = summaryModel.Shipping,
+						total = summaryModel.Total
+					});
 				}
 				else
 				{

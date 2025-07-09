@@ -229,9 +229,9 @@ namespace OnlineStore.Services.Core
 			return summaryModel;
 		}
 
-		public async Task<bool> RemoveCartItemAsync(string? userId, int? itemId)
+		public async Task<ShoppingCartSummaryViewModel?> RemoveCartItemAsync(string? userId, int? itemId)
 		{
-			bool isRemoved = false;
+			ShoppingCartSummaryViewModel? summaryModel = null;
 
 			if ((itemId != null) && (userId != null))
 			{
@@ -257,13 +257,17 @@ namespace OnlineStore.Services.Core
 							this._context.ShoppingCartsItems.Remove(cartItemToRemove);
 						}
 
-						int affectedRows = await this._context.SaveChangesAsync();
-						isRemoved = affectedRows > 0;
+						await this._context.SaveChangesAsync();
+
+						summaryModel = new ShoppingCartSummaryViewModel()
+						{
+							SubTotal = shoppingCart.ShoppingCartItems.Sum(sci => sci.TotalPrice)
+						};
 					}
 				}
 			}
 
-			return isRemoved;
+			return summaryModel;
 		}
 
 	}

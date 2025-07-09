@@ -98,7 +98,7 @@ async function UpdateCartItem(quantity, itemId) {
 
         if (response.ok) {
 
-            document.querySelector('.item-totalprice').textContent = `$${data.itemTotalPrice.toFixed(2)}`;
+            document.querySelector(`.item-totalprice-${itemId}`).textContent = `$${data.itemTotalPrice.toFixed(2)}`;
             document.querySelector('.summary-subtotal').textContent = `$${data.subTotal.toFixed(2)}`;
             document.querySelector('.summary-shipping').textContent = `$${data.shipping.toFixed(2)}`;
             document.querySelector('.summary-total').textContent = `$${data.total.toFixed(2)}`;
@@ -124,13 +124,52 @@ async function RemoveCartItem(itemId) {
         const data = await response.json();
 
         if (response.ok) {
-            alert(data.result)
-            location.reload();
+            if (data.total <= 0) {
+                document.querySelector('.checkout-button').disabled = true;
+                document.querySelector('.cart-container').innerHTML = `
+                    <div class="p-6 bg-white rounded-xl shadow-md border border-dashed border-gray-300 text-center text-gray-600">
+                        <p class="text-xl font-medium mb-4">🛒 Your cart is empty</p>
+                        <a href="/products" class="text-blue-600 underline hover:text-blue-800 transition">
+                            Browse Products
+                        </a>
+                    </div>
+                `;
+            }
+            else {
+                const itemToRemove = document.getElementById(`cart-item-${itemId}`)
+                itemToRemove.remove();
+            }
+
+            document.querySelector('.summary-subtotal').textContent = `$${data.subTotal.toFixed(2)}`;
+            document.querySelector('.summary-shipping').textContent = `$${data.shipping.toFixed(2)}`;
+            document.querySelector('.summary-total').textContent = `$${data.total.toFixed(2)}`;
         } else {
             alert(data.message);
         }
     } catch (error) {
         console.error("Error while removing the cart item", error);
+        alert("Something went wrong.");
+    }
+}
+
+async function GetCartItemsCount() {
+    try {
+        const response = await fetch(`/api/shoppingcartapi/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            alert(data.result);
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error("Error while adding to shoppingCart", error);
         alert("Something went wrong.");
     }
 }
