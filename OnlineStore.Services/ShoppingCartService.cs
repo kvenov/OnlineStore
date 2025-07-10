@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OnlineStore.Data.Models;
 using OnlineStore.Data.Repository.Interfaces;
@@ -139,24 +140,80 @@ namespace OnlineStore.Services.Core
 			return 0;
 		}
 
-		public async Task<bool> AddToCartAsync(int? productId, string? userId)
+		public async Task<bool> AddToCartForUserAsync(int? productId, string? userId)
 		{
 			bool isAdded = false;
 
-			if ((productId != null) && (userId != null))
+			if (userId != null)
+			{
+				if (productId != null)
+				{
+					Product? product = await this._productRepository
+								.GetByIdAsync(productId.Value);
+
+					ApplicationUser? user = await this._userManager
+								.FindByIdAsync(userId);
+
+					if ((product != null) && (user != null))
+					{
+						ShoppingCart? shoppingCart = await this._shoppingCartRepository
+									.GetAllAttached()
+									.Include(w => w.ShoppingCartItems)
+									.SingleOrDefaultAsync(sc => sc.UserId == user.Id);
+
+						if (shoppingCart != null)
+						{
+							ShoppingCartItem? existingShoppingCartItem = await this._shoppingCartRepository
+										.GetShoppingCartItemAsync(sci => sci.ShoppingCartId == shoppingCart.Id && sci.ProductId == product.Id);
+
+							if (existingShoppingCartItem != null)
+							{
+								existingShoppingCartItem.Quantity += 1;
+							}
+							else
+							{
+								int defaultProductQuantity = 1;
+								decimal totalPrice = defaultProductQuantity * product.Price;
+
+								ShoppingCartItem newItem = new ShoppingCartItem()
+								{
+									Quantity = defaultProductQuantity,
+									Price = product.Price,
+									TotalPrice = totalPrice,
+									ShoppingCartId = shoppingCart.Id,
+									ProductId = product.Id
+								};
+
+								await this._shoppingCartRepository.AddShoppingCartItemAsync(newItem);
+								shoppingCart.ShoppingCartItems.Add(newItem);
+							}
+
+							await this._shoppingCartRepository.SaveChangesAsync();
+							isAdded = true;
+						}
+					}
+				}
+			}
+			
+			return isAdded;
+		}
+
+		public async Task<bool> AddToCartForGuestAsync(int? productId, HttpContext context)
+		{
+			bool isAdded = false;
+			string? guestId = context.Items["GuestIdentifier"].ToString();
+
+			if ((guestId != null) && (productId != null))
 			{
 				Product? product = await this._productRepository
 							.GetByIdAsync(productId.Value);
 
-				ApplicationUser? user = await this._userManager
-							.FindByIdAsync(userId);
-
-				if ((product != null) && (user != null))
+				if (product != null)
 				{
 					ShoppingCart? shoppingCart = await this._shoppingCartRepository
 								.GetAllAttached()
 								.Include(w => w.ShoppingCartItems)
-								.SingleOrDefaultAsync(sc => sc.UserId == user.Id);
+								.SingleOrDefaultAsync(sc => sc.GuestId == guestId);
 
 					if (shoppingCart != null)
 					{
@@ -188,9 +245,36 @@ namespace OnlineStore.Services.Core
 						await this._shoppingCartRepository.SaveChangesAsync();
 						isAdded = true;
 					}
+					else
+					{
+						ShoppingCart newShoppingCart = new ShoppingCart()
+						{
+							GuestId = guestId
+						};
+
+						await this._shoppingCartRepository.AddAsync(newShoppingCart);
+
+						int defaultProductQuantity = 1;
+						decimal totalPrice = defaultProductQuantity * product.Price;
+
+						ShoppingCartItem newItem = new ShoppingCartItem()
+						{
+							Quantity = defaultProductQuantity,
+							Price = product.Price,
+							TotalPrice = totalPrice,
+							ShoppingCartId = newShoppingCart.Id,
+							ProductId = product.Id
+						};
+
+						await this._shoppingCartRepository.AddShoppingCartItemAsync(newItem);
+
+						newShoppingCart.ShoppingCartItems.Add(newItem);
+
+						await this._shoppingCartRepository.SaveChangesAsync();
+						isAdded = true;
+					}
 				}
 			}
-
 
 			return isAdded;
 		}
@@ -281,5 +365,97 @@ namespace OnlineStore.Services.Core
 			return summaryModel;
 		}
 
+		public async Task<CartInfoViewModel?> GetGuestShoppingCartDataAsync(string? guestId)
+		{
+			CartInfoViewModel? cartModel = null;
+
+			if (guestId != null)
+			{
+				cartModel = await this._shoppingCartRepository
+						.GetAllAttached()
+						.AsNoTracking()
+						.Include(sc => sc.ShoppingCartItems)
+						.ThenInclude(sci => sci.Product)
+						.Where(sc => sc.GuestId == guestId)
+						.Select(sc => new CartInfoViewModel()
+						{
+							Items = sc.ShoppingCartItems
+										.Select(sci => new ShoppingCartItemViewModel()
+										{
+											Id = sci.Id,
+											ProductId = sci.ProductId,
+											ProductName = sci.Product.Name,
+											ProductImageUrl = sci.Product.ImageUrl,
+											UnitPrice = sci.Price,
+											Quantity = sci.Quantity,
+										})
+										.ToList(),
+							Total = sc.ShoppingCartItems.Sum(sci => sci.TotalPrice)
+						})
+						.FirstOrDefaultAsync();
+			}
+			else
+			{
+				cartModel = new CartInfoViewModel();
+			}
+
+			return cartModel;
+		}
+
+		public async Task<int> GetGuestShoppingCartItemsCountAsync(string? guestId)
+		{
+			if (guestId != null)
+			{
+
+				ShoppingCart? shoppingCart = await this._shoppingCartRepository
+							.GetAllAttached()
+							.AsNoTracking()
+							.Include(sc => sc.ShoppingCartItems)
+							.SingleOrDefaultAsync(sc => sc.GuestId == guestId);
+
+				if (shoppingCart != null)
+				{
+					return shoppingCart.ShoppingCartItems.Count;
+				}
+			}
+
+			return 0;
+		}
+
+		public async Task<ShoppingCartViewModel?> GetShoppingCartForGuestAsync(string? guestId)
+		{
+			ShoppingCartViewModel? cartModel = null;
+
+			if (guestId != null)
+			{
+				cartModel = await this._shoppingCartRepository
+						.GetAllAttached()
+						.AsNoTracking()
+						.Include(sc => sc.ShoppingCartItems)
+						.ThenInclude(sci => sci.Product)
+						.Where(sc => sc.GuestId == guestId)
+						.Select(sc => new ShoppingCartViewModel()
+						{
+							Items = sc.ShoppingCartItems
+										.Select(sci => new ShoppingCartItemViewModel()
+										{
+											Id = sci.Id,
+											ProductId = sci.ProductId,
+											ProductName = sci.Product.Name,
+											ProductImageUrl = sci.Product.ImageUrl,
+											UnitPrice = sci.Price,
+											Quantity = sci.Quantity,
+										})
+										.ToList()
+						})
+						.FirstOrDefaultAsync();
+			}
+			else
+			{
+				cartModel = new ShoppingCartViewModel();
+			}
+
+			return cartModel;
+		}
 	}
 }

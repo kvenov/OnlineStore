@@ -18,7 +18,20 @@ namespace OnlineStore.Web.ViewComponents
 		public async Task<IViewComponentResult> InvokeAsync()
 		{
 			string? userId = HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-			CartInfoViewModel? model = await _shoppingCartService.GetUserShoppingCartDataAsync(userId);
+
+			CartInfoViewModel? model;
+			if (userId != null)
+			{
+				model = await _shoppingCartService
+							.GetUserShoppingCartDataAsync(userId);
+			}
+			else
+			{
+				string? guestId = this.HttpContext?.Items["GuestIdentifier"]?.ToString();
+				model = await _shoppingCartService
+							.GetGuestShoppingCartDataAsync(guestId);
+			}
+			
 
 			return View("Default", model);
 		}

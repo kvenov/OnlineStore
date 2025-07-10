@@ -22,8 +22,18 @@ namespace OnlineStore.Web.Controllers
 			{
 				string? userId = this.GetUserId();
 
-				ShoppingCartViewModel? model = await _shoppingCartService
-							.GetShoppingCartForUserAsync(userId);
+				ShoppingCartViewModel? model;
+				if (userId != null)
+				{
+					model = await _shoppingCartService
+								.GetShoppingCartForUserAsync(userId);
+				}
+				else
+				{
+					string? guestId = this.HttpContext.Items["GuestIdentifier"]?.ToString();
+					model = await this._shoppingCartService
+								.GetShoppingCartForGuestAsync(guestId);
+				}
 
 				if (model == null)
 				{
@@ -40,6 +50,7 @@ namespace OnlineStore.Web.Controllers
 			}
 		}
 
+		[AllowAnonymous]
 		[HttpGet("cartFlyout")]
 		public async Task<IActionResult> GetCartFlyoutDataPartial()
 		{
@@ -47,8 +58,18 @@ namespace OnlineStore.Web.Controllers
 			{
 				string? userId = this.GetUserId();
 
-				CartInfoViewModel? model = await this._shoppingCartService
-												.GetUserShoppingCartDataAsync(userId);
+				CartInfoViewModel? model;
+				if (userId != null)
+				{
+					model = await this._shoppingCartService
+											.GetUserShoppingCartDataAsync(userId);
+				}
+				else
+				{
+					string? guestId = this.HttpContext.Items["GuestIdentifier"]?.ToString();
+					model = await this._shoppingCartService
+											.GetGuestShoppingCartDataAsync(guestId);
+				}
 
 				if (model != null)
 				{

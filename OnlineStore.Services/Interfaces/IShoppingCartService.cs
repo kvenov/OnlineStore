@@ -1,4 +1,5 @@
-﻿using OnlineStore.Web.ViewModels.Layout;
+﻿using Microsoft.AspNetCore.Http;
+using OnlineStore.Web.ViewModels.Layout;
 using OnlineStore.Web.ViewModels.ShoppingCart;
 
 namespace OnlineStore.Services.Core.Interfaces
@@ -8,11 +9,19 @@ namespace OnlineStore.Services.Core.Interfaces
 
 		Task<ShoppingCartViewModel?> GetShoppingCartForUserAsync(string? userId);
 
+		Task<ShoppingCartViewModel?> GetShoppingCartForGuestAsync(string? guestId);
+
 		Task<CartInfoViewModel?> GetUserShoppingCartDataAsync(string? userId);
+
+		Task<CartInfoViewModel?> GetGuestShoppingCartDataAsync(string? guestId);
 
 		Task<int> GetUserShoppingCartItemsCountAsync(string? userId);
 
-		Task<bool> AddToCartAsync(int? productId, string? userId);
+		Task<int> GetGuestShoppingCartItemsCountAsync(string? guestId);
+
+		Task<bool> AddToCartForUserAsync(int? productId, string? userId);
+
+		Task<bool> AddToCartForGuestAsync(int? productId, HttpContext context);
 
 		Task<ShoppingCartSummaryViewModel?> UpdateCartItemAsync(string? userId, int? quantity, int? itemId);
 

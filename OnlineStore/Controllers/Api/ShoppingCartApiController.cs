@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OnlineStore.Services.Core.Interfaces;
 using OnlineStore.Web.DTO.ShoppingCart;
 using OnlineStore.Web.ViewModels.ShoppingCart;
@@ -16,6 +17,7 @@ namespace OnlineStore.Web.Controllers.Api
 			this._shoppingCartService = shoppingCartService;
 		}
 
+		[AllowAnonymous]
 		[HttpPost("add/{productId}")]
 		public async Task<IActionResult> AddToCart(int? productId)
 		{
@@ -24,8 +26,17 @@ namespace OnlineStore.Web.Controllers.Api
 			{
 				string? userId = this.GetUserId();
 
-				bool isAdded = await this._shoppingCartService
-							.AddToCartAsync(productId, userId);
+				bool isAdded;
+				if (userId != null)
+				{
+					isAdded = await this._shoppingCartService
+							.AddToCartForUserAsync(productId, userId);
+				}
+				else
+				{
+					isAdded = await this._shoppingCartService
+							.AddToCartForGuestAsync(productId, this.HttpContext);
+				}
 
 				if (isAdded)
 				{
@@ -109,6 +120,7 @@ namespace OnlineStore.Web.Controllers.Api
 			}
 		}
 
+		[AllowAnonymous]
 		[HttpGet("count")]
 		public async Task<IActionResult> GetCartItemsCount()
 		{
@@ -116,8 +128,18 @@ namespace OnlineStore.Web.Controllers.Api
 			{
 				string? userId = this.GetUserId();
 
-				int cartItemsCount = await this._shoppingCartService
+				int cartItemsCount;
+				if (userId != null)
+				{
+					cartItemsCount = await this._shoppingCartService
 								.GetUserShoppingCartItemsCountAsync(userId);
+				}
+				else
+				{
+					string? guestId = this.HttpContext.Items["GuestIdentifier"]?.ToString();
+					cartItemsCount = await this._shoppingCartService
+								.GetGuestShoppingCartItemsCountAsync(guestId);
+				}
 
 				return Ok(new
 				{
