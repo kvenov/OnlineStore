@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using OnlineStore.Data;
 using OnlineStore.Data.Interceptors;
 using OnlineStore.Data.Models;
 using OnlineStore.Data.Repository;
@@ -43,7 +42,7 @@ builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, CustomC
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -64,6 +63,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseGuestTracking();
 
 app.MapControllerRoute(
 	  name: "areas",
