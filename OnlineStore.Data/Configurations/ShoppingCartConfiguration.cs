@@ -19,7 +19,11 @@ namespace OnlineStore.Data.Configurations
 
 			entity
 				.Property(sc => sc.UserId)
-				.IsRequired();
+				.IsRequired(false);
+
+			entity
+				.Property(sc => sc.GuestId)
+				.IsRequired(false);
 
 			entity
 				.HasOne(sc => sc.User)
@@ -34,8 +38,11 @@ namespace OnlineStore.Data.Configurations
 			entity
 				.HasIndex(sc => sc.CreatedAt);
 
-			entity
-				.HasQueryFilter(wi => wi.User.IsDeleted == false);
+			entity.HasQueryFilter(sc =>
+				(sc.User != null && !sc.User.IsDeleted) ||
+				(sc.User == null && sc.GuestId != null)
+			);
+
 		}
 	}
 }
