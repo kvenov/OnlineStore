@@ -198,10 +198,9 @@ namespace OnlineStore.Services.Core
 			return isAdded;
 		}
 
-		public async Task<bool> AddToCartForGuestAsync(int? productId, HttpContext context)
+		public async Task<bool> AddToCartForGuestAsync(int? productId, string? guestId)
 		{
 			bool isAdded = false;
-			string? guestId = context.Items["GuestIdentifier"].ToString();
 
 			if ((guestId != null) && (productId != null))
 			{
@@ -279,7 +278,7 @@ namespace OnlineStore.Services.Core
 			return isAdded;
 		}
 
-		public async Task<ShoppingCartSummaryViewModel?> UpdateCartItemAsync(string? userId, int? quantity, int? itemId)
+		public async Task<ShoppingCartSummaryViewModel?> UpdateUserCartItemAsync(string? userId, int? quantity, int? itemId)
 		{
 			ShoppingCartSummaryViewModel? summaryModel = null;
 
@@ -456,6 +455,43 @@ namespace OnlineStore.Services.Core
 			}
 
 			return cartModel;
+		}
+
+		public async Task<ShoppingCartSummaryViewModel?> UpdateGuestCartItemAsync(string? guestId, int? quantity, int? itemId)
+		{
+			ShoppingCartSummaryViewModel? summaryModel = null;
+
+			if ((itemId != null) && (guestId != null) && (quantity != null))
+			{
+				ShoppingCart? shoppingCart = await this._shoppingCartRepository
+							.GetAllAttached()
+							.Include(w => w.ShoppingCartItems)
+							.SingleOrDefaultAsync(sc => sc.GuestId == guestId);
+
+				if (shoppingCart != null)
+				{
+					ShoppingCartItem? existingShoppingCartItem = await this._shoppingCartRepository
+									.GetAllShoppingCartItemsAttached()
+									.Include(sci => sci.Product)
+									.SingleOrDefaultAsync(sci => sci.Id == itemId);
+
+					if (existingShoppingCartItem != null)
+					{
+						existingShoppingCartItem.Quantity = quantity.Value;
+						existingShoppingCartItem.TotalPrice = existingShoppingCartItem.Price * quantity.Value;
+
+						summaryModel = new ShoppingCartSummaryViewModel()
+						{
+							ItemTotalPrice = existingShoppingCartItem.TotalPrice,
+							SubTotal = shoppingCart.ShoppingCartItems.Sum(sci => sci.TotalPrice)
+						};
+					}
+
+					await this._shoppingCartRepository.SaveChangesAsync();
+				}
+			}
+
+			return summaryModel;
 		}
 	}
 }

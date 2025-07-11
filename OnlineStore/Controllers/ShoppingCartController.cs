@@ -30,7 +30,8 @@ namespace OnlineStore.Web.Controllers
 				}
 				else
 				{
-					string? guestId = this.HttpContext.Items["GuestIdentifier"]?.ToString();
+					string? guestId = this.GetGuestId();
+
 					model = await this._shoppingCartService
 								.GetShoppingCartForGuestAsync(guestId);
 				}
@@ -66,7 +67,8 @@ namespace OnlineStore.Web.Controllers
 				}
 				else
 				{
-					string? guestId = this.HttpContext.Items["GuestIdentifier"]?.ToString();
+					string? guestId = this.GetGuestId();
+
 					model = await this._shoppingCartService
 											.GetGuestShoppingCartDataAsync(guestId);
 				}

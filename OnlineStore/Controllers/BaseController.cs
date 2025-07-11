@@ -25,5 +25,17 @@ namespace OnlineStore.Web.Controllers
 
 			return userId;
 		}
+
+		protected string? GetGuestId()
+		{
+			string? guestId = null;
+
+			if (!this.IsAuthenticated())
+			{
+				guestId = this.HttpContext.Items["GuestIdentifier"]?.ToString();
+			}
+
+			return guestId;
+		}
 	}
 }

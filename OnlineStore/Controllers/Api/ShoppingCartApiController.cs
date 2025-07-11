@@ -34,8 +34,9 @@ namespace OnlineStore.Web.Controllers.Api
 				}
 				else
 				{
+					string? guestId = this.GetGuestId();
 					isAdded = await this._shoppingCartService
-							.AddToCartForGuestAsync(productId, this.HttpContext);
+							.AddToCartForGuestAsync(productId, guestId);
 				}
 
 				if (isAdded)
@@ -55,6 +56,7 @@ namespace OnlineStore.Web.Controllers.Api
 			}
 		}
 
+		[AllowAnonymous]
 		[HttpPost("update")]
 		public async Task<IActionResult> UpdateCartItem([FromBody]UpdateCartItemDto model)
 		{
@@ -64,12 +66,25 @@ namespace OnlineStore.Web.Controllers.Api
 				int? quantity = model.Quantity;
 				int? itemId = model.ItemId;
 
-				ShoppingCartSummaryViewModel? summaryModel = await this._shoppingCartService
-									.UpdateCartItemAsync(userId, quantity, itemId);
+
+				ShoppingCartSummaryViewModel? summaryModel;
+				if (userId != null)
+				{
+					summaryModel = await this._shoppingCartService
+									.UpdateUserCartItemAsync(userId, quantity, itemId);
+				}
+				else
+				{
+					string? guestId = this.GetGuestId();
+
+					summaryModel = await this._shoppingCartService
+									.UpdateGuestCartItemAsync(guestId, quantity, itemId);
+				}
 
 				if (summaryModel != null)
 				{
-					return Ok(new {
+					return Ok(new
+					{
 						itemTotalPrice = summaryModel.ItemTotalPrice,
 						subTotal = summaryModel.SubTotal,
 						shipping = summaryModel.Shipping,
@@ -136,7 +151,7 @@ namespace OnlineStore.Web.Controllers.Api
 				}
 				else
 				{
-					string? guestId = this.HttpContext.Items["GuestIdentifier"]?.ToString();
+					string? guestId = this.GetGuestId();
 					cartItemsCount = await this._shoppingCartService
 								.GetGuestShoppingCartItemsCountAsync(guestId);
 				}
