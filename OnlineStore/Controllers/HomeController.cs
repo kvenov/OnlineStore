@@ -11,7 +11,12 @@ namespace OnlineStore.Controllers
 {
     public class HomeController : BaseController
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly Dictionary<int, string> statusCodesCache = new Dictionary<int, string>
+        {
+            {401, "UnauthorizedError"}
+        };
+
+		private readonly ILogger<HomeController> _logger;
         private readonly IProductService _productService;
         private readonly IProductPromotionService _productPromotionService;
         private readonly IArticleService _articleService;
@@ -72,10 +77,21 @@ namespace OnlineStore.Controllers
 			return View();
 		}
 
+        [AllowAnonymous]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(int? statusCode)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
+            switch (statusCode){
+                case 401:
+                    return View("UnauthorizedError");
+                case 404:
+                    return View("NotFoundError");
+				case 403:
+					return View("NotFoundError");
+				default:
+					return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+			}
         }
     }
 }
