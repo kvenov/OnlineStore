@@ -21,16 +21,16 @@ var connectionString = builder.Configuration
 //This interceptor is used to ovveride the default EF Core delete behaviour.
 builder.Services.AddScoped<SoftDeleteInterceptor>();
 
-builder.Services.AddUserDefinedApplicationDbContext(connectionString);
+builder.Services.AddApplicationDbContext(connectionString);
 
-builder.Services.AddUserDefinedScopedGenericRepositories(typeof(GenericRepository<,>));
-builder.Services.AddUserDefinedScopedRepositories(typeof(IProductRepository).Assembly);
+builder.Services.AddScopedGenericRepositories(typeof(GenericRepository<,>));
+builder.Services.AddScopedRepositories(typeof(IProductRepository).Assembly);
 
 
 //This service is only used for the development seeding purposes.
 builder.Services.AddScoped<IDbSeeder, ApplicationDbContextSeeder>();
 
-builder.Services.AddUserDefinedScopedServices(typeof(IProductService).Assembly);
+builder.Services.AddScopedServices(typeof(IProductService).Assembly);
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 

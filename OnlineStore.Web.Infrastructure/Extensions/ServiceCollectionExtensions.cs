@@ -7,6 +7,8 @@ using OnlineStore.Data.Models;
 using OnlineStore.Data.Repository.Interfaces;
 using System.Reflection;
 
+using static OnlineStore.Common.ExceptionMessages;
+
 namespace OnlineStore.Web.Infrastructure.Extensions
 {
 	public static class ServiceCollectionExtensions
@@ -18,8 +20,8 @@ namespace OnlineStore.Web.Infrastructure.Extensions
 		private static readonly string RepositoryInterfacePrefix = "I";
 		private static readonly string RepositoryTypeSuffix = "Repository";
 
-
-		public static IServiceCollection AddUserDefinedScopedServices(this IServiceCollection serviceCollection, Assembly serviceAssembly)
+		
+		public static IServiceCollection AddScopedServices(this IServiceCollection serviceCollection, Assembly serviceAssembly)
 		{
 			Type[] servicesClasses = serviceAssembly
 					.GetTypes()
@@ -29,24 +31,26 @@ namespace OnlineStore.Web.Infrastructure.Extensions
 
 			foreach (Type serviceClass in servicesClasses)
 			{
-				Type[] serviceClassInterfaces = serviceClass
-							.GetInterfaces();
+				Type? serviceClassInterface = serviceClass
+							.GetInterfaces()
+							.FirstOrDefault(i => i.Name.StartsWith(ServiceInterfacePrefix) &&
+												 i.Name.EndsWith(ServiceTypeSuffix) &&
+												 i.IsInterface);
 
-				if (serviceClassInterfaces.Length == 1 &&
-					serviceClassInterfaces.First().Name.StartsWith(ServiceInterfacePrefix) &&
-					serviceClassInterfaces.First().Name.EndsWith(ServiceTypeSuffix) &&
-					serviceClassInterfaces.First().IsInterface)
+				if (serviceClassInterface != null)
 				{
-					Type serviceClassInterface = serviceClassInterfaces.First();
-
 					serviceCollection.AddScoped(serviceClassInterface, serviceClass);
+				}
+				else
+				{
+					throw new ArgumentException(string.Format(ServiceInterfaceNotFound, serviceClass.Name));
 				}
 			}
 
 			return serviceCollection;
 		}
 
-		public static IServiceCollection AddUserDefinedScopedRepositories(this IServiceCollection serviceCollection, Assembly repositotyAssembly)
+		public static IServiceCollection AddScopedRepositories(this IServiceCollection serviceCollection, Assembly repositotyAssembly)
 		{
 
 			Type[] repositoriesClasses = repositotyAssembly
@@ -57,28 +61,27 @@ namespace OnlineStore.Web.Infrastructure.Extensions
 
 			foreach (var repositoryClass in repositoriesClasses)
 			{
-				string repositotyClassName = repositoryClass.Name;
-				Type[] repositoryInterfaces = repositoryClass
+				Type? repositoryInterface = repositoryClass
 							.GetInterfaces()
-							.Where(i => i.Name.ToLower().Contains(repositotyClassName.ToLower()))
-							.ToArray();
+							.FirstOrDefault(i => i.Name.StartsWith(RepositoryInterfacePrefix) &&
+												 i.Name.EndsWith(RepositoryTypeSuffix) &&
+												 i.Name.Contains(repositoryClass.Name));
 
-				if (repositoryInterfaces.Length == 1 && 
-					repositoryInterfaces.First().Name.StartsWith(RepositoryInterfacePrefix) &&
-					repositoryInterfaces.First().Name.EndsWith(RepositoryTypeSuffix) &&
-					repositoryInterfaces.First().IsInterface)
+				if (repositoryInterface != null)
 				{
-					Type repositoryInterface = repositoryInterfaces.First();
-
 					serviceCollection.AddScoped(repositoryInterface, repositoryClass);
+				}
+				else
+				{
+					throw new ArgumentException(string.Format(RepositoryInterfaceNotFound, repositoryClass.Name));
 				}
 
 			}
 
 			return serviceCollection;
 		}
-
-		public static IServiceCollection AddUserDefinedScopedGenericRepositories(this IServiceCollection serviceCollection, Type repositoryType)
+		
+		public static IServiceCollection AddScopedGenericRepositories(this IServiceCollection serviceCollection, Type repositoryType)
 		{
 			Type[] interfaceTypes = repositoryType.GetInterfaces()
 				.Where(i => i.IsGenericType &&
@@ -95,8 +98,8 @@ namespace OnlineStore.Web.Infrastructure.Extensions
 
 			return serviceCollection;
 		}
-
-		public static IServiceCollection AddUserDefinedApplicationDbContext(this IServiceCollection serviceCollection, string connectionString)
+		
+		public static IServiceCollection AddApplicationDbContext(this IServiceCollection serviceCollection, string connectionString)
 		{
 			serviceCollection.AddDbContext<ApplicationDbContext>((sp, options) =>
 			{
