@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using OnlineStore.Data.Models;
+using OnlineStore.Services.Core.Interfaces;
 
 namespace OnlineStore.Areas.Identity.Pages.Account
 {
@@ -29,19 +30,22 @@ namespace OnlineStore.Areas.Identity.Pages.Account
         private readonly IUserStore<ApplicationUser> _userStore;
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
+        private readonly IShoppingCartService _shoppingCartService;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
-            ILogger<RegisterModel> logger)
+            ILogger<RegisterModel> logger,
+            IShoppingCartService shoppingCartService)
         {
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
+            _shoppingCartService = shoppingCartService;
         }
 
         /// <summary>
@@ -120,8 +124,18 @@ namespace OnlineStore.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+					if (user.ShoppingCart == null)
+					{
+						ShoppingCart shoppingCart = new ShoppingCart()
+						{
+							UserId = user.Id
+						};
 
-                    await this._userManager.AddToRoleAsync(user, "User");
+						user.ShoppingCart = shoppingCart;
+						await this._shoppingCartService.AddNewShoppingCartAsync(shoppingCart);
+					}
+
+					await this._userManager.AddToRoleAsync(user, "User");
 
 					//var userId = await _userManager.GetUserIdAsync(user);
 					//var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

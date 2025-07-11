@@ -531,5 +531,10 @@ namespace OnlineStore.Services.Core
 
 			return summaryModel;
 		}
+
+		public async Task AddNewShoppingCartAsync(ShoppingCart cart)
+		{
+			await this._shoppingCartRepository.AddAsync(cart);
+		}
 	}
 }
