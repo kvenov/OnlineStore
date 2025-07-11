@@ -321,7 +321,7 @@ namespace OnlineStore.Services.Core
 			return summaryModel;
 		}
 
-		public async Task<ShoppingCartSummaryViewModel?> RemoveCartItemAsync(string? userId, int? itemId)
+		public async Task<ShoppingCartSummaryViewModel?> RemoveUserCartItemAsync(string? userId, int? itemId)
 		{
 			ShoppingCartSummaryViewModel? summaryModel = null;
 
@@ -488,6 +488,44 @@ namespace OnlineStore.Services.Core
 					}
 
 					await this._shoppingCartRepository.SaveChangesAsync();
+				}
+			}
+
+			return summaryModel;
+		}
+
+		public async Task<ShoppingCartSummaryViewModel?> RemoveGuestCartItemAsync(string? guestId, int? itemId)
+		{
+			ShoppingCartSummaryViewModel? summaryModel = null;
+
+			if ((itemId != null) && (guestId != null))
+			{
+
+				ShoppingCart? shoppingCart = await this._shoppingCartRepository
+							.GetAllAttached()
+							.Include(w => w.ShoppingCartItems)
+							.SingleOrDefaultAsync(sc => sc.GuestId == guestId);
+
+				if (shoppingCart != null)
+				{
+					ShoppingCartItem? cartItemToRemove = await this._shoppingCartRepository
+									.GetAllShoppingCartItemsAttached()
+									.Include(sci => sci.Product)
+									.SingleOrDefaultAsync(sci => sci.Id == itemId);
+
+					if (cartItemToRemove != null)
+					{
+
+						shoppingCart.ShoppingCartItems.Remove(cartItemToRemove);
+						this._shoppingCartRepository.RemoveShoppingCartItem(cartItemToRemove);
+					}
+
+					await this._shoppingCartRepository.SaveChangesAsync();
+
+					summaryModel = new ShoppingCartSummaryViewModel()
+					{
+						SubTotal = shoppingCart.ShoppingCartItems.Sum(sci => sci.TotalPrice)
+					};
 				}
 			}
 

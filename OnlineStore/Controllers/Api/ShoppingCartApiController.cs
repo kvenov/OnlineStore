@@ -104,6 +104,7 @@ namespace OnlineStore.Web.Controllers.Api
 			}
 		}
 
+		[AllowAnonymous]
 		[HttpPost("remove/{itemId}")]
 		public async Task<IActionResult> RemoveCartItem(int? itemId)
 		{
@@ -111,8 +112,20 @@ namespace OnlineStore.Web.Controllers.Api
 			{
 				string? userId = this.GetUserId();
 
-				ShoppingCartSummaryViewModel? summaryModel = await this._shoppingCartService
-									.RemoveCartItemAsync(userId, itemId);
+				ShoppingCartSummaryViewModel? summaryModel;
+
+				if (userId != null)
+				{
+					summaryModel = await this._shoppingCartService
+									.RemoveUserCartItemAsync(userId, itemId);
+				}
+				else
+				{
+					string? guestId = this.GetGuestId();
+
+					summaryModel = await this._shoppingCartService
+									.RemoveGuestCartItemAsync(guestId, itemId);
+				}
 
 				if (summaryModel != null)
 				{

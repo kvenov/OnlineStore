@@ -27,6 +27,8 @@ namespace OnlineStore.Services.Core.Interfaces
 
 		Task<ShoppingCartSummaryViewModel?> UpdateGuestCartItemAsync(string? guestId, int? quantity, int? itemId);
 
-		Task<ShoppingCartSummaryViewModel?> RemoveCartItemAsync(string? userId, int? itemId);
+		Task<ShoppingCartSummaryViewModel?> RemoveUserCartItemAsync(string? userId, int? itemId);
+
+		Task<ShoppingCartSummaryViewModel?> RemoveGuestCartItemAsync(string? guestId, int? itemId);
 	}
 }
