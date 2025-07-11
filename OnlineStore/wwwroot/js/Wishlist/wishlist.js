@@ -12,16 +12,20 @@ async function setWishlistCount() {
             }
         });
 
-        if (!response.ok) {
-            // If unauthorized, just silently skip
-            if (response.status === 401) return;
+        // If unauthorized, silently return
+        if (response.status === 401) return;
 
-            // Try to read message if any, otherwise generic message
+        if (!response.ok) {
             let errorMessage = "Something went wrong.";
-            try {
-                const errorResult = await response.json();
-                errorMessage = errorResult.message || errorMessage;
-            } catch (_) {
+
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                try {
+                    const errorResult = await response.json();
+                    errorMessage = errorResult.message || errorMessage;
+                } catch (_) {
+                   // Ignore parsing error
+                }
             }
 
             console.warn(errorMessage);
@@ -42,7 +46,7 @@ async function setWishlistCount() {
         }
     } catch (error) {
         console.error("Occured error while getting the wishlist count", error);
-        alert("Something went wrong.");
+        // alert("Something went wrong.");
     }
 }
 
