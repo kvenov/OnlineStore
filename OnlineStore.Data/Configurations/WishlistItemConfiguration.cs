@@ -45,7 +45,8 @@ namespace OnlineStore.Data.Configurations
 				.OnDelete(DeleteBehavior.Restrict);
 
 			entity
-				.HasQueryFilter(wi => wi.Product.IsDeleted == false);
+				.HasQueryFilter(wi => wi.Product.IsDeleted == false &&
+									  wi.Wishlist.IsDeleted == false);
 		}
 	}
 }

@@ -68,10 +68,8 @@ namespace OnlineStore.Data.Configurations
 				.HasIndex(p => p.PaidAt);
 
 			entity
-				.HasQueryFilter(pd => pd.Order.BillingAddress.IsDeleted == false);
+				.HasQueryFilter(pd => pd.Checkout.IsDeleted == false);
 
-			entity
-				.HasQueryFilter(pd => pd.Order.ShippingAddress.IsDeleted == false);
 		}
 	}
 	

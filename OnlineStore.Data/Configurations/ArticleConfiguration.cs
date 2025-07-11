@@ -68,6 +68,11 @@ namespace OnlineStore.Data.Configurations
 			entity
 				.HasIndex(p => p.IsPublished);
 
+			entity
+				.HasQueryFilter(a => (!a.IsDeleted) &&
+									 (a.Author == null || !a.Author.IsDeleted) &&
+									 (!a.Category.IsDeleted));
+
 		}
 	}
 }

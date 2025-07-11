@@ -41,7 +41,7 @@ namespace OnlineStore.Data.Configurations
 				.OnDelete(DeleteBehavior.Restrict);
 
 			entity
-				.HasQueryFilter(wi => wi.Product.IsDeleted == false);
+				.HasQueryFilter(sci => sci.Product.IsDeleted == false);
 		}
 	}
 }

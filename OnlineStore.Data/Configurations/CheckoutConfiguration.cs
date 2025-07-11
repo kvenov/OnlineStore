@@ -91,6 +91,13 @@ namespace OnlineStore.Data.Configurations
 				.WithOne(o => o.Checkout)
 				.HasForeignKey<Order>(o => o.CheckoutId)
 				.OnDelete(DeleteBehavior.Cascade);
+
+			entity
+				.HasQueryFilter(c => (!c.IsDeleted) &&
+									 (!c.User.IsDeleted) &&
+									 (!c.PaymentMethod.IsDeleted) &&
+									 (c.ShippingAddress == null || !c.ShippingAddress.IsDeleted ||
+									  c.BillingAddress == null || !c.BillingAddress.IsDeleted));
 		}
 	}
 }

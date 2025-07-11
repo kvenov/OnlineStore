@@ -67,6 +67,9 @@ namespace OnlineStore.Data.Configurations
 			entity
 				.HasIndex(p => p.UserId);
 
+			entity
+				.HasQueryFilter(a => a.User.IsDeleted == false);
+
 		}
 	}
 }

@@ -94,6 +94,10 @@ namespace OnlineStore.Data.Configurations
 			entity
 				.HasIndex(p => p.AverageRating);
 
+			entity
+				.HasQueryFilter(p => (p.Brand == null || !p.Brand.IsDeleted) &&
+									 (p.Category.IsDeleted == false));
+
 		}
 	}
 }

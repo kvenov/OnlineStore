@@ -228,7 +228,7 @@ namespace OnlineStore.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Addresses", t =>
+                    b.ToTable("Addresses", null, t =>
                         {
                             t.HasComment("The Addresses of the store");
                         });
@@ -375,7 +375,7 @@ namespace OnlineStore.Data.Migrations
 
                     b.HasIndex("Title");
 
-                    b.ToTable("Articles", t =>
+                    b.ToTable("Articles", null, t =>
                         {
                             t.HasComment("Articles in the store");
                         });
@@ -408,7 +408,7 @@ namespace OnlineStore.Data.Migrations
 
                     b.HasIndex("Name");
 
-                    b.ToTable("ArticleCategories", t =>
+                    b.ToTable("ArticleCategories", null, t =>
                         {
                             t.HasComment("Article categories in the store");
                         });
@@ -465,7 +465,7 @@ namespace OnlineStore.Data.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Brands", t =>
+                    b.ToTable("Brands", null, t =>
                         {
                             t.HasComment("Brands in the store");
                         });
@@ -530,7 +530,7 @@ namespace OnlineStore.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Checkouts", t =>
+                    b.ToTable("Checkouts", null, t =>
                         {
                             t.HasComment("The checkouts in the store");
                         });
@@ -592,7 +592,7 @@ namespace OnlineStore.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders", t =>
+                    b.ToTable("Orders", null, t =>
                         {
                             t.HasComment("Orders in the store");
                         });
@@ -633,7 +633,7 @@ namespace OnlineStore.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrdersItems", t =>
+                    b.ToTable("OrdersItems", null, t =>
                         {
                             t.HasComment("Order items in the store");
                         });
@@ -695,7 +695,7 @@ namespace OnlineStore.Data.Migrations
 
                     b.HasIndex("Status");
 
-                    b.ToTable("PaymentDetails", t =>
+                    b.ToTable("PaymentDetails", null, t =>
                         {
                             t.HasComment("The payment details of the store");
                         });
@@ -733,7 +733,7 @@ namespace OnlineStore.Data.Migrations
 
                     b.HasIndex("Name");
 
-                    b.ToTable("PaymentMethods", t =>
+                    b.ToTable("PaymentMethods", null, t =>
                         {
                             t.HasComment("The payment methods in the store");
                         });
@@ -822,7 +822,7 @@ namespace OnlineStore.Data.Migrations
 
                     b.HasIndex("Price", "DiscountPrice");
 
-                    b.ToTable("Products", t =>
+                    b.ToTable("Products", null, t =>
                         {
                             t.HasComment("Products in the store");
                         });
@@ -855,7 +855,7 @@ namespace OnlineStore.Data.Migrations
 
                     b.HasIndex("Name");
 
-                    b.ToTable("ProductCategories", t =>
+                    b.ToTable("ProductCategories", null, t =>
                         {
                             t.HasComment("Product categories in the store");
                         });
@@ -942,7 +942,7 @@ namespace OnlineStore.Data.Migrations
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("ProductDetails", t =>
+                    b.ToTable("ProductDetails", null, t =>
                         {
                             t.HasComment("Details for a certain product");
                         });
@@ -990,7 +990,7 @@ namespace OnlineStore.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductsPromotions", t =>
+                    b.ToTable("ProductsPromotions", null, t =>
                         {
                             t.HasComment("The promotions in the store");
                         });
@@ -1037,7 +1037,7 @@ namespace OnlineStore.Data.Migrations
                     b.HasIndex("ProductId", "UserId")
                         .IsUnique();
 
-                    b.ToTable("ProductsRatings", t =>
+                    b.ToTable("ProductsRatings", null, t =>
                         {
                             t.HasComment("The Products ratings in the store");
                         });
@@ -1088,7 +1088,7 @@ namespace OnlineStore.Data.Migrations
                     b.HasIndex("UserId", "ProductId")
                         .IsUnique();
 
-                    b.ToTable("ProductReviews", t =>
+                    b.ToTable("ProductReviews", null, t =>
                         {
                             t.HasComment("The Product Reviews in the store");
                         });
@@ -1120,7 +1120,7 @@ namespace OnlineStore.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RecentlyViewedProducts", t =>
+                    b.ToTable("RecentlyViewedProducts", null, t =>
                         {
                             t.HasComment("The Recently(lastly) viewed products in the store");
                         });
@@ -1156,7 +1156,7 @@ namespace OnlineStore.Data.Migrations
                         .IsUnique()
                         .HasFilter("[UserId] IS NOT NULL");
 
-                    b.ToTable("ShoppingCarts", t =>
+                    b.ToTable("ShoppingCarts", null, t =>
                         {
                             t.HasComment("Shopping carts in the store");
                         });
@@ -1197,7 +1197,7 @@ namespace OnlineStore.Data.Migrations
 
                     b.HasIndex("ShoppingCartId");
 
-                    b.ToTable("ShoppingCartsItems", t =>
+                    b.ToTable("ShoppingCartsItems", null, t =>
                         {
                             t.HasComment("Shopping cart items in the store");
                         });
@@ -1224,7 +1224,7 @@ namespace OnlineStore.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Wishlists", t =>
+                    b.ToTable("Wishlists", null, t =>
                         {
                             t.HasComment("The Wishlist in the store");
                         });
@@ -1263,7 +1263,7 @@ namespace OnlineStore.Data.Migrations
 
                     b.HasIndex("WishlistId");
 
-                    b.ToTable("WishlistsItems", t =>
+                    b.ToTable("WishlistsItems", null, t =>
                         {
                             t.HasComment("The wishlists items in the store");
                         });

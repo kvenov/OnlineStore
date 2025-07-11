@@ -54,10 +54,10 @@ namespace OnlineStore.Data.Configurations
 				.OnDelete(DeleteBehavior.Cascade);
 
 			entity
-				.HasQueryFilter(pr => pr.IsDeleted == false);
+				.HasQueryFilter(pr => pr.IsDeleted == false && 
+									  pr.Product.IsDeleted == false && 
+									  pr.User.IsDeleted == false);
 
-			entity
-				.HasQueryFilter(pr => pr.Product.IsDeleted == false);
 		}
 	}
 }

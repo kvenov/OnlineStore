@@ -90,10 +90,12 @@ namespace OnlineStore.Data.Configurations
 				.HasIndex(o => o.Status);
 
 			entity
-				.HasQueryFilter(wi => wi.BillingAddress.IsDeleted == false);
+				.HasQueryFilter(o => (o.User == null || !o.User.IsDeleted == false) &&
+									  o.PaymentMethod.IsDeleted == false &&
+									  o.Checkout.IsDeleted == false &&
+									  o.BillingAddress.IsDeleted == false &&
+									  o.ShippingAddress.IsDeleted == false);
 
-			entity
-				.HasQueryFilter(wi => wi.ShippingAddress.IsDeleted == false);
 		}
 	}
 }

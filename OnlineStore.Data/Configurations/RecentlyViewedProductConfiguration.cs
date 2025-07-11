@@ -37,7 +37,8 @@ namespace OnlineStore.Data.Configurations
 				.OnDelete(DeleteBehavior.Cascade);
 
 			entity
-				.HasQueryFilter(wi => wi.Product.IsDeleted == false);
+				.HasQueryFilter(wi => wi.Product.IsDeleted == false &&
+									  wi.User.IsDeleted == false);
 		}
 	}
 }

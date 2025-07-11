@@ -25,6 +25,9 @@ namespace OnlineStore.Data.Configurations
 			entity
 				.HasIndex(w => w.UserId)
 				.IsUnique();
+
+			entity
+				.HasQueryFilter(w => w.User.IsDeleted == false);
 		}
 	}
 }
