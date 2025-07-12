@@ -13,5 +13,13 @@ namespace OnlineStore.Web.Infrastructure.Extensions
 
 			return app;
 		}
+
+		public static IApplicationBuilder UseApiSafeStatusCodeRedirects(this IApplicationBuilder app)
+		{
+
+			app.UseMiddleware<ApiSafeStatusCodeRedirectMiddleware>();
+
+			return app;
+		}
 	}
 }

@@ -56,8 +56,7 @@ else
     app.UseHsts();
 }
 
-//We are using this middleware to show application custom error views.
-app.UseStatusCodePagesWithRedirects("/Home/Error?statusCode={0}");
+app.UseApiSafeStatusCodeRedirects();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
