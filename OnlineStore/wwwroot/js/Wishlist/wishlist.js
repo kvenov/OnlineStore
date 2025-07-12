@@ -46,7 +46,7 @@ async function setWishlistCount() {
         }
     } catch (error) {
         console.error("Occured error while getting the wishlist count", error);
-        // alert("Something went wrong.");
+        alert("Something went wrong.");
     }
 }
 
@@ -138,7 +138,31 @@ function showIsRemovedFromWishlist(itemId) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', (event) => {
-    removeFromWishlist();
-    setWishlistCount();
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const response = await fetch(`/api/baseapi/auth`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+        });
+
+        if (response.ok) {
+            const text = await response.text();
+            console.log("Raw response:", text);
+
+            const data = await response.json();
+
+            if (data.IsAuthenticated) {
+                removeFromWishlist();
+                setWishlistCount();
+            }
+        } else {
+            console.warn("Unathorized access");
+        }
+    } catch (error) {
+        console.error("Error while getting the user credentials", error);
+        alert("Something went wrong.");
+    }
 })

@@ -38,5 +38,14 @@ namespace OnlineStore.Web.Controllers.Api
 
 			return guestId;
 		}
+
+		[HttpGet("auth")]
+		public IActionResult IsUserAuth()
+		{
+			return Ok(new
+			{
+				IsAuthenticated = IsAuthenticated()
+			});
+		}
 	}
 }
