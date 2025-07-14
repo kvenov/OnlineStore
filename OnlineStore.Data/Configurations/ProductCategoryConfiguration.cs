@@ -24,6 +24,16 @@ namespace OnlineStore.Data.Configurations
 				.HasMaxLength(ProductCategoryDescriptionMaxLength);
 
 			entity
+				.Property(pc => pc.ParentCategoryId)
+				.IsRequired(false);
+
+			entity
+				.HasOne(pc => pc.ParentCategory)
+				.WithMany(pc => pc.Subcategories)
+				.HasForeignKey(pc => pc.ParentCategoryId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			entity
 				.HasIndex(pc => pc.Name);
 		}
 	}
