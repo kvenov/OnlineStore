@@ -21,7 +21,7 @@
                     <ul class="list-unstyled">
                         @foreach (var sub in categoryGroup.Subcategories)
                         {
-                            <li><a href="#">@sub</a></li>
+                            <li><a href="javascript:void(0)" onclick="navigateToCategory('@categoryGroup.ParentCategory', '@sub')">@sub</a></li>
                         }
                     </ul>
                 </div>

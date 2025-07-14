@@ -1,7 +1,8 @@
 ﻿const megaMenu = document.getElementById('megaMenu');
 let timeout;
 
-function showMegaMenu(category) {
+function showMegaMenu(gender) {
+    localStorage.setItem("selectedGender", gender);
     clearTimeout(timeout);
     megaMenu.classList.add('show');
 }
@@ -12,10 +13,16 @@ function hideMegaMenu() {
     }, 200); // slight delay for smoother UX
 }
 
+function navigateToCategory(category, subcategory) {
+    const gender = localStorage.getItem("selectedGender") || "unisex";
+    window.location.href = `/products/${gender}/${category}/${subcategory}`;
+}
+
 // Optional: Keep menu visible when hovering it
 megaMenu.addEventListener('mouseover', () => clearTimeout(timeout));
 megaMenu.addEventListener('mouseout', hideMegaMenu);
 
+//Searchbar
 document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.querySelector('.search-input');
     const searchExpanded = document.querySelector('.search-expanded');
@@ -37,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+//User account
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll('.account-menu-toggle').forEach(toggle => {
         toggle.addEventListener('click', function (e) {
