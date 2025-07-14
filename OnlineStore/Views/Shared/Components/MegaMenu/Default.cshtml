@@ -1,0 +1,38 @@
+﻿@using OnlineStore.Web.ViewModels.Layout
+@model IEnumerable<MenuViewModel>
+
+
+<div class="collapse navbar-collapse justify-content-center" id="mainNavbar">
+    <ul class="navbar-nav mega-dropdown">
+        @foreach (var gender in Model.Select(m => m.Gender))
+        {
+            <li class="nav-item" onmouseover="showMegaMenu('@gender')" onmouseout="hideMegaMenu()">
+                <a class="nav-link" href="#">@gender</a>
+            </li>
+        }
+    </ul>
+
+    <div class="dropdown-menu mega-menu" id="megaMenu">
+        <div class="row g-4 px-4 py-3">
+            @foreach (var categoryGroup in Model.FirstOrDefault()?.CategoryGroups ?? Enumerable.Empty<CategoryGroup>())
+            {
+                <div class="col-md-3">
+                    <h6>@categoryGroup.ParentCategory</h6>
+                    <ul class="list-unstyled">
+                        @foreach (var sub in categoryGroup.Subcategories)
+                        {
+                            <li><a href="#">@sub</a></li>
+                        }
+                    </ul>
+                </div>
+            }
+            <div class="col-md-3">
+                <h6>Featured</h6>
+                <ul class="list-unstyled">
+                    <li><a href="#">New Arrivals</a></li>
+                    <li><a href="#">Best Sellers</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

@@ -73,52 +73,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     
-                    <div class="collapse navbar-collapse justify-content-center" id="mainNavbar">
-                        <ul class="navbar-nav mega-dropdown">
-                            @foreach (var category in new[] { "Men", "Women", "Kids", "Unisex" })
-                            {
-                                <li class="nav-item" onmouseover="showMegaMenu('@category')" onmouseout="hideMegaMenu()">
-                                    <a class="nav-link" href="#">@category</a>
-                                </li>
-                            }
-                        </ul>
-
-                        <div class="dropdown-menu mega-menu" id="megaMenu">
-                            <div class="row g-4 px-4 py-3">
-                                <div class="col-md-3">
-                                    <h6>Clothing</h6>
-                                    <ul class="list-unstyled">
-                                        <li><a href="#">Hoodies / Sweatshirts</a></li>
-                                        <li><a href="#">Jackets</a></li>
-                                        <li><a href="#">T-Shirts</a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-3">
-                                    <h6>Shoes</h6>
-                                    <ul class="list-unstyled">
-                                        <li><a href="#">All Shoes</a></li>
-                                        <li><a href="#">Sporty</a></li>
-                                        <li><a href="#">Lifestyle</a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-3">
-                                    <h6>Accessories</h6>
-                                    <ul class="list-unstyled">
-                                        <li><a href="#">Bags</a></li>
-                                        <li><a href="#">Hats</a></li>
-                                        <li><a href="#">Socks</a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-3">
-                                    <h6>Featured</h6>
-                                    <ul class="list-unstyled">
-                                        <li><a href="#">New Arrivals</a></li>
-                                        <li><a href="#">Best Sellers</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @await Component.InvokeAsync("MegaMenu")
 
 
                     <div class="d-none d-lg-flex align-items-center gap-1">
