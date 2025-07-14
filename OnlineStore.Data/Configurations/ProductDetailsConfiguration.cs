@@ -80,6 +80,301 @@ namespace OnlineStore.Data.Configurations
 
 			entity
 				.HasQueryFilter(wi => wi.Product.IsDeleted == false);
+
+			entity
+				.HasData(this.GenerateProductDetails());
+		}
+
+		private IEnumerable<ProductDetails> GenerateProductDetails()
+		{
+			return new List<ProductDetails>()
+			{
+				new ProductDetails
+				{
+					Id = 10,
+					Material = "Polyester",
+					Color = "Black",
+					Gender = "Men",
+					Size = "L",
+					SizeGuideUrl = "https://example.com/size-guide",
+					CountryOfOrigin = "Vietnam",
+					CareInstructions = "Machine wash cold, tumble dry low.",
+					Weight = 0.45m,
+					Fit = "Regular",
+					Style = "Sport",
+					ProductId = 12
+				},
+				new ProductDetails
+				{
+					Id = 11,
+					Material = "Textile",
+					Color = "White",
+					Gender = "Unisex",
+					Size = "42 EU",
+					SizeGuideUrl = "https://example.com/size-guide",
+					CountryOfOrigin = "Indonesia",
+					CareInstructions = "Spot clean with mild detergent.",
+					Weight = 0.9m,
+					Fit = "Regular",
+					Style = "Running",
+					ProductId = 13
+				},
+				new ProductDetails
+				{
+					Id = 12,
+					Material = "Denim",
+					Color = "Indigo",
+					Gender = "Men",
+					Size = "32/32",
+					SizeGuideUrl = "https://example.com/size-guide",
+					CountryOfOrigin = "Mexico",
+					CareInstructions = "Wash inside out with like colors.",
+					Weight = 0.75m,
+					Fit = "Slim",
+					Style = "Casual",
+					ProductId = 14
+				},
+				new ProductDetails
+				{
+					Id = 13,
+					Material = "Fleece",
+					Color = "Grey",
+					Gender = "Men",
+					Size = "M",
+					SizeGuideUrl = "https://example.com/size-guide",
+					CountryOfOrigin = "China",
+					CareInstructions = "Machine wash warm.",
+					Weight = 0.65m,
+					Fit = "Regular",
+					Style = "Streetwear",
+					ProductId = 15
+				},
+				new ProductDetails
+				{
+					Id = 14,
+					Material = "Cotton",
+					Color = "Black",
+					Gender = "Men",
+					Size = "L",
+					SizeGuideUrl = "https://example.com/size-guide",
+					CountryOfOrigin = "Thailand",
+					CareInstructions = "Do not bleach.",
+					Weight = 0.35m,
+					Fit = "Athletic",
+					Style = "Sport",
+					ProductId = 16
+				},
+				new ProductDetails
+				{
+					Id = 15,
+					Material = "Cotton",
+					Color = "White",
+					Gender = "Unisex",
+					Size = "M",
+					SizeGuideUrl = "https://example.com/size-guide",
+					CountryOfOrigin = "Bangladesh",
+					CareInstructions = "Machine wash cold, iron if needed.",
+					Weight = 0.4m,
+					Fit = "Classic",
+					Style = "Casual",
+					ProductId = 17
+				},
+				new ProductDetails
+				{
+					Id = 16,
+					Material = "Cotton Blend",
+					Color = "Black",
+					Gender = "Unisex",
+					Size = "M",
+					SizeGuideUrl = "https://example.com/size-guide",
+					CountryOfOrigin = "India",
+					CareInstructions = "Wash in cold water.",
+					Weight = 0.15m,
+					Fit = "Tight",
+					Style = "Training",
+					ProductId = 18
+				},
+				new ProductDetails
+				{
+					Id = 17,
+					Material = "Polyester",
+					Color = "Blue",
+					Gender = "Unisex",
+					Size = "One Size",
+					SizeGuideUrl = "https://example.com/size-guide",
+					CountryOfOrigin = "China",
+					CareInstructions = "Hand wash.",
+					Weight = 0.6m,
+					Fit = "Standard",
+					Style = "Urban",
+					ProductId = 19
+				},
+				new ProductDetails
+				{
+					Id = 18,
+					Material = "Cotton",
+					Color = "Grey",
+					Gender = "Men",
+					Size = "M",
+					SizeGuideUrl = "https://www.nike.com/size-fit/men",
+					CountryOfOrigin = "Vietnam",
+					CareInstructions = "Machine wash cold",
+					Weight = 0.65m,
+					Fit = "Regular",
+					Style = "Pullover",
+					ProductId = 20
+				},
+				new ProductDetails
+				{
+					Id = 19,
+					Material = "Cotton",
+					Color = "Black",
+					Gender = "Men",
+					Size = "L",
+					SizeGuideUrl = "https://www.levi.com/size-guide",
+					CountryOfOrigin = "Bangladesh",
+					CareInstructions = "Machine wash",
+					Weight = 0.3m,
+					Fit = "Relaxed",
+					Style = "Crewneck",
+					ProductId = 21
+				},
+				new ProductDetails
+				{
+					Id = 20,
+					Material = "Polyester",
+					Color = "Navy",
+					Gender = "Men",
+					Size = "L",
+					SizeGuideUrl = "https://www.nike.com/size-fit/men",
+					CountryOfOrigin = "Thailand",
+					CareInstructions = "Machine wash cold",
+					Weight = 0.25m,
+					Fit = "Regular",
+					Style = "Athletic",
+					ProductId = 22
+				},
+				new ProductDetails
+				{
+					Id = 21,
+					Material = "Fleece",
+					Color = "Grey",
+					Gender = "Unisex",
+					Size = "M",
+					SizeGuideUrl = "https://www.adidas.com/us/help/size_charts",
+					CountryOfOrigin = "Indonesia",
+					CareInstructions = "Machine wash warm",
+					Weight = 0.7m,
+					Fit = "Loose",
+					Style = "Pullover",
+					ProductId = 23
+				},
+				new ProductDetails
+				{
+					Id = 22,
+					Material = "Cotton/Polyester",
+					Color = "Blue",
+					Gender = "Unisex",
+					Size = "M",
+					SizeGuideUrl = "https://www.nike.com/size-fit/unisex",
+					CountryOfOrigin = "China",
+					CareInstructions = "Machine wash cold",
+					Weight = 0.15m,
+					Fit = "Snug",
+					Style = "Low cut",
+					ProductId = 24
+				},
+				new ProductDetails
+				{
+					Id = 23,
+					Material = "Denim",
+					Color = "Blue",
+					Gender = "Men",
+					Size = "L",
+					SizeGuideUrl = "https://www.levi.com/size-guide",
+					CountryOfOrigin = "Mexico",
+					CareInstructions = "Machine wash cold",
+					Weight = 1.2m,
+					Fit = "Regular",
+					Style = "Trucker",
+					ProductId = 25
+				},
+				new ProductDetails
+				{
+					Id = 24,
+					Material = "Textile",
+					Color = "White",
+					Gender = "Men",
+					Size = "42",
+					SizeGuideUrl = "https://www.adidas.com/us/help/size_charts",
+					CountryOfOrigin = "Vietnam",
+					CareInstructions = "Wipe with damp cloth",
+					Weight = 0.9m,
+					Fit = "True to size",
+					Style = "Running",
+					ProductId = 26
+				},
+				new ProductDetails
+				{
+					Id = 25,
+					Material = "Polyester",
+					Color = "Red",
+					Gender = "Unisex",
+					Size = "18L",
+					SizeGuideUrl = "https://www.nike.com/size-fit/bags",
+					CountryOfOrigin = "China",
+					CareInstructions = "Wipe clean",
+					Weight = 0.8m,
+					Fit = "Compact",
+					Style = "Training",
+					ProductId = 27
+				},
+				new ProductDetails
+				{
+					Id = 26,
+					Material = "Leather",
+					Color = "Black",
+					Gender = "Men",
+					Size = "43",
+					SizeGuideUrl = "https://www.nike.com/size-fit/mens-shoes",
+					CountryOfOrigin = "Vietnam",
+					CareInstructions = "Wipe with damp cloth",
+					Weight = 1.0m,
+					Fit = "True to size",
+					Style = "Lifestyle",
+					ProductId = 28
+				},
+				new ProductDetails
+				{
+					Id = 27,
+					Material = "Denim",
+					Color = "Blue",
+					Gender = "Men",
+					Size = "32",
+					SizeGuideUrl = "https://www.levi.com/size-guide",
+					CountryOfOrigin = "Mexico",
+					CareInstructions = "Machine wash cold",
+					Weight = 1.1m,
+					Fit = "Slim",
+					Style = "Jeans",
+					ProductId = 29
+				},
+				new ProductDetails
+				{
+					Id = 28,
+					Material = "Polyester",
+					Color = "Black",
+					Gender = "Men",
+					Size = "M",
+					SizeGuideUrl = "https://www.nike.com/size-fit/mens-tops",
+					CountryOfOrigin = "Thailand",
+					CareInstructions = "Machine wash cold",
+					Weight = 0.25m,
+					Fit = "Athletic",
+					Style = "Training",
+					ProductId = 30
+				}
+			};
 		}
 	}
 }

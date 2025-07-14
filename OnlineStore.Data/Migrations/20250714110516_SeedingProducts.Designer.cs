@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineStore.Data;
 
@@ -11,9 +12,11 @@ using OnlineStore.Data;
 namespace OnlineStore.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250714110516_SeedingProducts")]
+    partial class SeedingProducts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -834,7 +837,7 @@ namespace OnlineStore.Data.Migrations
                             AverageRating = 0.0,
                             BrandId = 1,
                             CategoryId = 12,
-                            CreatedAt = new DateTime(2025, 7, 14, 11, 11, 16, 238, DateTimeKind.Utc).AddTicks(6695),
+                            CreatedAt = new DateTime(2025, 7, 14, 11, 5, 14, 974, DateTimeKind.Utc).AddTicks(9677),
                             Description = "Men's Road Running Shoes",
                             ImageUrl = "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/09f3dd58-91e6-4d94-a5ea-1b2c8f7e9ff0/revolution-6-road-running-shoes-8Xf5w3.png",
                             IsActive = true,
@@ -850,7 +853,7 @@ namespace OnlineStore.Data.Migrations
                             AverageRating = 0.0,
                             BrandId = 2,
                             CategoryId = 12,
-                            CreatedAt = new DateTime(2025, 7, 14, 11, 11, 16, 238, DateTimeKind.Utc).AddTicks(6708),
+                            CreatedAt = new DateTime(2025, 7, 14, 11, 5, 14, 974, DateTimeKind.Utc).AddTicks(9746),
                             Description = "Running shoes made for energy return.",
                             DiscountPrice = 170.00m,
                             ImageUrl = "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/f228f1f8750b4a10929faf6f011c0b99_9366/Ultraboost_Light_Shoes_Black_GY9356_01_standard.jpg",
@@ -867,7 +870,7 @@ namespace OnlineStore.Data.Migrations
                             AverageRating = 0.0,
                             BrandId = 3,
                             CategoryId = 3,
-                            CreatedAt = new DateTime(2025, 7, 14, 11, 11, 16, 238, DateTimeKind.Utc).AddTicks(6714),
+                            CreatedAt = new DateTime(2025, 7, 14, 11, 5, 14, 974, DateTimeKind.Utc).AddTicks(9752),
                             Description = "Men's Jeans with a modern slim cut.",
                             DiscountPrice = 69.99m,
                             ImageUrl = "https://lsco.scene7.com/is/image/lsco/levis/clothing/005120939-front-pdp.jpg",
@@ -884,7 +887,7 @@ namespace OnlineStore.Data.Migrations
                             AverageRating = 0.0,
                             BrandId = 1,
                             CategoryId = 6,
-                            CreatedAt = new DateTime(2025, 7, 14, 11, 11, 16, 238, DateTimeKind.Utc).AddTicks(6718),
+                            CreatedAt = new DateTime(2025, 7, 14, 11, 5, 14, 974, DateTimeKind.Utc).AddTicks(9757),
                             Description = "Comfortable fleece joggers for everyday wear.",
                             ImageUrl = "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/9bdce8c1-1c62-40fd-84d0-d0d658d3e883/sportswear-club-fleece-joggers-QDkzGC.png",
                             IsActive = true,
@@ -900,7 +903,7 @@ namespace OnlineStore.Data.Migrations
                             AverageRating = 0.0,
                             BrandId = 1,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 7, 14, 11, 11, 16, 238, DateTimeKind.Utc).AddTicks(6725),
+                            CreatedAt = new DateTime(2025, 7, 14, 11, 5, 14, 974, DateTimeKind.Utc).AddTicks(9762),
                             Description = "Men's moisture-wicking training tee.",
                             DiscountPrice = 25.00m,
                             ImageUrl = "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/590d39a5-36ad-434c-b073-15376b493f3a/dri-fit-training-t-shirt-Fz4gD3.png",
@@ -917,7 +920,7 @@ namespace OnlineStore.Data.Migrations
                             AverageRating = 0.0,
                             BrandId = 2,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 7, 14, 11, 11, 16, 238, DateTimeKind.Utc).AddTicks(6731),
+                            CreatedAt = new DateTime(2025, 7, 14, 11, 5, 14, 974, DateTimeKind.Utc).AddTicks(9769),
                             Description = "Classic Adidas t-shirt for daily wear.",
                             ImageUrl = "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/10d12fc1e6e24c73bc03ad2d00cd6e4f_9366/Essentials_Logo_Tee_White_IC9319_01_laydown.jpg",
                             IsActive = true,
@@ -933,7 +936,7 @@ namespace OnlineStore.Data.Migrations
                             AverageRating = 0.0,
                             BrandId = 1,
                             CategoryId = 8,
-                            CreatedAt = new DateTime(2025, 7, 14, 11, 11, 16, 238, DateTimeKind.Utc).AddTicks(6747),
+                            CreatedAt = new DateTime(2025, 7, 14, 11, 5, 14, 974, DateTimeKind.Utc).AddTicks(9773),
                             Description = "Comfortable crew socks for all-day wear.",
                             DiscountPrice = 15.00m,
                             ImageUrl = "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/a4f39e13-4e96-4e8d-bc71-3476bb8ac719/everyday-plus-cushioned-training-crew-socks-JmgKcT.png",
@@ -950,7 +953,7 @@ namespace OnlineStore.Data.Migrations
                             AverageRating = 0.0,
                             BrandId = 2,
                             CategoryId = 4,
-                            CreatedAt = new DateTime(2025, 7, 14, 11, 11, 16, 238, DateTimeKind.Utc).AddTicks(6753),
+                            CreatedAt = new DateTime(2025, 7, 14, 11, 5, 14, 974, DateTimeKind.Utc).AddTicks(9778),
                             Description = "Spacious backpack with modern design.",
                             DiscountPrice = 39.99m,
                             ImageUrl = "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/39aa23ceae624ddcb6eeae8601556df5_9366/Classic_Backpack_Black_FM6876_01_standard.jpg",
@@ -967,7 +970,7 @@ namespace OnlineStore.Data.Migrations
                             AverageRating = 0.0,
                             BrandId = 1,
                             CategoryId = 6,
-                            CreatedAt = new DateTime(2025, 7, 14, 11, 11, 16, 238, DateTimeKind.Utc).AddTicks(6757),
+                            CreatedAt = new DateTime(2025, 7, 14, 11, 5, 14, 974, DateTimeKind.Utc).AddTicks(9782),
                             Description = "Nike Men’s Essential Grey Hoodie",
                             ImageUrl = "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/fb26574f-572f-463a-a63d-df361188ed62/sportswear-club-fleece-mens-graphic-pullover-hoodie-1WcMnq.png",
                             IsActive = true,
@@ -983,7 +986,7 @@ namespace OnlineStore.Data.Migrations
                             AverageRating = 0.0,
                             BrandId = 3,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 7, 14, 11, 11, 16, 238, DateTimeKind.Utc).AddTicks(6764),
+                            CreatedAt = new DateTime(2025, 7, 14, 11, 5, 14, 974, DateTimeKind.Utc).AddTicks(9788),
                             Description = "Levi's Men's Relaxed Fit Graphic T-Shirt",
                             DiscountPrice = 24.99m,
                             ImageUrl = "https://lsco.scene7.com/is/image/lsco/161430124-front-pdp.jpg",
@@ -1000,7 +1003,7 @@ namespace OnlineStore.Data.Migrations
                             AverageRating = 0.0,
                             BrandId = 1,
                             CategoryId = 7,
-                            CreatedAt = new DateTime(2025, 7, 14, 11, 11, 16, 238, DateTimeKind.Utc).AddTicks(6769),
+                            CreatedAt = new DateTime(2025, 7, 14, 11, 5, 14, 974, DateTimeKind.Utc).AddTicks(9793),
                             Description = "Nike Men's Navy Training Shorts",
                             DiscountPrice = 34.99m,
                             ImageUrl = "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/62231792-14aa-47c4-b5e4-ef59ec69a4ff/dri-fit-mens-training-shorts-kFv4LN.png",
@@ -1017,7 +1020,7 @@ namespace OnlineStore.Data.Migrations
                             AverageRating = 0.0,
                             BrandId = 2,
                             CategoryId = 6,
-                            CreatedAt = new DateTime(2025, 7, 14, 11, 11, 16, 238, DateTimeKind.Utc).AddTicks(6774),
+                            CreatedAt = new DateTime(2025, 7, 14, 11, 5, 14, 974, DateTimeKind.Utc).AddTicks(9798),
                             Description = "Adidas Essentials Grey Sweatshirt",
                             ImageUrl = "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/6b0dfdfd66e24667be28af6400c33688_9366/Essentials_Logo_Fleece_Sweatshirt_Grey_IC6779_01_laydown.jpg",
                             IsActive = true,
@@ -1033,7 +1036,7 @@ namespace OnlineStore.Data.Migrations
                             AverageRating = 0.0,
                             BrandId = 1,
                             CategoryId = 8,
-                            CreatedAt = new DateTime(2025, 7, 14, 11, 11, 16, 238, DateTimeKind.Utc).AddTicks(6779),
+                            CreatedAt = new DateTime(2025, 7, 14, 11, 5, 14, 974, DateTimeKind.Utc).AddTicks(9802),
                             Description = "Nike Everyday Plus Cushioned Ankle Socks",
                             ImageUrl = "https://static.nike.com/a/images/t_default/e30dcf40-0325-43aa-bfae-3e8a4cf2cb92/everyday-plus-cushioned-training-ankle-socks-M9CcJm.png",
                             IsActive = true,
@@ -1049,7 +1052,7 @@ namespace OnlineStore.Data.Migrations
                             AverageRating = 0.0,
                             BrandId = 3,
                             CategoryId = 5,
-                            CreatedAt = new DateTime(2025, 7, 14, 11, 11, 16, 238, DateTimeKind.Utc).AddTicks(6783),
+                            CreatedAt = new DateTime(2025, 7, 14, 11, 5, 14, 974, DateTimeKind.Utc).AddTicks(9806),
                             Description = "Levi's Original Trucker Denim Jacket",
                             DiscountPrice = 79.99m,
                             ImageUrl = "https://lsco.scene7.com/is/image/lsco/723340178-front-pdp.jpg",
@@ -1066,7 +1069,7 @@ namespace OnlineStore.Data.Migrations
                             AverageRating = 0.0,
                             BrandId = 2,
                             CategoryId = 12,
-                            CreatedAt = new DateTime(2025, 7, 14, 11, 11, 16, 238, DateTimeKind.Utc).AddTicks(6788),
+                            CreatedAt = new DateTime(2025, 7, 14, 11, 5, 14, 974, DateTimeKind.Utc).AddTicks(9811),
                             Description = "Adidas Ultraboost Light White Running Shoes",
                             DiscountPrice = 159.99m,
                             ImageUrl = "https://assets.adidas.com/images/w_600,f_auto,q_auto/bdf5b9ecbb54425aab59af6d0113e5c7_9366/Ultraboost_Light_Shoes_White_GW6723_01_standard.jpg",
@@ -1083,7 +1086,7 @@ namespace OnlineStore.Data.Migrations
                             AverageRating = 0.0,
                             BrandId = 1,
                             CategoryId = 4,
-                            CreatedAt = new DateTime(2025, 7, 14, 11, 11, 16, 238, DateTimeKind.Utc).AddTicks(6793),
+                            CreatedAt = new DateTime(2025, 7, 14, 11, 5, 14, 974, DateTimeKind.Utc).AddTicks(9859),
                             Description = "Nike Brasilia Small Training Backpack",
                             ImageUrl = "https://static.nike.com/a/images/t_default/e126b819-b305-40a0-aeb4-36e8c9ee5ce2/brasilia-small-training-backpack-18l-LZgMnm.png",
                             IsActive = true,
@@ -1099,7 +1102,7 @@ namespace OnlineStore.Data.Migrations
                             AverageRating = 0.0,
                             BrandId = 1,
                             CategoryId = 13,
-                            CreatedAt = new DateTime(2025, 7, 14, 11, 11, 16, 238, DateTimeKind.Utc).AddTicks(6797),
+                            CreatedAt = new DateTime(2025, 7, 14, 11, 5, 14, 974, DateTimeKind.Utc).AddTicks(9864),
                             Description = "Nike Air Force 1 '07 Men's Shoes",
                             ImageUrl = "https://static.nike.com/a/images/t_default/1bbebd34-3fe2-4dc7-9b98-80f9932f5a75/air-force-1-07-mens-shoes-WrLlWX.png",
                             IsActive = true,
@@ -1115,7 +1118,7 @@ namespace OnlineStore.Data.Migrations
                             AverageRating = 0.0,
                             BrandId = 3,
                             CategoryId = 3,
-                            CreatedAt = new DateTime(2025, 7, 14, 11, 11, 16, 238, DateTimeKind.Utc).AddTicks(6803),
+                            CreatedAt = new DateTime(2025, 7, 14, 11, 5, 14, 974, DateTimeKind.Utc).AddTicks(9870),
                             Description = "Levi's 511 Slim Fit Men's Jeans",
                             DiscountPrice = 49.99m,
                             ImageUrl = "https://lsco.scene7.com/is/image/lsco/045114406-front-pdp.jpg",
@@ -1132,7 +1135,7 @@ namespace OnlineStore.Data.Migrations
                             AverageRating = 0.0,
                             BrandId = 1,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 7, 14, 11, 11, 16, 238, DateTimeKind.Utc).AddTicks(6808),
+                            CreatedAt = new DateTime(2025, 7, 14, 11, 5, 14, 974, DateTimeKind.Utc).AddTicks(9874),
                             Description = "Nike Dri-FIT Men’s Training T-Shirt",
                             ImageUrl = "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/1797b3f1-9e7a-42cb-8d92-1c9e7cf9a93c/dri-fit-mens-training-t-shirt-Q7zT4k.png",
                             IsActive = true,
@@ -1267,293 +1270,6 @@ namespace OnlineStore.Data.Migrations
                         {
                             t.HasComment("Details for a certain product");
                         });
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 10,
-                            CareInstructions = "Machine wash cold, tumble dry low.",
-                            Color = "Black",
-                            CountryOfOrigin = "Vietnam",
-                            Fit = "Regular",
-                            Gender = "Men",
-                            Material = "Polyester",
-                            ProductId = 12,
-                            Size = "L",
-                            SizeGuideUrl = "https://example.com/size-guide",
-                            Style = "Sport",
-                            Weight = 0.45m
-                        },
-                        new
-                        {
-                            Id = 11,
-                            CareInstructions = "Spot clean with mild detergent.",
-                            Color = "White",
-                            CountryOfOrigin = "Indonesia",
-                            Fit = "Regular",
-                            Gender = "Unisex",
-                            Material = "Textile",
-                            ProductId = 13,
-                            Size = "42 EU",
-                            SizeGuideUrl = "https://example.com/size-guide",
-                            Style = "Running",
-                            Weight = 0.9m
-                        },
-                        new
-                        {
-                            Id = 12,
-                            CareInstructions = "Wash inside out with like colors.",
-                            Color = "Indigo",
-                            CountryOfOrigin = "Mexico",
-                            Fit = "Slim",
-                            Gender = "Men",
-                            Material = "Denim",
-                            ProductId = 14,
-                            Size = "32/32",
-                            SizeGuideUrl = "https://example.com/size-guide",
-                            Style = "Casual",
-                            Weight = 0.75m
-                        },
-                        new
-                        {
-                            Id = 13,
-                            CareInstructions = "Machine wash warm.",
-                            Color = "Grey",
-                            CountryOfOrigin = "China",
-                            Fit = "Regular",
-                            Gender = "Men",
-                            Material = "Fleece",
-                            ProductId = 15,
-                            Size = "M",
-                            SizeGuideUrl = "https://example.com/size-guide",
-                            Style = "Streetwear",
-                            Weight = 0.65m
-                        },
-                        new
-                        {
-                            Id = 14,
-                            CareInstructions = "Do not bleach.",
-                            Color = "Black",
-                            CountryOfOrigin = "Thailand",
-                            Fit = "Athletic",
-                            Gender = "Men",
-                            Material = "Cotton",
-                            ProductId = 16,
-                            Size = "L",
-                            SizeGuideUrl = "https://example.com/size-guide",
-                            Style = "Sport",
-                            Weight = 0.35m
-                        },
-                        new
-                        {
-                            Id = 15,
-                            CareInstructions = "Machine wash cold, iron if needed.",
-                            Color = "White",
-                            CountryOfOrigin = "Bangladesh",
-                            Fit = "Classic",
-                            Gender = "Unisex",
-                            Material = "Cotton",
-                            ProductId = 17,
-                            Size = "M",
-                            SizeGuideUrl = "https://example.com/size-guide",
-                            Style = "Casual",
-                            Weight = 0.4m
-                        },
-                        new
-                        {
-                            Id = 16,
-                            CareInstructions = "Wash in cold water.",
-                            Color = "Black",
-                            CountryOfOrigin = "India",
-                            Fit = "Tight",
-                            Gender = "Unisex",
-                            Material = "Cotton Blend",
-                            ProductId = 18,
-                            Size = "M",
-                            SizeGuideUrl = "https://example.com/size-guide",
-                            Style = "Training",
-                            Weight = 0.15m
-                        },
-                        new
-                        {
-                            Id = 17,
-                            CareInstructions = "Hand wash.",
-                            Color = "Blue",
-                            CountryOfOrigin = "China",
-                            Fit = "Standard",
-                            Gender = "Unisex",
-                            Material = "Polyester",
-                            ProductId = 19,
-                            Size = "One Size",
-                            SizeGuideUrl = "https://example.com/size-guide",
-                            Style = "Urban",
-                            Weight = 0.6m
-                        },
-                        new
-                        {
-                            Id = 18,
-                            CareInstructions = "Machine wash cold",
-                            Color = "Grey",
-                            CountryOfOrigin = "Vietnam",
-                            Fit = "Regular",
-                            Gender = "Men",
-                            Material = "Cotton",
-                            ProductId = 20,
-                            Size = "M",
-                            SizeGuideUrl = "https://www.nike.com/size-fit/men",
-                            Style = "Pullover",
-                            Weight = 0.65m
-                        },
-                        new
-                        {
-                            Id = 19,
-                            CareInstructions = "Machine wash",
-                            Color = "Black",
-                            CountryOfOrigin = "Bangladesh",
-                            Fit = "Relaxed",
-                            Gender = "Men",
-                            Material = "Cotton",
-                            ProductId = 21,
-                            Size = "L",
-                            SizeGuideUrl = "https://www.levi.com/size-guide",
-                            Style = "Crewneck",
-                            Weight = 0.3m
-                        },
-                        new
-                        {
-                            Id = 20,
-                            CareInstructions = "Machine wash cold",
-                            Color = "Navy",
-                            CountryOfOrigin = "Thailand",
-                            Fit = "Regular",
-                            Gender = "Men",
-                            Material = "Polyester",
-                            ProductId = 22,
-                            Size = "L",
-                            SizeGuideUrl = "https://www.nike.com/size-fit/men",
-                            Style = "Athletic",
-                            Weight = 0.25m
-                        },
-                        new
-                        {
-                            Id = 21,
-                            CareInstructions = "Machine wash warm",
-                            Color = "Grey",
-                            CountryOfOrigin = "Indonesia",
-                            Fit = "Loose",
-                            Gender = "Unisex",
-                            Material = "Fleece",
-                            ProductId = 23,
-                            Size = "M",
-                            SizeGuideUrl = "https://www.adidas.com/us/help/size_charts",
-                            Style = "Pullover",
-                            Weight = 0.7m
-                        },
-                        new
-                        {
-                            Id = 22,
-                            CareInstructions = "Machine wash cold",
-                            Color = "Blue",
-                            CountryOfOrigin = "China",
-                            Fit = "Snug",
-                            Gender = "Unisex",
-                            Material = "Cotton/Polyester",
-                            ProductId = 24,
-                            Size = "M",
-                            SizeGuideUrl = "https://www.nike.com/size-fit/unisex",
-                            Style = "Low cut",
-                            Weight = 0.15m
-                        },
-                        new
-                        {
-                            Id = 23,
-                            CareInstructions = "Machine wash cold",
-                            Color = "Blue",
-                            CountryOfOrigin = "Mexico",
-                            Fit = "Regular",
-                            Gender = "Men",
-                            Material = "Denim",
-                            ProductId = 25,
-                            Size = "L",
-                            SizeGuideUrl = "https://www.levi.com/size-guide",
-                            Style = "Trucker",
-                            Weight = 1.2m
-                        },
-                        new
-                        {
-                            Id = 24,
-                            CareInstructions = "Wipe with damp cloth",
-                            Color = "White",
-                            CountryOfOrigin = "Vietnam",
-                            Fit = "True to size",
-                            Gender = "Men",
-                            Material = "Textile",
-                            ProductId = 26,
-                            Size = "42",
-                            SizeGuideUrl = "https://www.adidas.com/us/help/size_charts",
-                            Style = "Running",
-                            Weight = 0.9m
-                        },
-                        new
-                        {
-                            Id = 25,
-                            CareInstructions = "Wipe clean",
-                            Color = "Red",
-                            CountryOfOrigin = "China",
-                            Fit = "Compact",
-                            Gender = "Unisex",
-                            Material = "Polyester",
-                            ProductId = 27,
-                            Size = "18L",
-                            SizeGuideUrl = "https://www.nike.com/size-fit/bags",
-                            Style = "Training",
-                            Weight = 0.8m
-                        },
-                        new
-                        {
-                            Id = 26,
-                            CareInstructions = "Wipe with damp cloth",
-                            Color = "Black",
-                            CountryOfOrigin = "Vietnam",
-                            Fit = "True to size",
-                            Gender = "Men",
-                            Material = "Leather",
-                            ProductId = 28,
-                            Size = "43",
-                            SizeGuideUrl = "https://www.nike.com/size-fit/mens-shoes",
-                            Style = "Lifestyle",
-                            Weight = 1.0m
-                        },
-                        new
-                        {
-                            Id = 27,
-                            CareInstructions = "Machine wash cold",
-                            Color = "Blue",
-                            CountryOfOrigin = "Mexico",
-                            Fit = "Slim",
-                            Gender = "Men",
-                            Material = "Denim",
-                            ProductId = 29,
-                            Size = "32",
-                            SizeGuideUrl = "https://www.levi.com/size-guide",
-                            Style = "Jeans",
-                            Weight = 1.1m
-                        },
-                        new
-                        {
-                            Id = 28,
-                            CareInstructions = "Machine wash cold",
-                            Color = "Black",
-                            CountryOfOrigin = "Thailand",
-                            Fit = "Athletic",
-                            Gender = "Men",
-                            Material = "Polyester",
-                            ProductId = 30,
-                            Size = "M",
-                            SizeGuideUrl = "https://www.nike.com/size-fit/mens-tops",
-                            Style = "Training",
-                            Weight = 0.25m
-                        });
                 });
 
             modelBuilder.Entity("OnlineStore.Data.Models.ProductPromotion", b =>
@@ -1591,7 +1307,7 @@ namespace OnlineStore.Data.Migrations
                     b.Property<DateTime>("StartDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 7, 14, 11, 11, 16, 239, DateTimeKind.Utc).AddTicks(7915))
+                        .HasDefaultValue(new DateTime(2025, 7, 14, 11, 5, 14, 975, DateTimeKind.Utc).AddTicks(6626))
                         .HasComment("The promotion start date");
 
                     b.HasKey("Id");
