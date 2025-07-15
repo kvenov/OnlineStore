@@ -7,17 +7,23 @@ using OnlineStore.Web.ViewModels.Home.Partial;
 using OnlineStore.Web.ViewModels.Product;
 using OnlineStore.Web.ViewModels.Product.Partial;
 
+using static OnlineStore.Data.Common.Constants.EntityConstants.ProductDetails;
+
 namespace OnlineStore.Services.Core
 {
 	public class ProductService : IProductService
 	{
 		private readonly IProductRepository _repository;
+		private readonly IRepository<ProductCategory, int> _categoryRepository;
 		private readonly UserManager<ApplicationUser> _userManager;
 
-		public ProductService(IProductRepository repository, UserManager<ApplicationUser> userManager)
+		public ProductService(IProductRepository repository, 
+							  IRepository<ProductCategory, int> categoryRepository, 
+							  UserManager<ApplicationUser> userManager)
 		{
 			this._repository = repository;
 			this._userManager = userManager;
+			this._categoryRepository = categoryRepository;
 		}
 
 		public async Task<IEnumerable<AllProductListViewModel>> GetAllProductsAsync()
@@ -279,11 +285,62 @@ namespace OnlineStore.Services.Core
 
 		}
 
+		public async Task<IEnumerable<AllProductListViewModel>> GetFilteredProductsAsync(string? gender, string? category, string? subCategory)
+		{
+			IEnumerable<AllProductListViewModel>? filteredProducts = new List<AllProductListViewModel>();
+
+			if (!string.IsNullOrWhiteSpace(gender) && 
+					!string.IsNullOrWhiteSpace(category) && 
+						!string.IsNullOrWhiteSpace(subCategory))
+			{
+				bool isGenderValid = AllowedGenders
+						.Any(g => g.ToLower() == gender.ToLower());
+
+				bool isCategoryValid = await this._categoryRepository
+						.GetAllAttached()
+						.AsNoTracking()
+						.Where(c => c.ParentCategoryId == null)
+						.AnyAsync(c => c.Name.ToLower() == category.ToLower());
+
+				bool isSubCategoryValid = await this._categoryRepository
+						.GetAllAttached()
+						.AsNoTracking()
+						.Where(c => c.ParentCategoryId != null)
+						.AnyAsync(c => c.Name.ToLower() == subCategory.ToLower());
+
+				if (isGenderValid && isCategoryValid && isSubCategoryValid)
+				{
+					filteredProducts = await this._repository
+						.GetAllAttached()
+						.AsNoTracking()
+						.Include(p => p.Category)
+						.ThenInclude(c => c.ParentCategory)
+						.Include(p => p.ProductDetails)
+						.Where(p => p.ProductDetails.Gender.ToLower() == gender.ToLower())
+						.Where(p => p.Category.Name.ToLower() == subCategory.ToLower() &&
+									p.Category.ParentCategory!.Name.ToLower() == category.ToLower())
+						.Select(p => new AllProductListViewModel()
+						{
+							Id = p.Id,
+							Name = p.Name,
+							Description = p.Description,
+							Price = p.Price,
+							ImageUrl = p.ImageUrl,
+							Rating = (float)p.AverageRating
+						})
+						.ToListAsync();
+				}
+			}
+
+			return filteredProducts;
+		}
+
 		private static IEnumerable<string> GetSizesForCategory(string categoryName)
 		{
 			return categoryName.Trim().ToLower() switch
 			{
-				"shoes" => new List<string>() { "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47" },
+				"sporty shoes" => new List<string>() { "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47" },
+				"lifestyle shoes" => new List<string>() { "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47" },
 				"t-shirts" => new List<string>() { "XS", "S", "M", "L", "XL", "XXL" },
 				"jeans" => new List<string>() { "28", "30", "32", "34", "36", "38", "40" },
 				"jackets" => new List<string>() { "XS", "S", "M", "L", "XL", "XXL" },

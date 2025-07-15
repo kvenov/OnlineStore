@@ -18,5 +18,7 @@ namespace OnlineStore.Services.Core.Interfaces
 		Task<bool> RemoveProductReviewAsync(int? reviewId, int? ratingId, string userId);
 
 		Task<IEnumerable<TrendingProductViewModel>> GetBestProductsAsync();
+
+		Task<IEnumerable<AllProductListViewModel>> GetFilteredProductsAsync(string? gender, string? category, string? subCategory);
 	}
 }

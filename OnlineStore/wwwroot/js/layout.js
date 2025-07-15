@@ -10,12 +10,15 @@ function showMegaMenu(gender) {
 function hideMegaMenu() {
     timeout = setTimeout(() => {
         megaMenu.classList.remove('show');
-    }, 200); // slight delay for smoother UX
+    }, 200);
 }
 
 function navigateToCategory(category, subcategory) {
     const gender = localStorage.getItem("selectedGender") || "unisex";
-    window.location.href = `/products/${gender}/${category}/${subcategory}`;
+    const safeCategory = encodeURIComponent(category.replace(/\//g, "-"));
+    const safeSubcategory = encodeURIComponent(subcategory.replace(/\//g, "-"));
+
+    window.location.href = `/products/${gender}/${safeCategory}/${safeSubcategory}`;
 }
 
 // Optional: Keep menu visible when hovering it

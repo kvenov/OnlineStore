@@ -39,6 +39,37 @@ namespace OnlineStore.Web.Controllers
 		}
 
 		[HttpGet]
+		[Route("products/{gender}/{category}/{subcategory?}")]
+		[AllowAnonymous]
+		[ActionName("List")]
+		public async Task<IActionResult> GetFilteredProducts(string? gender, string? category, string? subCategory)
+		{
+			try
+			{
+				if (!string.IsNullOrWhiteSpace(category) && !string.IsNullOrWhiteSpace(subCategory))
+				{
+					category = category.Replace("-", "/");
+					subCategory = subCategory.Replace("-", "/");
+				}
+
+				IEnumerable<AllProductListViewModel> filteredProducts = await this._productService
+												.GetFilteredProductsAsync(gender, category, subCategory);
+
+				ViewBag.Gender = gender;
+				ViewBag.Category = category;
+				ViewBag.SubCategory = subCategory;
+
+				return View(filteredProducts);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				
+				return RedirectToAction("Index", "Home");
+			}
+		}
+
+		[HttpGet]
 		[AllowAnonymous]
 		public async Task<IActionResult> Details(int? id)
 		{
