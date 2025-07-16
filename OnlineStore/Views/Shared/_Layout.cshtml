@@ -80,14 +80,18 @@
                         <div class="search-container">
                             <input type="text" class="form-control form-control-sm search-input" placeholder="Search..." id="searchInput">
                             <div class="search-expanded shadow" id="searchExpanded">
-                                <input type="text" class="form-control" placeholder="What are you looking for?">
+                                <input type="text" class="form-control" placeholder="What are you looking for?" id="searchQueryBox">
+
+                                <div class="search-results mt-3" id="searchResults">
+                                </div>
+
                                 <div class="popular-searches mt-3">
                                     <span>Sneakers</span>
                                     <span>Jackets</span>
                                     <span>Running Shoes</span>
                                     <span>Summer Fit</span>
                                 </div>
-                                <button class="search-cancel-btn">Cancel</button>
+                                <button class="search-cancel-btn" onclick="hideSearch()">Cancel</button>
                             </div>
                         </div>
 

@@ -1,4 +1,4 @@
-﻿namespace OnlineStore.Web.DTO.ShoppingCart
+﻿namespace OnlineStore.Services.Core.DTO.ShoppingCart
 {
 	public class UpdateCartItemDto
 	{

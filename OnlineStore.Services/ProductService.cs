@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using OnlineStore.Data.Models;
 using OnlineStore.Data.Repository.Interfaces;
+using OnlineStore.Services.Core.DTO.Product;
 using OnlineStore.Services.Core.Interfaces;
 using OnlineStore.Web.ViewModels.Home.Partial;
 using OnlineStore.Web.ViewModels.Product;
@@ -333,6 +334,30 @@ namespace OnlineStore.Services.Core
 			}
 
 			return filteredProducts;
+		}
+
+		public async Task<IEnumerable<GetSearchedProductsDto>> GetSearchedProductsAsync(string? query, int maxResults = 5)
+		{
+			IEnumerable<GetSearchedProductsDto> searchedProducts = new List<GetSearchedProductsDto>();
+			if (!string.IsNullOrWhiteSpace(query))
+			{
+				searchedProducts = await this._repository
+					.GetAllAttached()
+					.AsNoTracking()
+					.Where(p => p.Name.ToLower().Contains(query.Trim().ToLower()) ||
+								p.Description.ToLower().Contains(query.Trim().ToLower()))
+					.Select(p => new GetSearchedProductsDto
+					{
+						Id = p.Id,
+						Name = p.Name,
+						ImageUrl = p.ImageUrl,
+						Price = p.Price.ToString("C")
+					})
+					.Take(maxResults)
+					.ToListAsync();
+			}
+
+			return searchedProducts;
 		}
 
 		private static IEnumerable<string> GetSizesForCategory(string categoryName)

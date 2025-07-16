@@ -26,26 +26,113 @@ megaMenu.addEventListener('mouseover', () => clearTimeout(timeout));
 megaMenu.addEventListener('mouseout', hideMegaMenu);
 
 //Searchbar
-document.addEventListener('DOMContentLoaded', function () {
-    const searchInput = document.querySelector('.search-input');
-    const searchExpanded = document.querySelector('.search-expanded');
-    const cancelBtn = document.querySelector('.search-cancel-btn');
+const debounce = (func, delay) => {
+    let timer;
+    return function (...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => func.apply(this, args), delay);
+    };
+};
 
-    searchInput.addEventListener('focus', () => {
-        searchExpanded.classList.add('active');
+$(document).ready(function () {
+    const $input = $('#searchQueryBox');
+    const $results = $('#searchResults');
+    const $expanded = $('#searchExpanded');
+
+    // Show panel when main input is focused
+    $('#searchInput').on('focus', function () {
+        $expanded.show();
+        $('#searchQueryBox').focus();
     });
 
-    cancelBtn?.addEventListener('click', () => {
-        searchExpanded.classList.remove('active');
-        searchInput.blur();
+    // Debounced AJAX search
+    $input.on('input', debounce(function () {
+        const query = $(this).val().trim();
+
+        if (!query) {
+            $results.empty();
+            return;
+        }
+
+        $.ajax({
+            url: '/api/productapi/search',
+            type: 'GET',
+            data: { query: query },
+            success: function (data) {
+                $results.empty();
+                if (data.length === 0) {
+                    $results.append('<p class="text-muted">No results found.</p>');
+                    return;
+                }
+
+                data.forEach(product => {
+                    const card = `
+                            <div class="search-card">
+                                <img src="${product.imageUrl}" data-product-id="${product.id}" alt="${product.name}" />
+                                <div>
+                                    <h6>${product.name}</h6>
+                                    <small>${product.price}</small>
+                                </div>
+                            </div>`;
+                    $results.append(card);
+                });
+            },
+            error: function () {
+                $results.html('<p class="text-danger">Search failed.</p>');
+            }
+        });
+    }, 300));
+
+    // Handle popular searches
+    $('.popular-searches span').on('click', function () {
+        const term = $(this).text();
+        $('#searchQueryBox').val(term).trigger('input');
     });
 
-    document.addEventListener('click', (e) => {
-        if (!searchExpanded.contains(e.target) && !searchInput.contains(e.target)) {
-            searchExpanded.classList.remove('active');
+    // Submit on Enter key
+    $input.on('keypress', function (e) {
+        if (e.key === 'Enter') {
+            performFullSearch();
         }
     });
+
+    $(document).on('click', '.search-card img', function () {
+        const productId = $(this).data('product-id');
+        window.location.href = `/product/details/${productId}`;
+    });
+
+
+    // Optional search button
+    $('.search-btn').on('click', performFullSearch);
+
+    // Close the panel if clicking outside
+    $(document).on('click', function (e) {
+        const $target = $(e.target);
+        const $expanded = $('#searchExpanded');
+        const $input = $('#searchInput');
+
+        if (!$target.closest('#searchExpanded').length && !$target.closest('#searchInput').length) {
+            $expanded.hide();
+            $('#searchResults').empty();
+        }
+    });
+
 });
+
+function performFullSearch() {
+    const query = $('#searchQueryBox').val().trim();
+    if (!query) {
+        alert("Please enter a search term.");
+        return;
+    }
+
+    window.location.href = `/products/search?query=${encodeURIComponent(query)}`;
+}
+
+function hideSearch() {
+    $('#searchExpanded').hide();
+    $('#searchResults').empty();
+}
 
 //User account
 document.addEventListener("DOMContentLoaded", function () {

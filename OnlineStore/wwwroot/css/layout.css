@@ -199,6 +199,26 @@ ul {
     margin-bottom: 1rem;
 }
 
+.search-card {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding: 8px 0;
+}
+
+.search-card img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.search-card h6 {
+    margin: 0;
+    font-size: 14px;
+}
+
 .popular-searches span {
     display: inline-block;
     margin: 6px;

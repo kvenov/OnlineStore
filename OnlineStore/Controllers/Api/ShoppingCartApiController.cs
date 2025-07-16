@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineStore.Services.Core.Interfaces;
-using OnlineStore.Web.DTO.ShoppingCart;
+using OnlineStore.Services.Core.DTO.ShoppingCart;
 using OnlineStore.Web.ViewModels.ShoppingCart;
 
 namespace OnlineStore.Web.Controllers.Api

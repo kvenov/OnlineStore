@@ -1,5 +1,6 @@
 ﻿using OnlineStore.Web.ViewModels.Home.Partial;
 using OnlineStore.Web.ViewModels.Product;
+using OnlineStore.Services.Core.DTO.Product;
 
 namespace OnlineStore.Services.Core.Interfaces
 {
@@ -20,5 +21,7 @@ namespace OnlineStore.Services.Core.Interfaces
 		Task<IEnumerable<TrendingProductViewModel>> GetBestProductsAsync();
 
 		Task<IEnumerable<AllProductListViewModel>> GetFilteredProductsAsync(string? gender, string? category, string? subCategory);
+
+		Task<IEnumerable<GetSearchedProductsDto>> GetSearchedProductsAsync(string? query, int maxResults = 5);
 	}
 }
