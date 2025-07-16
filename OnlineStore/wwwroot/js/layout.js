@@ -15,8 +15,8 @@ function hideMegaMenu() {
 
 function navigateToCategory(category, subcategory) {
     const gender = localStorage.getItem("selectedGender") || "unisex";
-    const safeCategory = encodeURIComponent(category.replace(/\//g, "-"));
-    const safeSubcategory = encodeURIComponent(subcategory.replace(/\//g, "-"));
+    const safeCategory = encodeURIComponent(category.replace(/\//g, "@"));
+    const safeSubcategory = encodeURIComponent(subcategory.replace(/\//g, "@"));
 
     window.location.href = `/products/${gender}/${safeCategory}/${safeSubcategory}`;
 }

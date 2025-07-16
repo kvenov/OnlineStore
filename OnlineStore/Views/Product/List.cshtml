@@ -31,18 +31,6 @@
             </form>
         </div>
 
-        <div class="col-md-4 mb-2">
-            <form method="get" asp-action="All">
-                <select class="form-select" name="category">
-                    <option value="">All Categories</option>
-                    <!-- Populate dynamically -->
-                    <option value="Clothing">Clothing</option>
-                    <option value="Accessories">Accessories</option>
-                    <option value="Tech">Tech</option>
-                </select>
-            </form>
-        </div>
-
         <div class="col-md-4 d-flex align-items-center justify-content-end">
             <span class="text-muted small">Showing @Model.Count() product(s)</span>
         </div>

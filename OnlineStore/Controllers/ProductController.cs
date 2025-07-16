@@ -48,8 +48,8 @@ namespace OnlineStore.Web.Controllers
 			{
 				if (!string.IsNullOrWhiteSpace(category) && !string.IsNullOrWhiteSpace(subCategory))
 				{
-					category = category.Replace("-", "/");
-					subCategory = subCategory.Replace("-", "/");
+					category = category.Replace("@", "/");
+					subCategory = subCategory.Replace("@", "/");
 				}
 
 				IEnumerable<AllProductListViewModel> filteredProducts = await this._productService
