@@ -126,7 +126,7 @@ function performFullSearch() {
         return;
     }
 
-    window.location.href = `/products/search?query=${encodeURIComponent(query)}`;
+    window.location.href = `/product/search/${encodeURIComponent(query)}`;
 }
 
 function hideSearch() {

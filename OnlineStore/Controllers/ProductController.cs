@@ -69,6 +69,32 @@ namespace OnlineStore.Web.Controllers
 			}
 		}
 
+		[Route("/product/search/{query}")]
+		[HttpGet]
+		[AllowAnonymous]
+		public async Task<IActionResult> SearchProductList(string? query)
+		{
+			try
+			{
+				SearchProductListViewModel searchProductList = await this._productService
+								.GetAllProductsAsync(query);
+
+				if (searchProductList == null || searchProductList.Products == null)
+				{
+					return RedirectToAction("Index", "Home");
+				}
+
+				ViewBag.Query = query;
+				return View(searchProductList);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				
+				return RedirectToAction("Index", "Home");
+			}
+		}
+
 		[HttpGet]
 		[AllowAnonymous]
 		public async Task<IActionResult> Details(int? id)

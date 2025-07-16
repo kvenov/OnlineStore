@@ -8,6 +8,8 @@ namespace OnlineStore.Services.Core.Interfaces
 	{
 		Task<IEnumerable<AllProductListViewModel>> GetAllProductsAsync();
 
+		Task<SearchProductListViewModel> GetAllProductsAsync(string? query);
+
 		Task<AllProductListViewModel> GetProductByIdAsync(int id);
 
 		Task<ProductDetailsViewModel?> GetProductDetailsByIdAsync(int? productId, string? userId);

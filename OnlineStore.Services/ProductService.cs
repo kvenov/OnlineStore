@@ -360,6 +360,54 @@ namespace OnlineStore.Services.Core
 			return searchedProducts;
 		}
 
+		public async Task<SearchProductListViewModel> GetAllProductsAsync(string? query)
+		{
+			SearchProductListViewModel searchProductList = new SearchProductListViewModel();
+
+			if (!string.IsNullOrWhiteSpace(query))
+			{
+				IEnumerable<AllProductListViewModel> productList = await this._repository
+					.GetAllAttached()
+					.AsNoTracking()
+					.Where(p => p.Name.ToLower().Contains(query.Trim().ToLower()) ||
+								p.Description.ToLower().Contains(query.Trim().ToLower()))
+					.Select(p => new AllProductListViewModel()
+					{
+						Id = p.Id,
+						Name = p.Name,
+						ImageUrl = p.ImageUrl,
+						Description = p.Description,
+						Rating = (float)p.AverageRating,
+						Price = p.Price
+					})
+					.ToListAsync();
+
+				var parentCategory = await this._repository
+					.GetAllAttached()
+					.AsNoTracking()
+					.Include(p => p.Category)
+						.ThenInclude(c => c.ParentCategory)
+					.Where(p => p.Name.ToLower().Contains(query.Trim().ToLower()) ||
+								p.Description.ToLower().Contains(query.Trim().ToLower()))
+					.Select(p => p.Category.ParentCategory)
+					.FirstOrDefaultAsync();
+
+				List<string> subCategories = parentCategory?.Subcategories
+					.Select(sc => sc.Name)
+					.Distinct()
+					.ToList() ?? new List<string>();
+
+
+				searchProductList = new SearchProductListViewModel()
+				{
+					SubCategories = subCategories,
+					Products = productList ?? new List<AllProductListViewModel>()
+				};
+			}
+
+			return searchProductList;
+		}
+
 		private static IEnumerable<string> GetSizesForCategory(string categoryName)
 		{
 			return categoryName.Trim().ToLower() switch

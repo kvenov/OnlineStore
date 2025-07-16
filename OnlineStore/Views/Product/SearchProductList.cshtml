@@ -1,0 +1,171 @@
+﻿@using OnlineStore.Web.ViewModels.Product
+@model SearchProductListViewModel
+
+@{
+    string query = ViewBag.Query.ToString();
+    int totalCount = Model.Products.Count();
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+	<link rel="stylesheet" href="~/css/Product/searchProductList.css" asp-append-version="true"/>
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Filters -->
+        <aside class="col-md-3 filter-section">
+            <div class="filters-panel">
+                <!-- Gender Filter -->
+                <div class="mb-3">
+                    <h5 class="d-flex justify-content-between" onclick="toggleFilter(this)">Gender <i class="bi bi-chevron-right arrow-icon"></i></h5>
+                    <div class="filter-content">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="Men" id="genderMen">
+                            <label class="form-check-label" for="genderMen">Male</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="Women" id="genderWomen">
+                            <label class="form-check-label" for="genderWomen">Female</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="Unisex" id="genderUnisex">
+                            <label class="form-check-label" for="genderUnisex">Unisex</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Price Filter -->
+                <div class="mb-3">
+                    <h5 onclick="toggleFilter(this)">Shop By Price <i class="bi bi-chevron-right arrow-icon"></i></h5>
+                    <div class="filter-content">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="price" id="under100" value="under100">
+                            <label class="form-check-label" for="under100">Under $99.99</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="price" id="over100" value="over100">
+                            <label class="form-check-label" for="over100">Over $100</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Color Filter -->
+                <div class="mb-3">
+                    <h5 onclick="toggleFilter(this)">Color <i class="bi bi-chevron-right arrow-icon"></i></h5>
+                    <div class="filter-content">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="Black" id="colorBlack">
+                            <label class="form-check-label" for="colorBlack">Black</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="White" id="colorWhite">
+                            <label class="form-check-label" for="colorWhite">White</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="Red" id="colorRed">
+                            <label class="form-check-label" for="colorRed">Red</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Filter (based on query) -->
+                @if (Model.SubCategories.Any())
+                {
+                    <div class="mb-3">
+                        <h5 onclick="toggleFilter(this)">By Category <i class="bi bi-chevron-right arrow-icon"></i></h5>
+                        <div class="filter-content">
+                            @foreach (var subCategory in Model.SubCategories)
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="@subCategory">
+                                    <label class="form-check-label">@subCategory</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </aside>
+
+        <!-- Product Grid -->
+        <div class="col-md-9 mb-5">
+            <div class="mb-4">
+                <h4>Search results for "<strong>@query</strong>" (@totalCount)</h4>
+            </div>
+
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                @foreach (var product in Model.Products)
+                {
+                    <div class="col">
+                        <div class="card h-100 shadow-sm border-0">
+                            <img src="@Url.Content(product.ImageUrl)" class="card-img-top" alt="@product.Name" style="height: 220px; object-fit: cover;">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">@product.Name</h5>
+
+                                <!-- Product Rating -->
+                                <div class="mb-2 text-warning">
+                                    @{
+                                        int fullStars = (int)Math.Floor(product.Rating);
+                                        bool halfStar = product.Rating % 1 >= 0.5;
+                                        int emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+                                    }
+                                    @for (int i = 0; i < fullStars; i++)
+                                    {
+                                        <i class="bi bi-star-fill"></i>
+                                    }
+                                    @if (halfStar)
+                                    {
+                                        <i class="bi bi-star-half"></i>
+                                    }
+                                    @for (int i = 0; i < emptyStars; i++)
+                                    {
+                                        <i class="bi bi-star"></i>
+                                    }
+                                </div>
+
+                                <p class="card-text text-muted">@product.Price.ToString("C")</p>
+
+                                <div class="d-flex justify-content-between align-items-center gap-2 mt-auto">
+                                    <a href="@Url.Action("Details", "Product", new { id = product.Id })" class="btn btn-outline-primary btn-sm">
+                                        View Details
+                                    </a>
+
+                                    <div class="added-to-cart js-added-to-cart-@product.Id">
+                                        <i class="bi bi-heart-fill me-2"></i>
+                                        Added to Favorites
+                                    </div>
+
+                                    <div class="d-flex gap-2">
+                                        <button class="expand-button btn btn-outline-danger btn-sm" onclick="addToWishlist(@product.Id)">
+                                            <i class="bi bi-heart me-1"></i>
+                                            <span class="btn-label">Favorites</span>
+                                        </button>
+                                        <button class="expand-button btn btn-outline-success btn-sm">
+                                            <i class="bi bi-cart-plus me-1"></i>
+                                            <span class="btn-label">Add to Cart</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function toggleFilter(header) {
+            header.classList.toggle('filter-active');
+            header.nextElementSibling.classList.toggle('filter-content');
+        }
+
+        // Placeholder: Dynamically filter products via JS or AJAX (implement if needed)
+    </script>
+}
