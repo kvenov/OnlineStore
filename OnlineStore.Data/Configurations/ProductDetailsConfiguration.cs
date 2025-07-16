@@ -373,6 +373,156 @@ namespace OnlineStore.Data.Configurations
 					Fit = "Athletic",
 					Style = "Training",
 					ProductId = 30
+				},
+				new ProductDetails
+				{
+					Id = 29,
+					Material = "Cotton",
+					Color = "Black",
+					Gender = "Female",
+					Size = "S",
+					SizeGuideUrl = "https://www.nike.com/size-fit",
+					CountryOfOrigin = "Vietnam",
+					CareInstructions = "Machine wash cold",
+					Weight = 0.25m,
+					Fit = "Relaxed",
+					Style = "Casual",
+					ProductId = 31
+				},
+				new ProductDetails
+				{
+					Id = 30,
+					Material = "Polyester",
+					Color = "White",
+					Gender = "Female",
+					Size = "M",
+					SizeGuideUrl = "https://www.adidas.com/size-chart",
+					CountryOfOrigin = "Cambodia",
+					CareInstructions = "Wash with similar colors",
+					Weight = 0.20m,
+					Fit = "Athletic",
+					Style = "Sport",
+					ProductId = 32
+				},
+				new ProductDetails
+				{
+					Id = 31,
+					Material = "Denim",
+					Color = "Blue",
+					Gender = "Female",
+					Size = "M",
+					SizeGuideUrl = "https://www.levi.com/size-guide",
+					CountryOfOrigin = "Mexico",
+					CareInstructions = "Wash inside out",
+					Weight = 0.60m,
+					Fit = "Skinny",
+					Style = "Streetwear",
+					ProductId = 33
+				},
+				new ProductDetails
+				{
+					Id = 32,
+					Material = "Cotton Blend",
+					Color = "Pink",
+					Gender = "Female",
+					Size = "L",
+					SizeGuideUrl = "https://www.nike.com/size-fit",
+					CountryOfOrigin = "Indonesia",
+					CareInstructions = "Do not bleach",
+					Weight = 0.50m,
+					Fit = "Loose",
+					Style = "Lounge",
+					ProductId = 34
+				},
+				new ProductDetails
+				{
+					Id = 33,
+					Material = "Mesh",
+					Color = "Grey",
+					Gender = "Female",
+					Size = "38",
+					SizeGuideUrl = "https://www.nike.com/size-fit",
+					CountryOfOrigin = "China",
+					CareInstructions = "Clean with soft brush",
+					Weight = 0.70m,
+					Fit = "Regular",
+					Style = "Running",
+					ProductId = 35
+				},
+				new ProductDetails
+				{
+					Id = 34,
+					Material = "Cotton",
+					Color = "Peach",
+					Gender = "Female",
+					Size = "S",
+					SizeGuideUrl = "https://www.adidas.com/size-chart",
+					CountryOfOrigin = "Bangladesh",
+					CareInstructions = "Tumble dry low",
+					Weight = 0.22m,
+					Fit = "Regular",
+					Style = "Casual",
+					ProductId = 36
+				},
+				new ProductDetails
+				{
+					Id = 35,
+					Material = "Polyester",
+					Color = "Black",
+					Gender = "Female",
+					Size = "M",
+					SizeGuideUrl = "https://www.nike.com/size-fit",
+					CountryOfOrigin = "Vietnam",
+					CareInstructions = "Do not iron",
+					Weight = 0.30m,
+					Fit = "Athletic",
+					Style = "Training",
+					ProductId = 37
+				},
+				new ProductDetails
+				{
+					Id = 36,
+					Material = "Denim",
+					Color = "Dark Blue",
+					Gender = "Female",
+					Size = "M",
+					SizeGuideUrl = "https://www.levi.com/size-guide",
+					CountryOfOrigin = "India",
+					CareInstructions = "Cold wash only",
+					Weight = 0.65m,
+					Fit = "Super Skinny",
+					Style = "Urban",
+					ProductId = 38
+				},
+				new ProductDetails
+				{
+					Id = 37,
+					Material = "Synthetic Leather",
+					Color = "White",
+					Gender = "Female",
+					Size = "39",
+					SizeGuideUrl = "https://www.adidas.com/size-chart",
+					CountryOfOrigin = "Indonesia",
+					CareInstructions = "Wipe clean",
+					Weight = 0.75m,
+					Fit = "Regular",
+					Style = "Lifestyle",
+					ProductId = 39
+				},
+				new ProductDetails
+				{
+					Id = 38,
+					Material = "Nylon",
+					Color = "Black",
+					Gender = "Female",
+					Size = "M",
+					SizeGuideUrl = "https://www.nike.com/size-fit",
+					CountryOfOrigin = "Vietnam",
+					CareInstructions = "Hand wash only",
+					Weight = 0.45m,
+					Fit = "Relaxed",
+					Style = "Windbreaker",
+					ProductId = 40
 				}
 			};
 		}
