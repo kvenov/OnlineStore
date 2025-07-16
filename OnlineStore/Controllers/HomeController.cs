@@ -83,14 +83,16 @@ namespace OnlineStore.Controllers
         {
 
             switch (statusCode){
-                case 401:
+                case 400:
+                    return View("BadRequestError");
+				case 401:
                     return View("UnauthorizedError");
                 case 404:
                     return View("NotFoundError");
 				case 403:
 					return View("NotFoundError");
 				default:
-					return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+					return View("InternalServerError");
 			}
         }
     }

@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "InternalServerError";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/errors.css" />
+}
+
+<div class="error-universal-container">
+    <div class="error-universal-icon">⚠️</div>
+    <h1 class="error-universal-code">Error <span id="error-universal-code">500</span></h1>
+    <p class="error-universal-title" id="error-universal-title">Internal Server Error</p>
+    <p class="error-universal-description" id="error-universal-description">
+        Something went wrong on our side.<br>
+        Please try again later or contact support.
+    </p>
+    <div class="error-universal-actions">
+        <a href="/" class="error-universal-home">Go Home</a>
+        <a href="javascript:history.back()" class="error-universal-back">Go Back</a>
+    </div>
+</div>

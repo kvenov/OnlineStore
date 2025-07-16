@@ -85,3 +85,143 @@
     background-color: #ffffff;
     color: #0f0f0f;
 }
+
+.error-400-container {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #e0e0e0;
+    background-color: #121212;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.03);
+}
+
+.error-400-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.error-400-code {
+    font-size: 6rem;
+    color: #ffffff;
+    font-weight: bold;
+    letter-spacing: -2px;
+}
+
+.error-400-title {
+    font-size: 1.75rem;
+    margin-top: 1rem;
+    color: #cccccc;
+}
+
+.error-400-description {
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    color: #888888;
+    line-height: 1.5;
+}
+
+.error-400-actions {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.error-400-home {
+    padding: 0.75rem 1.5rem;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    border: 1px solid #444444;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.error-400-home:hover {
+    background-color: #ffffff;
+    color: #121212;
+}
+
+.error-400-back {
+    padding: 0.75rem 1.5rem;
+    color: #999999;
+    border-radius: 8px;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+.error-400-back:hover {
+    color: #ffffff;
+}
+
+.error-universal-container {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #e0e0e0;
+    background-color: #121212;
+    border-radius: 12px;
+    margin: 0 auto;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.04);
+}
+
+.error-universal-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.error-universal-code {
+    font-size: 5rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin: 0.25rem 0;
+    letter-spacing: -1px;
+}
+
+.error-universal-title {
+    font-size: 1.75rem;
+    color: #cccccc;
+    margin-top: 0.5rem;
+}
+
+.error-universal-description {
+    font-size: 1rem;
+    color: #888888;
+    margin-top: 0.75rem;
+    line-height: 1.6;
+}
+
+.error-universal-actions {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.error-universal-home {
+    padding: 0.75rem 1.5rem;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    border: 1px solid #444444;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.error-universal-home:hover {
+    background-color: #ffffff;
+    color: #121212;
+}
+
+.error-universal-back {
+    padding: 0.75rem 1.5rem;
+    color: #999999;
+    border-radius: 8px;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+.error-universal-back:hover {
+    color: #ffffff;
+}
