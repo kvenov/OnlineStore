@@ -126,7 +126,6 @@ namespace OnlineStore.Data.Seeding
 
 						Address address = new Address()
 						{
-							FullName = addressDto.FullName,
 							Street = addressDto.Street,
 							City = addressDto.City,
 							Country = addressDto.Country,

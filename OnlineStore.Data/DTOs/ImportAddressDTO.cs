@@ -9,11 +9,6 @@ namespace OnlineStore.Data.DTOs
 	{
 
 		[Required]
-		[XmlElement(nameof(FullName))]
-		[MaxLength(AddressFullNameMaxLength)]
-		public string FullName { get; set; } = null!;
-
-		[Required]
 		[XmlElement(nameof(Street))]
 		[MaxLength(AddressStreetMaxLength)]
 		public string Street { get; set; } = null!;

@@ -14,12 +14,6 @@ namespace OnlineStore.Data.Configurations
 				.HasKey(p => p.Id);
 
 			entity
-				.Property(p => p.FullName)
-				.IsRequired()
-				.IsUnicode()
-				.HasMaxLength(AddressFullNameMaxLength);
-
-			entity
 				.Property(p => p.Street)
 				.IsRequired()
 				.IsUnicode()
@@ -57,6 +51,13 @@ namespace OnlineStore.Data.Configurations
 				.Property(p => p.IsShippingAddress)
 				.IsRequired();
 
+			entity
+				.Property(a => a.UserId)
+				.IsRequired(false);
+
+			entity
+				.Property(a => a.GuestId)
+				.IsRequired(false);
 
 			entity
 				.HasOne(a => a.User)
@@ -68,8 +69,11 @@ namespace OnlineStore.Data.Configurations
 				.HasIndex(p => p.UserId);
 
 			entity
-				.HasQueryFilter(a => a.User.IsDeleted == false);
+				.HasIndex(p => p.GuestId);
 
+			entity
+				.HasQueryFilter(a => (a.User != null && !a.User.IsDeleted) ||
+									 (a.User == null && a.GuestId != null));
 		}
 	}
 }

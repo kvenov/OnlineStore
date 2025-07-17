@@ -289,11 +289,6 @@
 		public static class Address
 		{
 			/// <summary>
-			/// The maximum length of the address's full name.
-			/// </summary>
-			public const int AddressFullNameMaxLength = 100;
-
-			/// <summary>
 			/// The maximum length of the address's street.
 			/// </summary>
 			public const int AddressStreetMaxLength = 200;

@@ -11,9 +11,6 @@ namespace OnlineStore.Data.Models
 		[Comment("The Address identifier")]
 		public int Id { get; set; }
 
-		[Comment("The Address Fullname")]
-		public string FullName { get; set; } = null!;
-
 		[Comment("The Address Street")]
 		public string Street { get; set; } = null!;
 
@@ -35,10 +32,13 @@ namespace OnlineStore.Data.Models
 		[Comment("The Address additional identifier")]
 		public bool IsShippingAddress { get; set; }
 
-		public string UserId { get; set; } = null!;
+		public string? UserId { get; set; }
 
 		[Comment("The Address User")]
-		public virtual ApplicationUser User { get; set; } = null!;
+		public virtual ApplicationUser? User { get; set; }
+
+		[Comment("Unique guest identifier for address")]
+		public string? GuestId { get; set; }
 
 		[Comment("The Orders that use this address as Shipping Address")]
 		public virtual ICollection<Order> ShippingAddressOrders { get; set; } =
