@@ -1,0 +1,29 @@
+﻿@using OnlineStore.Web.ViewModels.Checkout.Partials
+@model ShippingOptionsViewModel
+
+<section class="mb-4">
+    <h2 class="h5 mb-3">Shipping Method</h2>
+
+    <div class="alert alert-info">
+        <strong>Members enjoy free standard delivery.</strong><br />
+        <small>Sign in to get free shipping and faster checkout.</small>
+    </div>
+
+    <div class="row">
+        @foreach (var option in Model.Options)
+        {
+            <div class="col-md-6 mb-3">
+                <label class="form-check-label card p-3 h-100 cursor-pointer">
+                    <input type="radio" name="SelectedShippingOption" value="@option.Id" class="form-check-input me-2"
+                           @(Model.SelectedShippingOptionId == option.Id ? "checked" : "") />
+                    <div>
+                        <div class="fw-semibold">@option.Name</div>
+                        <div>@option.Description</div>
+                        <small class="text-muted">@option.DateRange</small><br />
+                        <strong class="text-success">@option.Price.ToString("C")</strong>
+                    </div>
+                </label>
+            </div>
+        }
+    </div>
+</section>

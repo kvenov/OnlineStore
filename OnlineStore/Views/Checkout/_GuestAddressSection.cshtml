@@ -1,0 +1,70 @@
+﻿@using OnlineStore.Web.ViewModels.Checkout.Partials
+@model GuestAddressViewModel
+
+<section class="mb-5">
+    <h2 class="h5 mb-4">Shipping & Billing Address</h2>
+
+    <form id="guest-address-form">
+        <div class="row g-3 mb-3">
+            <div class="col-md-6">
+                <label asp-for="FullName" class="form-label">Full Name</label>
+                <input asp-for="FullName" class="form-control" placeholder="Full Name" required />
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Email" class="form-label">Email</label>
+                <input asp-for="Email" type="email" class="form-control" placeholder="Email" required />
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="ShippingAddress.PhoneNumber" class="form-label">Phone Number</label>
+                <input asp-for="ShippingAddress.PhoneNumber" class="form-control" placeholder="Phone Number" required />
+            </div>
+            <div class="col-md-6">
+                <label asp-for="ShippingAddress.Street" class="form-label">Street</label>
+                <input asp-for="ShippingAddress.Street" class="form-control" placeholder="Street" required />
+            </div>
+            <div class="col-md-4">
+                <label asp-for="ShippingAddress.City" class="form-label">City</label>
+                <input asp-for="ShippingAddress.City" class="form-control" placeholder="City" required />
+            </div>
+            <div class="col-md-4">
+                <label asp-for="ShippingAddress.ZipCode" class="form-label">Zip Code</label>
+                <input asp-for="ShippingAddress.ZipCode" class="form-control" placeholder="Zip Code" required />
+            </div>
+            <div class="col-md-4">
+                <label asp-for="ShippingAddress.Country" class="form-label">Country</label>
+                <input asp-for="ShippingAddress.Country" class="form-control" placeholder="Country" required />
+            </div>
+        </div>
+
+        <div class="form-check mb-4">
+            <input class="form-check-input" type="checkbox" id="sameAsShipping" checked />
+            <label class="form-check-label" for="sameAsShipping">
+                Billing address is the same as shipping address
+            </label>
+        </div>
+
+        <div id="billing-address-section" class="row g-3" style="display:none;">
+            <div class="col-md-6">
+                <label asp-for="BillingAddress.BillingPhoneNumber" class="form-label">Billing Phone Number</label>
+                <input asp-for="BillingAddress.BillingPhoneNumber" class="form-control" placeholder="Billing Phone Number" />
+            </div>
+            <div class="col-md-6">
+                <label asp-for="BillingAddress.BillingStreet" class="form-label">Billing Street</label>
+                <input asp-for="BillingAddress.BillingStreet" class="form-control" placeholder="Billing Street" />
+            </div>
+            <div class="col-md-4">
+                <label asp-for="BillingAddress.BillingCity" class="form-label">Billing City</label>
+                <input asp-for="BillingAddress.BillingCity" class="form-control" placeholder="Billing City" />
+            </div>
+            <div class="col-md-4">
+                <label asp-for="BillingAddress.BillingZipCode" class="form-label">Billing Zip Code</label>
+                <input asp-for="BillingAddress.BillingZipCode" class="form-control" placeholder="Billing Zip Code" />
+            </div>
+            <div class="col-md-4">
+                <label asp-for="BillingAddress.BillingCountry" class="form-label">Billing Country</label>
+                <input asp-for="BillingAddress.BillingCountry" class="form-control" placeholder="Billing Country" />
+            </div>
+        </div>
+    </form>
+</section>

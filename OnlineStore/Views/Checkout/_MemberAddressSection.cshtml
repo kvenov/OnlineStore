@@ -1,0 +1,66 @@
+﻿@using OnlineStore.Web.ViewModels.Checkout.Partials
+@model MemberAddressViewModel
+
+<section class="mb-5">
+    <h2 class="h5 mb-3">Select Shipping Address</h2>
+
+    @if (Model.SavedAddresses.Any())
+    {
+        <div class="row g-3">
+            @foreach (var address in Model.SavedAddresses)
+            {
+                <div class="col-md-6">
+                    <label class="card p-3 h-100 shadow-sm position-relative cursor-pointer">
+                        <input type="radio"
+                               name="SelectedShippingAddressId"
+                               value="@address.Id"
+                               class="form-check-input position-absolute top-0 end-0 m-3"
+                               @(Model.SelectedShippingAddressId == address.Id ? "checked" : "") />
+
+                        <div>
+                            <div class="fw-bold">@address.Street</div>
+                            <div>@address.City, @address.ZipCode</div>
+                            <div>@address.Country</div>
+                            <div><small>Phone: @address.PhoneNumber</small></div>
+                        </div>
+                    </label>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning">
+            No saved addresses found. Please add a new shipping address below.
+        </div>
+    }
+
+    <hr class="my-4" />
+
+    <h3 class="h6 mb-3">Add New Shipping Address</h3>
+
+    <form>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label asp-for="NewShippingAddress.Street" class="form-label">Street</label>
+                <input asp-for="NewShippingAddress.Street" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label asp-for="NewShippingAddress.City" class="form-label">City</label>
+                <input asp-for="NewShippingAddress.City" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label asp-for="NewShippingAddress.Country" class="form-label">Country</label>
+                <input asp-for="NewShippingAddress.Country" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label asp-for="NewShippingAddress.ZipCode" class="form-label">Zip Code</label>
+                <input asp-for="NewShippingAddress.ZipCode" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label asp-for="NewShippingAddress.PhoneNumber" class="form-label">Phone Number</label>
+                <input asp-for="NewShippingAddress.PhoneNumber" class="form-control" />
+            </div>
+        </div>
+    </form>
+</section>

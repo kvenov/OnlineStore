@@ -1,0 +1,38 @@
+﻿@using OnlineStore.Web.ViewModels.Checkout.Partials
+@model OrderSummaryViewModel
+
+<aside id="order-summary" class="card shadow-sm p-4 sticky-top" style="top: 20px; max-height: 90vh; overflow-y: auto;">
+    <h2 class="h5 fw-bold mb-4">Order Summary</h2>
+
+    <div class="mb-4 small text-muted">
+        <div class="d-flex justify-content-between mb-2">
+            <span>Subtotal</span>
+            <span>@Model.Subtotal.ToString("C")</span>
+        </div>
+        <div class="d-flex justify-content-between mb-2">
+            <span>Delivery</span>
+            <span>@(Model.DeliveryCost == 0 ? "Free" : Model.DeliveryCost.ToString("C"))</span>
+        </div>
+        <div class="d-flex justify-content-between fw-semibold text-dark">
+            <span>Total</span>
+            <span>@Model.Total.ToString("C")</span>
+        </div>
+    </div>
+
+    <hr />
+    <h6 class="fw-semibold mb-3">Items</h6>
+    <div class="vstack gap-3">
+        @foreach (var item in Model.Products)
+        {
+            <div class="d-flex gap-3 align-items-start">
+                <img src="@item.ImageUrl" alt="@item.Name" class="rounded border" style="width: 64px; height: 64px; object-fit: cover;" />
+                <div class="flex-grow-1 small">
+                    <div class="fw-semibold">@item.Name</div>
+                    <div>Size: @item.Size</div>
+                    <div>Qty: @item.Quantity</div>
+                    <div class="fw-semibold mt-1">@item.TotalPrice.ToString("C")</div>
+                </div>
+            </div>
+        }
+    </div>
+</aside>

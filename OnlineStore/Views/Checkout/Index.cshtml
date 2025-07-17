@@ -1,0 +1,44 @@
+﻿@using OnlineStore.Web.ViewModels.Checkout;
+@model CheckoutViewModel
+
+@{
+    ViewData["Title"] = "Checkout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Checkout/checkout.css" asp-append-version="true" />
+}
+
+<div class="checkout-container row gx-5">
+    <div class="col-lg-8">
+        @if (Model.UserId != null)
+        {
+            <div class="section-card mb-4">
+                <partial name="_MemberAddressSection" model="Model.MemberAddress" />
+            </div>
+        }
+        else
+        {
+            <div class="section-card mb-4">
+                <partial name="_GuestAddressSection" model="Model.GuestAddress" />
+            </div>
+        }
+
+        <div class="section-card mb-4">
+            <partial name="_ShippingSection" model="Model.Shipping" />
+        </div>
+
+        <div class="section-card mb-4">
+            <partial name="_PaymentSection" model="Model.Payment" />
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <partial name="_OrderSummarySection" model="Model.Summary" />
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/Checkout/checkout.js" asp-append-version="true"></script>
+}

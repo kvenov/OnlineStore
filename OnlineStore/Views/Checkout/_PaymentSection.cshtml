@@ -1,0 +1,86 @@
+﻿@using OnlineStore.Web.ViewModels.Checkout.Partials
+@model PaymentMethodViewModel
+
+<section class="mb-4">
+    <h2 class="h5 mb-3">Payment Method</h2>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="payment-option-card position-relative d-block">
+                <input type="radio" name="SelectedPaymentOption" value="0" class="form-check-input position-absolute top-0 start-0 m-3"
+                       @(Model.SelectedPaymentOption == PaymentMethodViewModel.PaymentOption.CreditCard ? "checked" : "") />
+                <img src="/img/creditcard.svg" alt="Credit Card" class="w-100 h-100 object-fit-cover" />
+                <div class="payment-option-label">
+                    Credit Card
+                </div>
+            </label>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label class="payment-option-card position-relative d-block">
+                <input type="radio" name="SelectedPaymentOption" value="1" class="form-check-input position-absolute top-0 start-0 m-3"
+                       @(Model.SelectedPaymentOption == PaymentMethodViewModel.PaymentOption.PayPal ? "checked" : "") />
+                <img src="/img/paypal.svg" alt="PayPal" class="w-100 h-100 object-fit-cover" />
+                <div class="payment-option-label">
+                    PayPal (Not supported yet)
+                </div>
+            </label>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label class="payment-option-card position-relative d-block">
+                <input type="radio" name="SelectedPaymentOption" value="4" class="form-check-input position-absolute top-0 start-0 m-3"
+                       @(Model.SelectedPaymentOption == PaymentMethodViewModel.PaymentOption.GooglePay ? "checked" : "") />
+                <img src="/img/googlepay.svg" alt="Google Pay" class="w-100 h-100 object-fit-cover" />
+                <div class="payment-option-label">
+                    Google Pay (Not supported yet)
+                </div>
+            </label>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label class="payment-option-card position-relative d-block">
+                <input type="radio" name="SelectedPaymentOption" value="5" class="form-check-input position-absolute top-0 start-0 m-3"
+                       @(Model.SelectedPaymentOption == PaymentMethodViewModel.PaymentOption.CashOnDelivery ? "checked" : "") />
+                <img src="/img/cashondelivery.svg" alt="Cash on Delivery" class="w-100 h-100 object-fit-cover" />
+                <div class="payment-option-label">
+                    Cash on Delivery
+                </div>
+            </label>
+        </div>
+
+    </div>
+
+    <div id="creditCardDetails" class="mt-4 @(Model.SelectedPaymentOption != PaymentMethodViewModel.PaymentOption.CreditCard ? "d-none" : "")">
+        <h3 class="h6">Card Details</h3>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Name on Card</label>
+                <input asp-for="CreditCardDetails.NameOnCard" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Card Number</label>
+                <input asp-for="CreditCardDetails.CardNumber" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Expiry Month</label>
+                <input asp-for="CreditCardDetails.ExpMonth" type="number" class="form-control" min="1" max="12" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Expiry Year</label>
+                <input asp-for="CreditCardDetails.ExpYear" type="number" class="form-control" />
+            </div>
+            <div class="col-12">
+                <label class="form-label">CVV</label>
+                <input asp-for="CreditCardDetails.CVV" type="password" maxlength="4" class="form-control" />
+            </div>
+        </div>
+    </div>
+
+    <div class="d-grid mt-4">
+        <button type="submit" class="btn btn-primary btn-lg fw-bold">
+            Place Order
+        </button>
+    </div>
+
+</section>
