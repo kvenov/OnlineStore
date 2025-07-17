@@ -15,7 +15,19 @@ namespace OnlineStore.Data.Configurations
 
 			entity
 				.Property(p => p.UserId)
-				.IsRequired(true);
+				.IsRequired(false);
+
+			entity
+				.Property(p => p.GuestId)
+				.IsRequired(false);
+
+			entity
+				.Property(p => p.GuestEmail)
+				.IsRequired(false);
+
+			entity
+				.Property(p => p.GuestName)
+				.IsRequired(false);
 
 			entity
 				.Property(p => p.ShoppingCartId)
@@ -94,7 +106,8 @@ namespace OnlineStore.Data.Configurations
 
 			entity
 				.HasQueryFilter(c => (!c.IsDeleted) &&
-									 (!c.User.IsDeleted) &&
+									 ((c.User != null && !c.User.IsDeleted) ||
+									  (c.User == null && c.GuestId != null)) &&
 									 (!c.PaymentMethod.IsDeleted) &&
 									 (c.ShippingAddress == null || !c.ShippingAddress.IsDeleted ||
 									  c.BillingAddress == null || !c.BillingAddress.IsDeleted));

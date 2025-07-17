@@ -11,10 +11,19 @@ namespace OnlineStore.Data.Models
 		[Comment("Checkout id")]
 		public int Id { get; set; }
 
-		public string UserId { get; set; } = null!;
+		public string? UserId { get; set; }
 
 		[Comment("User who started the checkout")]
-		public virtual ApplicationUser User { get; set; } = null!;
+		public virtual ApplicationUser? User { get; set; }
+
+		[Comment("Unique guest identifier for checkout")]
+		public string? GuestId { get; set; }
+
+		[Comment("Contact email (for guest)")]
+		public string? GuestEmail { get; set; }
+
+		[Comment("Full name (for guest)")]
+		public string? GuestName { get; set; }
 
 		public int ShoppingCartId { get; set; }
 
