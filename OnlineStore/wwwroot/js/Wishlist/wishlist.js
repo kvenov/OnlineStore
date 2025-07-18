@@ -140,7 +140,7 @@ function showIsRemovedFromWishlist(itemId) {
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        const response = await fetch(`/api/baseapi/auth`, {
+        const response = await fetch(`/api/authorizationapi/auth`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -149,12 +149,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         if (response.ok) {
-            const text = await response.text();
-            console.log("Raw response:", text);
-
             const data = await response.json();
 
-            if (data.IsAuthenticated) {
+            if (data.isAuthenticated) {
                 removeFromWishlist();
                 setWishlistCount();
             }
