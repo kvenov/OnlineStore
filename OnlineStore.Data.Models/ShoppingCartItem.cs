@@ -29,5 +29,8 @@ namespace OnlineStore.Data.Models
 
 		[Comment("Shopping cart item product")]
 		public virtual Product Product { get; set; } = null!;
+
+		[Comment("Shopping cart item size")]
+		public string ProductSize { get; set; } = null!;
 	}
 }

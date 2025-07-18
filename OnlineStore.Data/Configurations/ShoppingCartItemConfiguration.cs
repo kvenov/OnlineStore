@@ -29,6 +29,10 @@ namespace OnlineStore.Data.Configurations
 				.IsRequired();
 
 			entity
+				.Property(p => p.ProductSize)
+				.IsRequired(true);
+
+			entity
 				.HasOne(sci => sci.ShoppingCart)
 				.WithMany(sc => sc.ShoppingCartItems)
 				.HasForeignKey(sci => sci.ShoppingCartId)
