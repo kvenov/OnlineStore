@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OnlineStore.Data.Models;
 using OnlineStore.Data.Repository.Interfaces;
@@ -52,6 +51,7 @@ namespace OnlineStore.Services.Core
 												ProductId = sci.ProductId,
 												ProductName = sci.Product.Name,
 												ProductImageUrl = sci.Product.ImageUrl,
+												ProductSize = sci.ProductSize,
 												UnitPrice = sci.Price,
 												Quantity = sci.Quantity,
 											})
@@ -97,6 +97,7 @@ namespace OnlineStore.Services.Core
 												ProductId = sci.ProductId,
 												ProductName = sci.Product.Name,
 												ProductImageUrl = sci.Product.ImageUrl,
+												ProductSize = sci.ProductSize,
 												UnitPrice = sci.Price,
 												Quantity = sci.Quantity,
 											})
@@ -140,57 +141,56 @@ namespace OnlineStore.Services.Core
 			return 0;
 		}
 
-		public async Task<bool> AddToCartForUserAsync(int? productId, string? userId)
+		//TODO: Refactor this method so that if the productSize is invalid for the current product category and for the valid app sizes!
+		public async Task<bool> AddToCartForUserAsync(int? productId, string? productSize, string? userId)
 		{
 			bool isAdded = false;
 
-			if (userId != null)
+			if ((productId != null) && (userId != null) && (productSize != null))
 			{
-				if (productId != null)
+				Product? product = await this._productRepository
+							.GetByIdAsync(productId.Value);
+
+				ApplicationUser? user = await this._userManager
+							.FindByIdAsync(userId);
+
+				if ((product != null) && (user != null))
 				{
-					Product? product = await this._productRepository
-								.GetByIdAsync(productId.Value);
+					ShoppingCart? shoppingCart = await this._shoppingCartRepository
+								.GetAllAttached()
+								.Include(w => w.ShoppingCartItems)
+								.SingleOrDefaultAsync(sc => sc.UserId == user.Id);
 
-					ApplicationUser? user = await this._userManager
-								.FindByIdAsync(userId);
-
-					if ((product != null) && (user != null))
+					if (shoppingCart != null)
 					{
-						ShoppingCart? shoppingCart = await this._shoppingCartRepository
-									.GetAllAttached()
-									.Include(w => w.ShoppingCartItems)
-									.SingleOrDefaultAsync(sc => sc.UserId == user.Id);
+						ShoppingCartItem? existingShoppingCartItem = await this._shoppingCartRepository
+									.GetShoppingCartItemAsync(sci => sci.ShoppingCartId == shoppingCart.Id && sci.ProductId == product.Id);
 
-						if (shoppingCart != null)
+						if (existingShoppingCartItem != null)
 						{
-							ShoppingCartItem? existingShoppingCartItem = await this._shoppingCartRepository
-										.GetShoppingCartItemAsync(sci => sci.ShoppingCartId == shoppingCart.Id && sci.ProductId == product.Id);
-
-							if (existingShoppingCartItem != null)
-							{
-								existingShoppingCartItem.Quantity += 1;
-							}
-							else
-							{
-								int defaultProductQuantity = 1;
-								decimal totalPrice = defaultProductQuantity * product.Price;
-
-								ShoppingCartItem newItem = new ShoppingCartItem()
-								{
-									Quantity = defaultProductQuantity,
-									Price = product.Price,
-									TotalPrice = totalPrice,
-									ShoppingCartId = shoppingCart.Id,
-									ProductId = product.Id
-								};
-
-								await this._shoppingCartRepository.AddShoppingCartItemAsync(newItem);
-								shoppingCart.ShoppingCartItems.Add(newItem);
-							}
-
-							await this._shoppingCartRepository.SaveChangesAsync();
-							isAdded = true;
+							existingShoppingCartItem.Quantity += 1;
 						}
+						else
+						{
+							int defaultProductQuantity = 1;
+							decimal totalPrice = defaultProductQuantity * product.Price;
+
+							ShoppingCartItem newItem = new ShoppingCartItem()
+							{
+								Quantity = defaultProductQuantity,
+								Price = product.Price,
+								TotalPrice = totalPrice,
+								ShoppingCartId = shoppingCart.Id,
+								ProductId = product.Id,
+								ProductSize = productSize
+							};
+
+							await this._shoppingCartRepository.AddShoppingCartItemAsync(newItem);
+							shoppingCart.ShoppingCartItems.Add(newItem);
+						}
+
+						await this._shoppingCartRepository.SaveChangesAsync();
+						isAdded = true;
 					}
 				}
 			}
@@ -198,11 +198,12 @@ namespace OnlineStore.Services.Core
 			return isAdded;
 		}
 
-		public async Task<bool> AddToCartForGuestAsync(int? productId, string? guestId)
+		//TODO: Refactor this method so that if the productSize is invalid for the current product category and for the valid app sizes!
+		public async Task<bool> AddToCartForGuestAsync(int? productId, string? productSize, string? guestId)
 		{
 			bool isAdded = false;
 
-			if ((guestId != null) && (productId != null))
+			if ((guestId != null) && (productId != null) && (productSize != null))
 			{
 				Product? product = await this._productRepository
 							.GetByIdAsync(productId.Value);
@@ -234,7 +235,8 @@ namespace OnlineStore.Services.Core
 								Price = product.Price,
 								TotalPrice = totalPrice,
 								ShoppingCartId = shoppingCart.Id,
-								ProductId = product.Id
+								ProductId = product.Id,
+								ProductSize = productSize
 							};
 
 							await this._shoppingCartRepository.AddShoppingCartItemAsync(newItem);
@@ -262,7 +264,8 @@ namespace OnlineStore.Services.Core
 							Price = product.Price,
 							TotalPrice = totalPrice,
 							ShoppingCartId = newShoppingCart.Id,
-							ProductId = product.Id
+							ProductId = product.Id,
+							ProductSize = productSize
 						};
 
 						await this._shoppingCartRepository.AddShoppingCartItemAsync(newItem);
@@ -385,6 +388,7 @@ namespace OnlineStore.Services.Core
 											ProductId = sci.ProductId,
 											ProductName = sci.Product.Name,
 											ProductImageUrl = sci.Product.ImageUrl,
+											ProductSize = sci.ProductSize,
 											UnitPrice = sci.Price,
 											Quantity = sci.Quantity,
 										})
@@ -442,6 +446,7 @@ namespace OnlineStore.Services.Core
 											ProductId = sci.ProductId,
 											ProductName = sci.Product.Name,
 											ProductImageUrl = sci.Product.ImageUrl,
+											ProductSize = sci.ProductSize,
 											UnitPrice = sci.Price,
 											Quantity = sci.Quantity,
 										})
@@ -531,6 +536,8 @@ namespace OnlineStore.Services.Core
 
 			return summaryModel;
 		}
+
+
 
 		public async Task AddNewShoppingCartAsync(ShoppingCart cart)
 		{

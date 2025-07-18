@@ -18,8 +18,8 @@ namespace OnlineStore.Web.Controllers.Api
 		}
 
 		[AllowAnonymous]
-		[HttpPost("add/{productId}")]
-		public async Task<IActionResult> AddToCart(int? productId)
+		[HttpPost("add/{productId}/{productSize}")]
+		public async Task<IActionResult> AddToCart(int? productId, string? productSize)
 		{
 
 			try
@@ -30,13 +30,13 @@ namespace OnlineStore.Web.Controllers.Api
 				if (userId != null)
 				{
 					isAdded = await this._shoppingCartService
-							.AddToCartForUserAsync(productId, userId);
+							.AddToCartForUserAsync(productId, productSize, userId);
 				}
 				else
 				{
 					string? guestId = this.GetGuestId();
 					isAdded = await this._shoppingCartService
-							.AddToCartForGuestAsync(productId, guestId);
+							.AddToCartForGuestAsync(productId, productSize, guestId);
 				}
 
 				if (isAdded)

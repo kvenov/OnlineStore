@@ -20,9 +20,9 @@ namespace OnlineStore.Services.Core.Interfaces
 
 		Task<int> GetGuestShoppingCartItemsCountAsync(string? guestId);
 
-		Task<bool> AddToCartForUserAsync(int? productId, string? userId);
+		Task<bool> AddToCartForUserAsync(int? productId, string? productSize, string? userId);
 
-		Task<bool> AddToCartForGuestAsync(int? productId, string? guestId);
+		Task<bool> AddToCartForGuestAsync(int? productId, string? productSize, string? guestId);
 
 		Task<ShoppingCartSummaryViewModel?> UpdateUserCartItemAsync(string? userId, int? quantity, int? itemId);
 

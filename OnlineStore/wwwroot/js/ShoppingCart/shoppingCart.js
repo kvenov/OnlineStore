@@ -20,7 +20,7 @@
             else {
                 const productId = addToCartButton.dataset.productId;
 
-                addToCart(productId);
+                addToCart(productId, selectedSize);
             }
         })
     }
@@ -59,9 +59,9 @@
 
 })
 
-async function addToCart(productId) {
+async function addToCart(productId, productSize) {
     try {
-        const response = await fetch(`/api/shoppingcartapi/add/${productId}`, {
+        const response = await fetch(`/api/shoppingcartapi/add/${productId}/${productSize}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
