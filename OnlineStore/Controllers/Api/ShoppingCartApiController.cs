@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using OnlineStore.Services.Core.Interfaces;
 using OnlineStore.Services.Core.DTO.ShoppingCart;
 using OnlineStore.Web.ViewModels.ShoppingCart;
+using OnlineStore.Web.ViewModels.Product;
 
 namespace OnlineStore.Web.Controllers.Api
 {
@@ -11,13 +12,17 @@ namespace OnlineStore.Web.Controllers.Api
 	public class ShoppingCartApiController : BaseApiController
 	{
 		private readonly IShoppingCartService _shoppingCartService;
+		private readonly IProductService _productService;
 
-		public ShoppingCartApiController(IShoppingCartService shoppingCartService)
+		public ShoppingCartApiController(IShoppingCartService shoppingCartService, IProductService productService)
 		{
 			this._shoppingCartService = shoppingCartService;
+			this._productService = productService;
 		}
 
 		[AllowAnonymous]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[HttpPost("add/{productId}/{productSize}")]
 		public async Task<IActionResult> AddToCart(int? productId, string? productSize)
 		{
@@ -39,9 +44,12 @@ namespace OnlineStore.Web.Controllers.Api
 							.AddToCartForGuestAsync(productId, productSize, guestId);
 				}
 
-				if (isAdded)
+				AllProductListViewModel? product = await this._productService
+							.GetProductByIdAsync(productId);
+
+				if ((isAdded) && (product != null))
 				{
-					return Ok(new {result = "The product is sucssesfuly added to the Cart"});
+					return Ok(new { product });
 				}
 				else
 				{

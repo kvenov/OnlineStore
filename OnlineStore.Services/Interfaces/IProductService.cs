@@ -10,7 +10,7 @@ namespace OnlineStore.Services.Core.Interfaces
 
 		Task<SearchProductListViewModel> GetAllProductsAsync(string? query);
 
-		Task<AllProductListViewModel> GetProductByIdAsync(int id);
+		Task<AllProductListViewModel?> GetProductByIdAsync(int? id);
 
 		Task<ProductDetailsViewModel?> GetProductDetailsByIdAsync(int? productId, string? userId);
 
@@ -25,5 +25,7 @@ namespace OnlineStore.Services.Core.Interfaces
 		Task<IEnumerable<AllProductListViewModel>> GetFilteredProductsAsync(string? gender, string? category, string? subCategory);
 
 		Task<IEnumerable<GetSearchedProductsDto>> GetSearchedProductsAsync(string? query, int maxResults = 5);
+
+		Task<IEnumerable<string>?> GetProductSizesAsync(int? productId);
 	}
 }

@@ -46,9 +46,13 @@ namespace OnlineStore.Services.Core
 			return productList;
 		}
 
-		public async Task<AllProductListViewModel> GetProductByIdAsync(int id)
+		public async Task<AllProductListViewModel?> GetProductByIdAsync(int? id)
 		{
-			return await this._repository
+			AllProductListViewModel? product = null;
+
+			if (id != null)
+			{
+				product = await this._repository
 				.GetAllAttached()
 				.AsNoTracking()
 				.Select(p => new AllProductListViewModel
@@ -60,6 +64,9 @@ namespace OnlineStore.Services.Core
 					ImageUrl = p.ImageUrl
 				})
 				.FirstAsync(p => p.Id == id);
+			}
+
+			return product;
 		}
 
 		public async Task<ProductDetailsViewModel?> GetProductDetailsByIdAsync(int? productId, string? userId)
@@ -408,6 +415,29 @@ namespace OnlineStore.Services.Core
 			return searchProductList;
 		}
 
+		public async Task<IEnumerable<string>?> GetProductSizesAsync(int? productId)
+		{
+			List<string> sizes = null;
+
+			if (productId != null)
+			{
+				Product? product = await this._repository
+					.SingleOrDefaultAsync(p => p.Id == productId);
+
+				if (product != null)
+				{
+					string productCatedory = product.Category.Name;
+
+					sizes = GetSizesForCategory(productCatedory)
+						.ToList();
+				}
+			}
+
+			return sizes;
+		}
+
+
+
 		private static IEnumerable<string> GetSizesForCategory(string categoryName)
 		{
 			return categoryName.Trim().ToLower() switch
@@ -417,7 +447,7 @@ namespace OnlineStore.Services.Core
 				"t-shirts" => new List<string>() { "XS", "S", "M", "L", "XL", "XXL" },
 				"jeans" => new List<string>() { "28", "30", "32", "34", "36", "38", "40" },
 				"jackets" => new List<string>() { "XS", "S", "M", "L", "XL", "XXL" },
-				"hoodies" or "sweatshirts" => new List<string>() { "XS", "S", "M", "L", "XL", "XXL" },
+				"hoodies / sweatshirts" => new List<string>() { "XS", "S", "M", "L", "XL", "XXL" },
 				"shorts" => new List<string>() { "28", "30", "32", "34", "36", "38" },
 				"socks" => new List<string>() { "36-38", "39-42", "43-46" },
 				"underwear" => new List<string>() { "XS", "S", "M", "L", "XL" },

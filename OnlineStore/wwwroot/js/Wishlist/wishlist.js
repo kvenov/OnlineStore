@@ -50,27 +50,67 @@ async function setWishlistCount() {
     }
 }
 
-async function addToWishlist(productId) {
+window.addToWishlist = async function (productId) {
     try {
-        const response = await fetch(`/api/wishlistapi/add/${productId}`, {
-            method: 'POST',
+        const response = await fetch(`/api/authorizationapi/auth`, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
-            }
+            },
+            credentials: 'include'
         });
 
-        const data = await response.json();
-
         if (response.ok) {
-            await setWishlistCount();
-            showAddedToFavorites(productId);
+            const data = await response.json();
+
+            if (data.isAuthenticated) {
+                try {
+                    const wishlistResponse = await fetch(`/api/wishlistapi/add/${productId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    const wishlistData = await wishlistResponse.json();
+
+                    if (wishlistResponse.ok) {
+                        await setWishlistCount();
+                        showAddedToFavorites(productId);
+                    } else {
+                        Swal.fire("Oops", wishlistData.message, "error");
+                    }
+                } catch (error) {
+                    console.error("Error adding to wishlist", error);
+                    Swal.fire("Error", "Something went wrong while adding to wishlist.", "error");
+                }
+            } else {
+                showSignInModal();
+            }
         } else {
-            alert(data.message);
+            showSignInModal();
         }
     } catch (error) {
-        console.error("Error adding to wishlist", error);
-        alert("Something went wrong.");
+        console.error("Error while getting user credentials", error);
+        Swal.fire("Error", "Something went wrong while checking authentication.", "error");
     }
+};
+
+function showSignInModal() {
+    Swal.fire({
+        title: 'Sign in Required',
+        text: 'To use the wishlist, you need to be signed in.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#0d6efd',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sign In',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = '/Identity/Account/Login'; // or your login route
+        }
+    });
 }
 
 function removeFromWishlist() {

@@ -59,7 +59,7 @@
 
 })
 
-async function addToCart(productId, productSize) {
+window.addToCart = async function(productId, productSize) {
     try {
         const response = await fetch(`/api/shoppingcartapi/add/${productId}/${productSize}`, {
             method: 'POST',
@@ -71,18 +71,53 @@ async function addToCart(productId, productSize) {
         const data = await response.json();
 
         if (response.ok) {
-            alert(data.result);
-
             setCartItemsCount();
             updateCartFlyout();
+
+            showCartToast(data.product);
         } else {
-            alert(data.message);
+            Swal.fire("Oops", data.message, "error");
         }
     } catch (error) {
         console.error("Error while adding to shoppingCart", error);
-        alert("Something went wrong.");
+        Swal.fire("Error", "Something went wrong while adding to cart.", "error");
     }
 }
+
+function showCartToast(product) {
+    const toastHtml = `
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <img src="${product.imageUrl}" alt="${product.name}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+            <div style="text-align: left;">
+                <div style="font-weight: 600; font-size: 14px;">${product.name}</div>
+                <div style="font-size: 13px; color: #555;">${product.price}</div>
+                <div style="color: green; font-size: 13px;">Added to Cart</div>
+            </div>
+        </div>
+    `;
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end', // Top right corner
+        showConfirmButton: false,
+        timer: 4000,
+        timerProgressBar: true,
+        background: 'rgba(255, 255, 255, 0.95)',
+        customClass: {
+            popup: 'shadow-lg rounded-4 border'
+        },
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+        }
+    });
+
+    Toast.fire({
+        html: toastHtml,
+        icon: 'success'
+    });
+}
+
 
 async function updateCartItem(quantity, itemId) {
     try {
