@@ -13,5 +13,7 @@ namespace OnlineStore.Data.Repository.Interfaces
 		IQueryable<ShoppingCartItem> GetAllShoppingCartItemsAttached();
 
 		void RemoveShoppingCartItem(ShoppingCartItem item);
+
+		Task<decimal> GetItemsTotalPrice(string userId);
 	}
 }

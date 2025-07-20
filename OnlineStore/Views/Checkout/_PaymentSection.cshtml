@@ -22,7 +22,7 @@
                        @(Model.SelectedPaymentOption == PaymentMethodViewModel.PaymentOption.PayPal ? "checked" : "") />
                 <img src="/img/paypal.svg" alt="PayPal" class="w-100 h-100 object-fit-cover" />
                 <div class="payment-option-label">
-                    PayPal (Not supported yet)
+                    PayPal
                 </div>
             </label>
         </div>
@@ -33,7 +33,7 @@
                        @(Model.SelectedPaymentOption == PaymentMethodViewModel.PaymentOption.GooglePay ? "checked" : "") />
                 <img src="/img/googlepay.svg" alt="Google Pay" class="w-100 h-100 object-fit-cover" />
                 <div class="payment-option-label">
-                    Google Pay (Not supported yet)
+                    Google Pay
                 </div>
             </label>
         </div>
@@ -60,7 +60,7 @@
             </div>
             <div class="col-md-6">
                 <label class="form-label">Card Number</label>
-                <input asp-for="CreditCardDetails.CardNumber" class="form-control" />
+                <input asp-for="CreditCardDetails.CardNumber" class="form-control" autocomplete="off"/>
             </div>
             <div class="col-md-6">
                 <label class="form-label">Expiry Month</label>
@@ -72,7 +72,7 @@
             </div>
             <div class="col-12">
                 <label class="form-label">CVV</label>
-                <input asp-for="CreditCardDetails.CVV" type="password" maxlength="4" class="form-control" />
+                <input asp-for="CreditCardDetails.CVV" type="password" maxlength="4" class="form-control" autocomplete="off"/>
             </div>
         </div>
     </div>

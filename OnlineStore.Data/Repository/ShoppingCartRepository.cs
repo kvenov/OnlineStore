@@ -23,6 +23,23 @@ namespace OnlineStore.Data.Repository
 							.AsQueryable();
 		}
 
+		public async Task<decimal> GetItemsTotalPrice(string userId)
+		{
+			decimal totalPrice = 0;
+			ShoppingCart? shoppingCart = await this.SingleOrDefaultAsync(
+					sc => sc.UserId == userId || sc.GuestId == userId);
+
+			if (shoppingCart != null)
+			{
+				foreach (var item in shoppingCart.ShoppingCartItems)
+				{
+					totalPrice += item.TotalPrice;
+				}
+			}
+
+			return totalPrice;
+		}
+
 		public async Task<ShoppingCartItem?> GetShoppingCartItemAsync(Expression<Func<ShoppingCartItem, bool>> predicate)
 		{
 			return await this.DbContext.ShoppingCartsItems

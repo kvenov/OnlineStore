@@ -2,6 +2,9 @@
 @model ShoppingCartViewModel
 @{
     ViewData["Title"] = "Your Cart";
+    var isDisabled = !Model.Items.Any();
+    var isAuthenticated = User.Identity?.IsAuthenticated == true;
+    var buttonText = isAuthenticated ? "Member Checkout" : "Guest Checkout";
 }
 
 @section Styles {
@@ -84,11 +87,21 @@
                 </div>
             </div>
 
-            <button class="checkout-button w-full mt-8 py-3 rounded-lg text-white text-lg font-semibold transition
-                           bg-black hover:bg-gray-800 shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-                    @(Model.Items.Any() ? "" : "disabled")>
-                Proceed to Checkout
-            </button>
+            @if (!isDisabled)
+            {
+                <a asp-action="Index" asp-controller="Checkout"
+                   class="checkout-button block text-center w-full mt-8 py-3 rounded-lg text-white text-lg font-semibold transition
+                  bg-black hover:bg-gray-800 shadow-md">
+                    @buttonText
+                </a>
+            }
+            else
+            {
+                <span class="checkout-button block text-center w-full mt-8 py-3 rounded-lg text-white text-lg font-semibold transition
+                     bg-gray-500 cursor-not-allowed opacity-50">
+                    @buttonText
+                </span>
+            }
         </div>
     </div>
 </div>
