@@ -5,11 +5,7 @@
 
 		CreditCard = 0,
 		PayPal = 1,
-		BankTransfer = 2,
-		ApplePay = 3,
-		GooglePay = 4,
-		CashOnDelivery = 5,
-		Bitcoin = 6,
-		Stripe = 7
+		GooglePay = 2,
+		CashOnDelivery = 3,
 	}
 }
