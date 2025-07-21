@@ -1,4 +1,5 @@
 ﻿@using OnlineStore.Web.ViewModels.Checkout.Partials
+@using OnlineStore.Data.Models.Enums
 @model PaymentMethodViewModel
 
 <section class="mb-4">
@@ -8,7 +9,7 @@
         <div class="col-md-6 mb-3">
             <label class="payment-option-card position-relative d-block">
                 <input type="radio" name="SelectedPaymentOption" value="0" class="form-check-input position-absolute top-0 start-0 m-3"
-                       @(Model.SelectedPaymentOption == PaymentMethodViewModel.PaymentOption.CreditCard ? "checked" : "") />
+                       @(Model.SelectedPaymentOption == PaymentMethodCode.CreditCard ? "checked" : "") />
                 <img src="/img/creditcard.svg" alt="Credit Card" class="w-100 h-100 object-fit-cover" />
                 <div class="payment-option-label">
                     Credit Card
@@ -19,7 +20,7 @@
         <div class="col-md-6 mb-3">
             <label class="payment-option-card position-relative d-block">
                 <input type="radio" name="SelectedPaymentOption" value="1" class="form-check-input position-absolute top-0 start-0 m-3"
-                       @(Model.SelectedPaymentOption == PaymentMethodViewModel.PaymentOption.PayPal ? "checked" : "") />
+                       @(Model.SelectedPaymentOption == PaymentMethodCode.PayPal ? "checked" : "") />
                 <img src="/img/paypal.svg" alt="PayPal" class="w-100 h-100 object-fit-cover" />
                 <div class="payment-option-label">
                     PayPal
@@ -30,7 +31,7 @@
         <div class="col-md-6 mb-3">
             <label class="payment-option-card position-relative d-block">
                 <input type="radio" name="SelectedPaymentOption" value="4" class="form-check-input position-absolute top-0 start-0 m-3"
-                       @(Model.SelectedPaymentOption == PaymentMethodViewModel.PaymentOption.GooglePay ? "checked" : "") />
+                       @(Model.SelectedPaymentOption == PaymentMethodCode.GooglePay ? "checked" : "") />
                 <img src="/img/googlepay.svg" alt="Google Pay" class="w-100 h-100 object-fit-cover" />
                 <div class="payment-option-label">
                     Google Pay
@@ -41,7 +42,7 @@
         <div class="col-md-6 mb-3">
             <label class="payment-option-card position-relative d-block">
                 <input type="radio" name="SelectedPaymentOption" value="5" class="form-check-input position-absolute top-0 start-0 m-3"
-                       @(Model.SelectedPaymentOption == PaymentMethodViewModel.PaymentOption.CashOnDelivery ? "checked" : "") />
+                       @(Model.SelectedPaymentOption == PaymentMethodCode.CashOnDelivery ? "checked" : "") />
                 <img src="/img/cashondelivery.svg" alt="Cash on Delivery" class="w-100 h-100 object-fit-cover" />
                 <div class="payment-option-label">
                     Cash on Delivery
@@ -51,7 +52,7 @@
 
     </div>
 
-    <div id="creditCardDetails" class="mt-4 @(Model.SelectedPaymentOption != PaymentMethodViewModel.PaymentOption.CreditCard ? "d-none" : "")">
+    <div id="creditCardDetails" class="mt-4 @(Model.SelectedPaymentOption != PaymentMethodCode.CreditCard ? "d-none" : "")">
         <h3 class="h6">Card Details</h3>
         <div class="row g-3">
             <div class="col-md-6">
@@ -60,7 +61,7 @@
             </div>
             <div class="col-md-6">
                 <label class="form-label">Card Number</label>
-                <input asp-for="CreditCardDetails.CardNumber" class="form-control" autocomplete="off"/>
+                <input asp-for="CreditCardDetails.CardNumber" type="number" class="form-control" autocomplete="off"/>
             </div>
             <div class="col-md-6">
                 <label class="form-label">Expiry Month</label>
