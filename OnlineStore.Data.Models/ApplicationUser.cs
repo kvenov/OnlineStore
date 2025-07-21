@@ -5,6 +5,7 @@ using OnlineStore.Data.Models.Interfaces;
 namespace OnlineStore.Data.Models
 {
 
+	//Add User default payment method - The User preferred payment method!
 	[Comment("Users in the store")]
 	public class ApplicationUser : IdentityUser, ISoftDeletable
 	{

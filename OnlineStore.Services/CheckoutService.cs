@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OnlineStore.Data.Models;
+using OnlineStore.Data.Models.Enums;
 using OnlineStore.Data.Repository.Interfaces;
 using OnlineStore.Services.Core.Interfaces;
 using OnlineStore.Web.ViewModels.Checkout;
@@ -14,17 +15,27 @@ namespace OnlineStore.Services.Core
 	{
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly IShoppingCartRepository _shoppingCartRepository;
+		private readonly ICheckoutRepository _checkoutRepository;
+		private readonly IOrderRepository _orderRepository;
+		private readonly IAsyncRepository<PaymentMethod, int> _paymentMethodRepository;
 
-		public CheckoutService(UserManager<ApplicationUser> userManager, IShoppingCartRepository shoppingCartRepository)
+		public CheckoutService(UserManager<ApplicationUser> userManager, 
+							   IShoppingCartRepository shoppingCartRepository, 
+							   ICheckoutRepository checkoutRepository, 
+							   IOrderRepository orderRepository,
+							   IAsyncRepository<PaymentMethod, int> paymentMethodRepository)
 		{
 			this._userManager = userManager;
 			this._shoppingCartRepository = shoppingCartRepository;
+			this._checkoutRepository = checkoutRepository;
+			this._orderRepository = orderRepository;
+			this._paymentMethodRepository = paymentMethodRepository;
 		}
 
-		public async Task<CheckoutViewModel?> GetUserCheckoutAsync(string? userId)
-		{
-			CheckoutViewModel? model = null;
 
+		public async Task<Checkout?> InitializeCheckoutAsync(string? userId)
+		{
+			Checkout? checkout = null;
 			if (userId != null)
 			{
 				ApplicationUser? user = await _userManager
@@ -32,9 +43,149 @@ namespace OnlineStore.Services.Core
 
 				if (user != null)
 				{
-					MemberAddressViewModel addressViewModel = new MemberAddressViewModel
+					var existingCheckout = await this._checkoutRepository
+							.SingleOrDefaultAsync(c =>
+								c.UserId == user.Id && c.Order == null);
+
+					if (existingCheckout != null)
 					{
-						SavedAddresses = user.Addresses
+						checkout = existingCheckout;
+						return checkout;
+					}
+
+					var shoppingCart = await this._shoppingCartRepository
+							.SingleOrDefaultAsync(sc => sc.UserId == user.Id);
+
+					decimal totalPrice = await this._shoppingCartRepository
+									.GetItemsTotalPrice(userId);
+
+					var newCheckout = new Checkout
+					{
+						UserId = user.Id,
+						ShoppingCartId = shoppingCart!.Id,
+						StartedAt = DateTime.UtcNow,
+						TotalPrice = totalPrice
+					};
+
+					var lastOrder = await this._orderRepository
+						.GetAllAttached()
+						.Where(o => o.UserId == user.Id)
+						.OrderByDescending(o => o.OrderDate)
+						.FirstOrDefaultAsync();
+
+					if (lastOrder != null)
+					{
+						newCheckout.ShippingAddressId = lastOrder.ShippingAddressId;
+						newCheckout.BillingAddressId = lastOrder.BillingAddressId;
+						newCheckout.PaymentMethodId = lastOrder.PaymentMethodId;
+
+						if (lastOrder.PaymentDetails != null)
+						{
+							newCheckout.PaymentDetailsId = lastOrder.PaymentDetails.Id;
+						}
+					}
+					else
+					{
+						var defaultPaymentMethod = await this._paymentMethodRepository
+							.FirstOrDefaultAsync(pm => pm.Name == DefaultPaymentMethodName);
+
+						if (defaultPaymentMethod != null)
+						{
+							newCheckout.PaymentMethodId = defaultPaymentMethod.Id;
+						}
+						else
+						{
+							throw new InvalidOperationException("No available payment methods configured.");
+						}
+					}
+
+					await this._checkoutRepository.AddAsync(newCheckout);
+					await this._checkoutRepository.SaveChangesAsync();
+
+					checkout = newCheckout;
+				}
+				else
+				{
+					var existingCheckout = await this._checkoutRepository
+							.SingleOrDefaultAsync(c =>
+								c.GuestId == userId && c.Order == null);
+
+					if (existingCheckout != null)
+					{
+						checkout = existingCheckout;
+						return checkout;
+					}
+
+					var shoppingCart = await this._shoppingCartRepository
+							.SingleOrDefaultAsync(sc => sc.GuestId == userId);
+
+					decimal totalPrice = await this._shoppingCartRepository
+									.GetItemsTotalPrice(userId);
+
+					var newCheckout = new Checkout
+					{
+						GuestId = userId,
+						ShoppingCartId = shoppingCart!.Id,
+						StartedAt = DateTime.UtcNow,
+						TotalPrice = totalPrice
+					};
+
+					var lastOrder = await this._orderRepository
+						.GetAllAttached()
+						.Where(o => o.GuestId == userId)
+						.OrderByDescending(o => o.OrderDate)
+						.FirstOrDefaultAsync();
+
+					if (lastOrder != null)
+					{
+						newCheckout.ShippingAddressId = lastOrder.ShippingAddressId;
+						newCheckout.BillingAddressId = lastOrder.BillingAddressId;
+						newCheckout.PaymentMethodId = lastOrder.PaymentMethodId;
+
+						if (lastOrder.PaymentDetails != null)
+						{
+							newCheckout.PaymentDetailsId = lastOrder.PaymentDetails.Id;
+						}
+					}
+					else
+					{
+						var defaultPaymentMethod = await this._paymentMethodRepository
+							.FirstOrDefaultAsync(pm => pm.Name == DefaultPaymentMethodName);
+
+						if (defaultPaymentMethod != null)
+						{
+							newCheckout.PaymentMethodId = defaultPaymentMethod.Id;
+						}
+						else
+						{
+							throw new InvalidOperationException("No available payment methods configured.");
+						}
+					}
+
+					await this._checkoutRepository.AddAsync(newCheckout);
+					await this._checkoutRepository.SaveChangesAsync();
+
+					checkout = newCheckout;
+				}
+			}
+
+			return checkout;
+		}
+
+		public CheckoutViewModel? GetUserCheckout(Checkout? checkout)
+		{
+			CheckoutViewModel? model = null;
+
+			if (checkout != null)
+			{
+				ApplicationUser? user = checkout.User;
+
+				if (!string.IsNullOrWhiteSpace(checkout.UserId) && (user != null))
+				{
+					MemberAddressViewModel addressViewModel = new MemberAddressViewModel();
+					if (user.Addresses.Any())
+					{
+						addressViewModel.SavedAddresses = user.Addresses
 							.Select(a => new MemberAddressItemViewModel
 							{
 								Id = a.Id,
@@ -42,42 +193,49 @@ namespace OnlineStore.Services.Core
 								City = a.City,
 								ZipCode = a.ZipCode,
 								Country = a.Country,
-								PhoneNumber = a.PhoneNumber
-							}).ToList()
-					};
+								PhoneNumber = a.PhoneNumber,
+								IsShippingAddress = a.IsShippingAddress
+							}).ToList();
+					}
+
+					if ((checkout.ShippingAddressId != null) 
+							&& (checkout.BillingAddressId != null))
+					{
+						addressViewModel.SelectedShippingAddressId = checkout.ShippingAddressId.Value;
+						addressViewModel.SelectedBillingAddressId = checkout.BillingAddressId.Value;
+					}
 
 					ShippingOptionsViewModel shippingModel = CreateShippingOptions(user);
 
-					PaymentMethodViewModel paymentModel = new PaymentMethodViewModel();
+					
+					string paymentMethodName = checkout.PaymentMethod.Name.Replace(" ", "");
+					PaymentMethodCode code = Enum.TryParse<PaymentMethodCode>(paymentMethodName, out var parsedCode)
+						? parsedCode
+						: PaymentMethodCode.CreditCard;
 
-					if (user.Orders.Any())
+					PaymentMethodViewModel paymentModel = new PaymentMethodViewModel{
+						SelectedPaymentOption = checkout.PaymentMethod.Code != null
+								? checkout.PaymentMethod.Code.Value
+								: code
+					};
+
+					if (checkout.PaymentDetailsId != null && checkout.PaymentDetails != null)
 					{
-						Order lastOrder = user.Orders
-							.OrderByDescending(o => o.OrderDate)
-							.First();
+						PaymentDetails lastPaymentDetails = checkout.PaymentDetails;
 
-						PaymentDetails? lastPaymentDetails = lastOrder.PaymentDetails;
-
-						if (lastPaymentDetails != null)
+						paymentModel.CreditCardDetails = new CreditCardFormViewModel()
 						{
-							paymentModel.CreditCardDetails = new CreditCardFormViewModel()
-							{
-								CardNumber = lastPaymentDetails.CardNumber,
-								NameOnCard = lastPaymentDetails.NameOnCard,
-								ExpMonth = lastPaymentDetails.ExpMonth!.Value,
-								ExpYear = lastPaymentDetails.ExpYear!.Value,
-							};
-						}
+							CardNumber = lastPaymentDetails.CardNumber,
+							NameOnCard = lastPaymentDetails.NameOnCard,
+							ExpMonth = lastPaymentDetails.ExpMonth!.Value,
+							ExpYear = lastPaymentDetails.ExpYear!.Value,
+						};
 					}
 
 					OrderSummaryViewModel orderSummary = new OrderSummaryViewModel
 					{
-						Products = await _shoppingCartRepository
-											.GetAllAttached()
-											.Include(sc => sc.ShoppingCartItems)
-											.ThenInclude(sci => sci.Product)
-											.Where(sc => sc.UserId == userId)
-											.SelectMany(sc => sc.ShoppingCartItems)
+						Products = checkout.ShoppingCart
+											.ShoppingCartItems
 											.Select(item => new OrderProductViewModel()
 											{
 												ProductId = item.ProductId,
@@ -87,16 +245,15 @@ namespace OnlineStore.Services.Core
 												ImageUrl = item.Product.ImageUrl,
 												Size = item.ProductSize
 											})
-											.ToListAsync(),
+											.ToList(),
 						DeliveryCost = 0,
-						Subtotal = await _shoppingCartRepository
-											.GetItemsTotalPrice(userId),
+						Subtotal = checkout.TotalPrice
 					};
 
 					model = new CheckoutViewModel
 					{
 						IsGuest = false,
-						UserId = userId,
+						UserId = checkout.UserId,
 						MemberAddress = addressViewModel,
 						Shipping = shippingModel,
 						Payment = paymentModel,
@@ -106,18 +263,51 @@ namespace OnlineStore.Services.Core
 				else
 				{
 					GuestAddressViewModel addressViewModel = new GuestAddressViewModel();
+
+					if ((checkout.ShippingAddressId != null) && (checkout.BillingAddressId != null) &&
+						(checkout.ShippingAddress != null) && (checkout.BillingAddress != null))
+					{
+						addressViewModel.ShippingAddress = new GuestShippingAddressViewModel
+						{
+							Street = checkout.ShippingAddress.Street,
+							City = checkout.ShippingAddress.City,
+							ZipCode = checkout.ShippingAddress.ZipCode,
+							Country = checkout.ShippingAddress.Country,
+							PhoneNumber = checkout.ShippingAddress.PhoneNumber
+						};
+
+						addressViewModel.BillingAddress = new GuestBillingAddressViewModel
+						{
+							BillingStreet = checkout.BillingAddress.Street,
+							BillingCity = checkout.BillingAddress.City,
+							BillingZipCode = checkout.BillingAddress.ZipCode,
+							BillingCountry = checkout.BillingAddress.Country,
+							BillingPhoneNumber = checkout.BillingAddress.PhoneNumber
+						};
+					}
+
 					ShippingOptionsViewModel shippingModel = CreateShippingOptions(user);
 
-					PaymentMethodViewModel paymentModel = new PaymentMethodViewModel();
+					string paymentMethodName = checkout.PaymentMethod.Name.Replace(" ", "");
+					PaymentMethodCode code = Enum.TryParse<PaymentMethodCode>(paymentMethodName, out var parsedCode)
+						? parsedCode
+						: PaymentMethodCode.CreditCard;
+
+					PaymentMethodViewModel paymentModel = new PaymentMethodViewModel
+					{
+						SelectedPaymentOption = checkout.PaymentMethod.Code != null
+								? checkout.PaymentMethod.Code.Value
+								: code
+					};
+
+					decimal deliveryCost = checkout.TotalPrice >= MinPriceForFreeShipping ?
+									StandartShippingPriceForMembers :
+											StandartShippingPriceForGuests;
 
 					OrderSummaryViewModel orderSummary = new OrderSummaryViewModel
 					{
-						Products = await _shoppingCartRepository
-											.GetAllAttached()
-											.Include(sc => sc.ShoppingCartItems)
-											.ThenInclude(sci => sci.Product)
-											.Where(sc => sc.GuestId == userId)
-											.SelectMany(sc => sc.ShoppingCartItems)
+						Products = checkout.ShoppingCart
+											.ShoppingCartItems
 											.Select(item => new OrderProductViewModel()
 											{
 												ProductId = item.ProductId,
@@ -127,15 +317,15 @@ namespace OnlineStore.Services.Core
 												ImageUrl = item.Product.ImageUrl,
 												Size = item.ProductSize
 											})
-											.ToListAsync(),
-						Subtotal = await _shoppingCartRepository
-											.GetItemsTotalPrice(userId),
+											.ToList(),
+						DeliveryCost = deliveryCost,
+						Subtotal = checkout.TotalPrice
 					};
 
 					model = new CheckoutViewModel
 					{
 						IsGuest = true,
-						GuestId = userId,
+						GuestId = checkout.GuestId,
 						GuestAddress = addressViewModel,
 						Shipping = shippingModel,
 						Payment = paymentModel,

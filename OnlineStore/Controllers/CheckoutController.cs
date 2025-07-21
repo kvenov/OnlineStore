@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OnlineStore.Data.Models;
 using OnlineStore.Services.Core.Interfaces;
 using OnlineStore.Web.ViewModels.Checkout;
-
-using static OnlineStore.Common.ApplicationConstants;
 
 namespace OnlineStore.Web.Controllers
 {
@@ -33,20 +32,24 @@ namespace OnlineStore.Web.Controllers
 					userId = this.GetGuestId();
 				}
 
-				CheckoutViewModel? model = await this._checkoutService
-							.GetUserCheckoutAsync(userId);
+				Checkout? checkout = await this._checkoutService
+									.InitializeCheckoutAsync(userId);
+
+				if (checkout == null)
+				{
+					return NotFound(new
+					{
+						Error = "Checkout not found.",
+						Details = "The checkout could not be initialized. Please try again later."
+					});
+				}
+
+				CheckoutViewModel? model = this._checkoutService
+						.GetUserCheckout(checkout);
 
 				if (model == null)
 				{
 					return BadRequest();
-				}
-
-				if (model.IsGuest)
-				{
-					decimal totalPrice = model.Summary.Subtotal;
-					model.Summary.DeliveryCost = totalPrice >= MinPriceForFreeShipping ?
-									StandartShippingPriceForMembers :
-											StandartShippingPriceForGuests;
 				}
 
 				return View(model);
