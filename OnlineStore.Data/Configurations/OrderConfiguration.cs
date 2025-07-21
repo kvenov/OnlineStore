@@ -41,6 +41,22 @@ namespace OnlineStore.Data.Configurations
 				.IsRequired(false);
 
 			entity
+				.Property(o => o.GuestId)
+				.IsRequired(false);
+
+			entity
+				.Property(o => o.GuestName)
+				.IsRequired(false);
+
+			entity
+				.Property(o => o.GuestEmail)
+				.IsRequired(false);
+
+			entity
+				.Property(o => o.OrderNumber)
+				.IsRequired(true);
+
+			entity
 				.Property(o => o.PaymentMethodId)
 				.IsRequired(true);
 
@@ -85,6 +101,9 @@ namespace OnlineStore.Data.Configurations
 
 			entity
 				.HasIndex(o => o.UserId);
+
+			entity
+				.HasIndex(o => o.GuestId);
 
 			entity
 				.HasIndex(o => o.Status);

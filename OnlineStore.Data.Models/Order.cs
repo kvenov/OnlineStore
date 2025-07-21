@@ -38,12 +38,25 @@ namespace OnlineStore.Data.Models
 		public virtual PaymentMethod PaymentMethod { get; set; } = null!;
 
 		[Comment("Payment details used for the order")]
-		public virtual PaymentDetails PaymentDetails { get; set; } = null!;
+		public virtual PaymentDetails? PaymentDetails { get; set; }
 
 		public string? UserId { get; set; }
 
 		[Comment("User who placed the order")]
 		public virtual ApplicationUser? User { get; set; }
+
+		[Comment("Unique guest identifier for order")]
+		public string? GuestId { get; set; }
+
+		[Comment("Full name (for guest)")]
+		public string? GuestName { get; set; }
+
+		[Comment("Contact email (for guest)")]
+		public string? GuestEmail { get; set; }
+
+
+		[Comment("Order number")]
+		public string OrderNumber { get; set; } = null!;
 
 		public int CheckoutId { get; set; }
 
