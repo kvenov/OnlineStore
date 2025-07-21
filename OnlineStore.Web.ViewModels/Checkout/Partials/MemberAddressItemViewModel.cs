@@ -9,5 +9,6 @@
 		public string Country { get; set; } = string.Empty;
 		public string ZipCode { get; set; } = string.Empty;
 		public string PhoneNumber { get; set; } = string.Empty;
+		public bool IsShippingAddress { get; set; }
 	}
 }

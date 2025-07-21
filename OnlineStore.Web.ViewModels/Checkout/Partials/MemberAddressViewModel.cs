@@ -5,8 +5,12 @@
 
 		public int SelectedShippingAddressId { get; set; }
 
+		public int SelectedBillingAddressId { get; set; }
+
 		public List<MemberAddressItemViewModel> SavedAddresses { get; set; } = new();
 
 		public MemberAddressItemViewModel NewShippingAddress { get; set; } = new();
+
+		public MemberAddressItemViewModel NewBillingAddress { get; set; } = new();
 	}
 }
