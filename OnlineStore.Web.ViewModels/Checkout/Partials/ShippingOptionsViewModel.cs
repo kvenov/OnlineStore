@@ -3,7 +3,7 @@
 	public class ShippingOptionsViewModel
 	{
 
-		public int? SelectedShippingOptionId { get; set; }
+		public ShippingOptionItemViewModel SelectedShippingOption { get; set; } = new();
 
 		public List<ShippingOptionItemViewModel> Options { get; set; } = new();
 	}

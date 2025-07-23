@@ -17,8 +17,8 @@
         {
             <div class="col-md-6 mb-3">
                 <label class="form-check-label card p-3 h-100 cursor-pointer">
-                    <input type="radio" name="SelectedShippingOption" value="@option.Id" class="form-check-input me-2"
-                           @(Model.SelectedShippingOptionId == option.Id ? "checked" : "") />
+                    <input type="radio" name="SelectedShippingOption" value="@option" class="form-check-input me-2"
+                           @(Model.SelectedShippingOption == option ? "checked" : "") />
                     <div>
                         <div class="fw-semibold">@option.Name</div>
                         <div>@option.Description</div>
