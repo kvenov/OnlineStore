@@ -4,7 +4,7 @@
 	{
 		public decimal ItemTotalPrice { get; set; }
 		public decimal SubTotal { get; set; }
-		public decimal Shipping => SubTotal > 0 && SubTotal < 400 ? 10 : 0;
+		public decimal Shipping { get; set; }
 		public decimal Total => SubTotal + Shipping;
 	}
 }

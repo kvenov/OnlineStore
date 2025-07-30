@@ -81,6 +81,8 @@ namespace OnlineStore.Services.Core
 
 				if (user != null)
 				{
+					decimal shipping = await this._shoppingCartRepository
+							.GetShoppingCartShippingCostByUserIdAsync(user.Id);
 
 					cartModel = await this._shoppingCartRepository
 							.GetAllAttached()
@@ -101,7 +103,8 @@ namespace OnlineStore.Services.Core
 												UnitPrice = sci.Price,
 												Quantity = sci.Quantity,
 											})
-											.ToList()
+											.ToList(),
+								Shipping = shipping,
 							})
 							.FirstOrDefaultAsync();
 				}
@@ -309,10 +312,14 @@ namespace OnlineStore.Services.Core
 							existingShoppingCartItem.Quantity = quantity.Value;
 							existingShoppingCartItem.TotalPrice = existingShoppingCartItem.Price * quantity.Value;
 
+							decimal shipping = await this._shoppingCartRepository
+										.GetShoppingCartShippingCostByUserIdAsync(user.Id);
+
 							summaryModel = new ShoppingCartSummaryViewModel()
 							{
 								ItemTotalPrice = existingShoppingCartItem.TotalPrice,
-								SubTotal = shoppingCart.ShoppingCartItems.Sum(sci => sci.TotalPrice)
+								SubTotal = shoppingCart.ShoppingCartItems.Sum(sci => sci.TotalPrice),
+								Shipping = shipping
 							};
 						}
 
@@ -356,9 +363,13 @@ namespace OnlineStore.Services.Core
 
 						await this._shoppingCartRepository.SaveChangesAsync();
 
+						decimal shipping = await this._shoppingCartRepository
+										.GetShoppingCartShippingCostByUserIdAsync(userId);
+
 						summaryModel = new ShoppingCartSummaryViewModel()
 						{
-							SubTotal = shoppingCart.ShoppingCartItems.Sum(sci => sci.TotalPrice)
+							SubTotal = shoppingCart.ShoppingCartItems.Sum(sci => sci.TotalPrice),
+							Shipping = shipping
 						};
 					}
 				}
@@ -431,6 +442,9 @@ namespace OnlineStore.Services.Core
 
 			if (guestId != null)
 			{
+				decimal shipping = await this._shoppingCartRepository
+						.GetShoppingCartShippingCostByUserIdAsync(guestId);
+
 				cartModel = await this._shoppingCartRepository
 						.GetAllAttached()
 						.AsNoTracking()
@@ -450,7 +464,8 @@ namespace OnlineStore.Services.Core
 											UnitPrice = sci.Price,
 											Quantity = sci.Quantity,
 										})
-										.ToList()
+										.ToList(),
+							Shipping = shipping
 						})
 						.FirstOrDefaultAsync();
 			}
@@ -485,10 +500,14 @@ namespace OnlineStore.Services.Core
 						existingShoppingCartItem.Quantity = quantity.Value;
 						existingShoppingCartItem.TotalPrice = existingShoppingCartItem.Price * quantity.Value;
 
+						decimal shipping = await this._shoppingCartRepository
+										.GetShoppingCartShippingCostByUserIdAsync(guestId);
+
 						summaryModel = new ShoppingCartSummaryViewModel()
 						{
 							ItemTotalPrice = existingShoppingCartItem.TotalPrice,
-							SubTotal = shoppingCart.ShoppingCartItems.Sum(sci => sci.TotalPrice)
+							SubTotal = shoppingCart.ShoppingCartItems.Sum(sci => sci.TotalPrice),
+							Shipping = shipping
 						};
 					}
 
@@ -527,9 +546,13 @@ namespace OnlineStore.Services.Core
 
 					await this._shoppingCartRepository.SaveChangesAsync();
 
+					decimal shipping = await this._shoppingCartRepository
+										.GetShoppingCartShippingCostByUserIdAsync(guestId);
+
 					summaryModel = new ShoppingCartSummaryViewModel()
 					{
-						SubTotal = shoppingCart.ShoppingCartItems.Sum(sci => sci.TotalPrice)
+						SubTotal = shoppingCart.ShoppingCartItems.Sum(sci => sci.TotalPrice),
+						Shipping = shipping
 					};
 				}
 			}

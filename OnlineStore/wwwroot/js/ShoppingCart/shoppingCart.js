@@ -164,7 +164,9 @@ async function removeCartItem(itemId) {
 
         if (response.ok) {
             if (data.total <= 0) {
-                document.querySelector('.checkout-button').disabled = true;
+                const button = document.querySelector('.checkout-button');
+                button.disabled = true;
+
                 document.querySelector('.cart-container').innerHTML = `
                     <div class="p-6 bg-white rounded-xl shadow-md border border-dashed border-gray-300 text-center text-gray-600">
                         <p class="text-xl font-medium mb-4">🛒 Your cart is empty</p>
@@ -213,7 +215,7 @@ async function setCartItemsCount() {
             alert(data.message);
         }
     } catch (error) {
-        console.error("Error while adding to shoppingCart", error);
+        console.error("Error while setting the shoppingCart count", error);
         alert("Something went wrong.");
     }
 }
@@ -232,3 +234,133 @@ async function updateCartFlyout() {
         alert("Something went wrong.");
     }
 }
+
+
+(function attachBFCacheAndFocusReconcile() {
+    let refreshLock = false;
+
+    function getDomLines() {
+        const lines = [];
+        document.querySelectorAll('[id^="input-quantity-"]').forEach(qtyInput => {
+            const m = qtyInput.id.match(/^input-quantity-(.+)$/);
+            if (!m) return;
+            const rawKey = m[1];
+            const hiddenId = document.getElementById(`input-itemId-${rawKey}`);
+            const itemId = hiddenId?.value || rawKey;
+            const quantity = qtyInput.value;
+            if (itemId && quantity != null) {
+                lines.push({ itemId, quantity });
+            }
+        });
+        return lines;
+    }
+
+    async function silentUpdateLine(itemId, quantity) {
+        try {
+            const resp = await fetch(`/api/shoppingcartapi/update`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ quantity, itemId })
+            });
+
+            const data = await resp.json();
+
+            if (resp.ok) {
+                document.querySelector(`.item-totalprice-${itemId}`).textContent = `$${data.itemTotalPrice.toFixed(2)}`;
+                document.querySelector('.summary-subtotal').textContent = `$${data.subTotal.toFixed(2)}`;
+                document.querySelector('.summary-shipping').textContent = `$${data.shipping.toFixed(2)}`;
+                document.querySelector('.summary-total').textContent = `$${data.total.toFixed(2)}`;
+
+                updateCartFlyout();
+
+                return true;
+            } else {
+                // Item no longer exists on server – remove stale DOM node if present
+                document.getElementById(`cart-item-${itemId}`)?.remove();
+                return false;
+            }
+        } catch {
+            // Network or other error; don’t alert during reconcile
+            return false;
+        }
+    }
+
+    async function reconcileCartUi() {
+        if (refreshLock) return;
+        refreshLock = true;
+
+        try {
+            // Always refresh the header badge and flyout
+            if (typeof setCartItemsCount === 'function') setCartItemsCount();
+            if (typeof updateCartFlyout === 'function') updateCartFlyout();
+
+            // If the page has cart lines, reconcile each line with server
+            const lines = getDomLines();
+            if (lines.length === 0) return;
+
+            let removedAny = false;
+
+            await Promise.all(lines.map(async ({ itemId, quantity }) => {
+                const ok = await silentUpdateLine(itemId, quantity);
+                if (!ok) removedAny = true;
+            }));
+
+            if (removedAny) {
+                if (typeof setCartItemsCount === 'function') setCartItemsCount();
+                if (typeof updateCartFlyout === 'function') updateCartFlyout();
+            }
+        } finally {
+            setTimeout(() => { refreshLock = false; }, 800);
+        }
+    }
+
+    async function refreshCheckoutButtonState() {
+        try {
+            const response = await fetch(`/api/shoppingcartapi/count`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) return;
+
+            const data = await response.json();
+
+            if (response.ok) {
+                if (data.count <= 0) {
+                    const button = document.querySelector('.checkout-button');
+                    if (button) {
+                        button.disabled = true;
+                        document.querySelector('.cart-container').innerHTML = `
+                        <div class="p-6 bg-white rounded-xl shadow-md border border-dashed border-gray-300 text-center text-gray-600">
+                            <p class="text-xl font-medium mb-4">🛒 Your cart is empty</p>
+                            <a href="/products" class="text-blue-600 underline hover:text-blue-800 transition">
+                                Browse Products
+                            </a>
+                        </div>
+                        `;
+
+                        document.querySelector('.summary-subtotal').textContent = `$0.00`;
+                        document.querySelector('.summary-shipping').textContent = `$0.00`;
+                        document.querySelector('.summary-total').textContent = `$0.00`;
+                    }
+                }
+            }
+        } catch (error) {
+            alert("Something went wrong. wdvvevfeeffb");
+        }
+    }
+
+    window.addEventListener('pageshow', () => {
+        reconcileCartUi();
+        refreshCheckoutButtonState();
+    });
+
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            reconcileCartUi();
+            refreshCheckoutButtonState();
+        }
+    });
+})();

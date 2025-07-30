@@ -15,5 +15,7 @@ namespace OnlineStore.Data.Repository.Interfaces
 		void RemoveShoppingCartItem(ShoppingCartItem item);
 
 		Task<decimal> GetItemsTotalPrice(string userId);
+
+		Task<decimal> GetShoppingCartShippingCostByUserIdAsync(string? userId);
 	}
 }
