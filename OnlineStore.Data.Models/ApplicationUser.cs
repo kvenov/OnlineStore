@@ -5,7 +5,6 @@ using OnlineStore.Data.Models.Interfaces;
 namespace OnlineStore.Data.Models
 {
 
-	//Add User default payment method - The User preferred payment method!
 	[Comment("Users in the store")]
 	public class ApplicationUser : IdentityUser, ISoftDeletable
 	{
@@ -49,6 +48,28 @@ namespace OnlineStore.Data.Models
 		[Comment("The User's product reviews")]
 		public virtual ICollection<ProductReview> ProductReviews { get; set; } =
 					new HashSet<ProductReview>();
+
+
+
+		public int? DefaultPaymentMethodId { get; set; }
+
+		[Comment("The User's default payment method")]
+		public virtual PaymentMethod? DefaultPaymentMethod { get; set; }
+
+		public int? DefaultPaymentDetailsId { get; set; }
+
+		[Comment("The User's default payment details")]
+		public virtual PaymentDetails? DefaultPaymentDetails { get; set; }
+
+		public int? DefaultShippingAddressId { get; set; }
+
+		[Comment("The User's default shipping address")]
+		public virtual Address? DefaultShippingAddress { get; set; }
+
+		public int? DefaultBillingAddressId { get; set; }
+
+		[Comment("The User's default billing address")]
+		public virtual Address? DefaultBillingAddress { get; set; }
 
 		public bool IsDeleted { get; set; }
 	}

@@ -23,6 +23,22 @@ namespace OnlineStore.Data.Configurations
 				.HasDefaultValueSql("GETDATE()");
 
 			entity
+				.Property(p => p.DefaultPaymentMethodId)
+				.IsRequired(false);
+
+			entity
+				.Property(p => p.DefaultPaymentDetailsId)
+				.IsRequired(false);
+
+			entity
+				.Property(p => p.DefaultShippingAddressId)
+				.IsRequired(false);
+
+			entity
+				.Property(p => p.DefaultBillingAddressId)
+				.IsRequired(false);
+
+			entity
 				.HasOne(au => au.ShoppingCart)
 				.WithOne(sc => sc.User)
 				.HasForeignKey<ShoppingCart>(sc => sc.UserId)
@@ -34,6 +50,36 @@ namespace OnlineStore.Data.Configurations
 				.HasForeignKey<Wishlist>(w => w.UserId)
 				.OnDelete(DeleteBehavior.Cascade);
 
+			entity
+				.HasOne(au => au.DefaultPaymentMethod)
+				.WithMany(pm => pm.MethodUsers)
+				.HasForeignKey(au => au.DefaultPaymentMethodId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			entity
+				.HasOne(au => au.DefaultPaymentDetails)
+				.WithMany(pd => pd.DetailsUsers)
+				.HasForeignKey(au => au.DefaultPaymentDetailsId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			entity
+				.HasOne(au => au.DefaultShippingAddress)
+				.WithMany(a => a.ShippingAddressUsers)
+				.HasForeignKey(au => au.DefaultShippingAddressId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			entity
+				.HasOne(au => au.DefaultBillingAddress)
+				.WithMany(a => a.BillingAddressUsers)
+				.HasForeignKey(au => au.DefaultBillingAddressId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			entity
+				.HasQueryFilter(au => !au.IsDeleted &&
+									  !au.Wishlist.IsDeleted &&
+									  (au.DefaultPaymentMethod == null || !au.DefaultPaymentMethod.IsDeleted) &&
+									  (au.DefaultShippingAddress == null || !au.DefaultShippingAddress.IsDeleted) &&
+									  (au.DefaultBillingAddress == null || !au.DefaultBillingAddress.IsDeleted));
 		}
 	}
 }

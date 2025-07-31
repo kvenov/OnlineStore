@@ -56,6 +56,14 @@ namespace OnlineStore.Data.Models
 		public virtual ICollection<Checkout> BillingAddressCheckouts { get; set; } =
 					new HashSet<Checkout>();
 
+		[Comment("The Users that uses this address as default shipping address")]
+		public virtual ICollection<ApplicationUser> ShippingAddressUsers { get; set; } =
+					new HashSet<ApplicationUser>();
+
+		[Comment("The Users that uses this address as default billing address")]
+		public virtual ICollection<ApplicationUser> BillingAddressUsers { get; set; } =
+					new HashSet<ApplicationUser>();
+
 		public bool IsDeleted { get; set; }
 	}
 }

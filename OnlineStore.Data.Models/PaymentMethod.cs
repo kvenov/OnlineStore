@@ -30,6 +30,10 @@ namespace OnlineStore.Data.Models
 		public virtual ICollection<Checkout> Checkouts { get; set; } =
 					new HashSet<Checkout>();
 
+		[Comment("The Users that uses this payment method as default")]
+		public virtual ICollection<ApplicationUser> MethodUsers { get; set; } =
+					new HashSet<ApplicationUser>();
+
 		public bool IsDeleted { get; set; }
 	}
 }

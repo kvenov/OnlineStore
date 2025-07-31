@@ -41,5 +41,10 @@ namespace OnlineStore.Data.Models
 		[Comment("Checkout that uses the payment details")]
 		public virtual Checkout Checkout { get; set; } = null!;
 
+
+		[Comment("The Users that uses this payment details as default")]
+		public virtual ICollection<ApplicationUser> DetailsUsers { get; set; } =
+					new HashSet<ApplicationUser>();
+
 	}
 }
