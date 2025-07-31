@@ -20,6 +20,8 @@ namespace OnlineStore.Web.Infrastructure.Extensions
 		private static readonly string RepositoryInterfacePrefix = "I";
 		private static readonly string RepositoryTypeSuffix = "Repository";
 
+		private static readonly string FilterTypeSuffix = "Filter";
+
 		
 		public static IServiceCollection AddScopedServices(this IServiceCollection serviceCollection, Assembly serviceAssembly)
 		{
@@ -128,6 +130,24 @@ namespace OnlineStore.Web.Infrastructure.Extensions
 				.AddSignInManager<SignInManager<ApplicationUser>>()
 				.AddEntityFrameworkStores<ApplicationDbContext>()
 				.AddDefaultTokenProviders();
+
+			return serviceCollection;
+		}
+
+		public static IServiceCollection AddCustomFilters(this IServiceCollection serviceCollection, Assembly filtersAssembly)
+		{
+			Type[] filtersClasses = filtersAssembly
+						.GetTypes()
+						.Where(t => t.IsClass && t.Name.EndsWith(FilterTypeSuffix))
+						.ToArray();
+
+			if (filtersClasses != null && filtersClasses.Any())
+			{
+				foreach (var filter in filtersClasses)
+				{
+					serviceCollection.AddScoped(filter);
+				}
+			}
 
 			return serviceCollection;
 		}

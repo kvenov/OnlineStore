@@ -9,6 +9,7 @@ using OnlineStore.Data.Seeding.Interfaces;
 using OnlineStore.Services.Core.Identity;
 using OnlineStore.Services.Core.Interfaces;
 using OnlineStore.Web.Infrastructure.Extensions;
+using OnlineStore.Web.Infrastructure.Filters;
 using static OnlineStore.Web.Infrastructure.Extensions.ServiceCollectionExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,6 +40,9 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddCustomIdentity();
 
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, CustomClaimsPrincipalFactory>();
+
+//Here we add the application custom filters.
+builder.Services.AddCustomFilters(typeof(CleanEmptyAddressFilter).Assembly);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
