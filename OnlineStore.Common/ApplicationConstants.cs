@@ -13,5 +13,53 @@
 
 
 		public const string DefaultPaymentMethodName = "Credit Card";
+		public const string DefaultPaymentMethodCode = "CreditCard";
+
+		public static class AddressValidationConstants
+		{
+			public const int FullNameMaxLength = 100;
+			public const int FullNameMinLength = 1;
+
+			public const int EmailMaxLength = 100;
+
+			public const int PhoneMaxLength = 20;
+			public const int PhoneMinLength = 7;
+
+			public const int StreetMaxLength = 100;
+			public const int StreetMinLength = 5;
+
+			public const int CityMaxLength = 50;
+			public const int CityMinLength = 2;
+
+			public const int ZipCodeMaxLength = 10;
+			public const int ZipCodeMinLength = 4;
+
+			public const int CountryMaxLength = 50;
+			public const int CountryMinLength = 2;
+
+			public const string CityPattern = @"^[A-Za-z\s\-']{2,50}$";
+			public const string ZipPattern = @"^\d{4,10}$";
+			public const string CountryPattern = @"^[A-Za-z\s]{2,50}$";
+			public const string PhonePattern = @"^\+?[0-9\s\-()]{7,20}$";
+
+		}
+
+		public static class CreditCardValidationConstants
+		{
+			public const int NameOnCardMinLength = 2;
+			public const int NameOnCardMaxLength = 100;
+
+			public const int CardNumberMinLength = 13;
+			public const int CardNumberMaxLength = 19;
+
+			public const int CvvMinLength = 3;
+			public const int CvvMaxLength = 4;
+
+			public const int ExpMonthMin = 1;
+			public const int ExpMonthMax = 12;
+
+			public const int ExpYearMin = 24;
+			public const int ExpYearMax = 100;
+		}
 	}
 }

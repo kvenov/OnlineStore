@@ -44,7 +44,7 @@ namespace OnlineStore.Web.Controllers
 					});
 				}
 
-				CheckoutViewModel? model = this._checkoutService
+				CheckoutViewModel? model = await this._checkoutService
 						.GetUserCheckout(checkout);
 
 				if (model == null)

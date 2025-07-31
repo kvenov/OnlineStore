@@ -2,6 +2,10 @@
 @model ShippingOptionsViewModel
 
 <section class="mb-4">
+    <input name="Shipping.SelectedShippingOption.Name" id="selectedOptionName" value="@Model.SelectedShippingOption.Name" type="hidden" />
+    <input name="Shipping.SelectedShippingOption.DateRange" id="selectedOptionDateRange" value="@Model.SelectedShippingOption.DateRange" type="hidden" />
+    <input name="Shipping.SelectedShippingOption.Price" id="selectedOptionPrice" value="@Model.SelectedShippingOption.Price" type="hidden" />
+
     <h2 class="h5 mb-3">Shipping Method</h2>
 
     @if (User.Identity?.IsAuthenticated == false)
@@ -13,11 +17,17 @@
     }
 
     <div class="row">
-        @foreach (var option in Model.Options)
+        @foreach (var option in Model.Options!)
         {
+            var price = option.Price.ToString("F2", System.Globalization.CultureInfo.InvariantCulture);
             <div class="col-md-6 mb-3">
                 <label class="form-check-label card p-3 h-100 cursor-pointer">
-                    <input type="radio" name="SelectedShippingOption" value="@option" class="form-check-input me-2"
+                    <input type="radio" 
+                            name="shippingOption" 
+                            class="form-check-input me-2"
+                            data-name="@option.Name"
+                            data-daterange="@option.DateRange"
+                            data-price="@price"
                            @(Model.SelectedShippingOption == option ? "checked" : "") />
                     <div>
                         <div class="fw-semibold">@option.Name</div>

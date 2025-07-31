@@ -7,34 +7,32 @@
         const toggleBillingAddress = () => {
             if (sameAsShippingCheckbox.checked) {
                 billingAddressSection.style.display = 'none';
-                // Disable inputs inside billing section so they don't submit
                 billingAddressSection.querySelectorAll('input').forEach(input => input.disabled = true);
             } else {
-                billingAddressSection.style.display = 'flex'; // match Bootstrap row display
+                billingAddressSection.style.display = 'flex';
                 billingAddressSection.querySelectorAll('input').forEach(input => input.disabled = false);
             }
         };
 
-        toggleBillingAddress(); // initial setup
+        toggleBillingAddress();
         sameAsShippingCheckbox.addEventListener('change', toggleBillingAddress);
     }
 
     // Payment method toggle for Credit Card details
-    const paymentOptionRadios = document.querySelectorAll('input[name="SelectedPaymentOption"]');
+    const paymentOptionRadios = document.querySelectorAll('input[name="Payment.SelectedPaymentOption"]');
     const creditCardDetails = document.getElementById('creditCardDetails');
 
     if (paymentOptionRadios.length && creditCardDetails) {
         const toggleCreditCardDetails = () => {
             const selected = Array.from(paymentOptionRadios).find(r => r.checked);
-            // In your razor, Credit Card has value="0"
-            if (selected && selected.value === '0') {
+            if (selected && selected.value === 'CreditCard') {
                 creditCardDetails.classList.remove('d-none');
             } else {
                 creditCardDetails.classList.add('d-none');
             }
         };
 
-        toggleCreditCardDetails(); // initial setup
+        toggleCreditCardDetails();
         paymentOptionRadios.forEach(radio => radio.addEventListener('change', toggleCreditCardDetails));
     }
 
@@ -55,7 +53,17 @@
             });
         };
 
-        updateAddressHighlight(); // initial highlight
+        updateAddressHighlight();
         savedAddressRadios.forEach(radio => radio.addEventListener('change', updateAddressHighlight));
     }
+
+    const radios = document.querySelectorAll('input[name="shippingOption"]');
+    radios.forEach(radio => {
+        radio.addEventListener('change', function () {
+            document.getElementById('selectedOptionName').value = this.dataset.name;
+            document.getElementById('selectedOptionDateRange').value = this.dataset.daterange;
+            document.getElementById('selectedOptionPrice').value = this.dataset.price;
+        });
+    });
+
 });

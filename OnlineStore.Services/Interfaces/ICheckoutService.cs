@@ -7,6 +7,6 @@ namespace OnlineStore.Services.Core.Interfaces
 	{
 		Task<Checkout?> InitializeCheckoutAsync(string? userId);
 
-		CheckoutViewModel? GetUserCheckout(Checkout? checkout);
+		Task<CheckoutViewModel?> GetUserCheckout(Checkout? checkout);
 	}
 }

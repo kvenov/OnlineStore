@@ -1,7 +1,11 @@
 ﻿@using OnlineStore.Web.ViewModels.Checkout.Partials
 @model OrderSummaryViewModel
 
-<aside id="order-summary" class="card shadow-sm p-4 sticky-top" style="top: 20px; max-height: 90vh; overflow-y: auto;">
+<aside id="order-summary" class="card shadow-sm p-4 sticky-top" style="top: 20px; max-height: 90vh; overflow-y: auto; position: sticky;">
+    <input asp-for="Subtotal" type="hidden" />
+    <input asp-for="DeliveryCost" type="hidden" />
+    <input asp-for="Total" type="hidden" />
+
     <h2 class="h5 fw-bold mb-4">Order Summary</h2>
 
     <div class="mb-4 small text-muted">

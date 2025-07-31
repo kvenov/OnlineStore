@@ -2,84 +2,90 @@
 @using OnlineStore.Data.Models.Enums
 @model PaymentMethodViewModel
 
+@functions {
+    private string GetPaymentMethodImage(PaymentMethodCode method)
+    {
+        return method switch
+        {
+            PaymentMethodCode.CreditCard => "/img/creditcard.svg",
+            PaymentMethodCode.PayPal => "/img/paypal.svg",
+            PaymentMethodCode.GooglePay => "/img/googlepay.svg",
+            PaymentMethodCode.CashOnDelivery => "/img/cashondelivery.svg",
+            _ => "/img/default.svg"
+        };
+    }
+}
+
+
 <section class="mb-4">
     <h2 class="h5 mb-3">Payment Method</h2>
 
     <div class="row">
-        <div class="col-md-6 mb-3">
-            <label class="payment-option-card position-relative d-block">
-                <input type="radio" name="SelectedPaymentOption" value="0" class="form-check-input position-absolute top-0 start-0 m-3"
-                       @(Model.SelectedPaymentOption == PaymentMethodCode.CreditCard ? "checked" : "") />
-                <img src="/img/creditcard.svg" alt="Credit Card" class="w-100 h-100 object-fit-cover" />
-                <div class="payment-option-label">
-                    Credit Card
-                </div>
-            </label>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label class="payment-option-card position-relative d-block">
-                <input type="radio" name="SelectedPaymentOption" value="1" class="form-check-input position-absolute top-0 start-0 m-3"
-                       @(Model.SelectedPaymentOption == PaymentMethodCode.PayPal ? "checked" : "") />
-                <img src="/img/paypal.svg" alt="PayPal" class="w-100 h-100 object-fit-cover" />
-                <div class="payment-option-label">
-                    PayPal
-                </div>
-            </label>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label class="payment-option-card position-relative d-block">
-                <input type="radio" name="SelectedPaymentOption" value="4" class="form-check-input position-absolute top-0 start-0 m-3"
-                       @(Model.SelectedPaymentOption == PaymentMethodCode.GooglePay ? "checked" : "") />
-                <img src="/img/googlepay.svg" alt="Google Pay" class="w-100 h-100 object-fit-cover" />
-                <div class="payment-option-label">
-                    Google Pay
-                </div>
-            </label>
-        </div>
-
-        <div class="col-md-6 mb-3">
-            <label class="payment-option-card position-relative d-block">
-                <input type="radio" name="SelectedPaymentOption" value="5" class="form-check-input position-absolute top-0 start-0 m-3"
-                       @(Model.SelectedPaymentOption == PaymentMethodCode.CashOnDelivery ? "checked" : "") />
-                <img src="/img/cashondelivery.svg" alt="Cash on Delivery" class="w-100 h-100 object-fit-cover" />
-                <div class="payment-option-label">
-                    Cash on Delivery
-                </div>
-            </label>
-        </div>
-
+        @foreach (PaymentMethodCode method in Enum.GetValues(typeof(PaymentMethodCode)))
+        {
+            <div class="col-md-6 mb-3">
+                <label class="payment-option-card position-relative d-block">
+                    <input type="radio" name="Payment.SelectedPaymentOption" value="@method" class="form-check-input position-absolute top-0 start-0 m-3"
+                           @(Model.SelectedPaymentOption == method ? "checked" : "") />
+                    <img src="@GetPaymentMethodImage(method)" alt="@method" class="w-100 h-100 object-fit-cover" />
+                    <div class="payment-option-label">
+                        @method.ToString()
+                    </div>
+                </label>
+            </div>
+        }
+        
     </div>
+
+    <div class="form-check mb-4">
+        <input asp-for="DefaultPaymentMethod" class="form-check-input small-checkbox" type="checkbox" id="defaultPaymentMethod" />
+        <label class="form-check-label" for="defaultPaymentMethod">
+            Set as default payment method
+        </label>
+    </div>
+
 
     <div id="creditCardDetails" class="mt-4 @(Model.SelectedPaymentOption != PaymentMethodCode.CreditCard ? "d-none" : "")">
         <h3 class="h6">Card Details</h3>
         <div class="row g-3">
             <div class="col-md-6">
-                <label class="form-label">Name on Card</label>
+                <label asp-for="CreditCardDetails.NameOnCard" class="form-label">Name on Card</label>
                 <input asp-for="CreditCardDetails.NameOnCard" class="form-control" />
+                <span asp-validation-for="CreditCardDetails.NameOnCard" class="text-danger"></span>
             </div>
             <div class="col-md-6">
-                <label class="form-label">Card Number</label>
-                <input asp-for="CreditCardDetails.CardNumber" type="number" class="form-control" autocomplete="off"/>
+                <label asp-for="CreditCardDetails.CardNumber" class="form-label">Card Number</label>
+                <input asp-for="CreditCardDetails.CardNumber" type="number" class="form-control" autocomplete="off" />
+				<span asp-validation-for="CreditCardDetails.CardNumber" class="text-danger"></span>
             </div>
             <div class="col-md-6">
-                <label class="form-label">Expiry Month</label>
+                <label asp-for="CreditCardDetails.ExpMonth" class="form-label">Expiry Month</label>
                 <input asp-for="CreditCardDetails.ExpMonth" type="number" class="form-control" min="1" max="12" />
+                <span asp-validation-for="CreditCardDetails.ExpMonth" id="ExpMonthError" class="text-danger d-none">ExpMonth has expired</span>
             </div>
             <div class="col-md-6">
-                <label class="form-label">Expiry Year</label>
+                <label asp-for="CreditCardDetails.ExpYear" class="form-label">Expiry Year</label>
                 <input asp-for="CreditCardDetails.ExpYear" type="number" class="form-control" />
+                <span asp-validation-for="CreditCardDetails.ExpYear" id="ExpYearError" class="text-danger d-none">ExpYear has expired</span>
             </div>
             <div class="col-12">
-                <label class="form-label">CVV</label>
-                <input asp-for="CreditCardDetails.CVV" type="password" maxlength="4" class="form-control" autocomplete="off"/>
+                <label asp-for="CreditCardDetails.CVV" class="form-label">CVV</label>
+                <input asp-for="CreditCardDetails.CVV" type="password" maxlength="4" class="form-control" autocomplete="off" />
+				<span asp-validation-for="CreditCardDetails.CVV" class="text-danger"></span>
             </div>
         </div>
+
+        <div class="form-check mb-4">
+            <input asp-for="CreditCardDetails.DefaultPaymentDetails" class="form-check-input small-checkbox" type="checkbox" id="defaultPaymentDetails" />
+            <label class="form-check-label" for="defaultPaymentDetails">
+                Set as default payment details
+            </label>
+        </div>
+
     </div>
 
     <div class="d-grid mt-4">
-        <button type="submit" class="btn btn-primary btn-lg fw-bold">
+        <button type="submit" id="make-order-button" class="btn btn-primary btn-lg fw-bold">
             Place Order
         </button>
     </div>

@@ -10,35 +10,58 @@
     <link rel="stylesheet" href="~/css/Checkout/checkout.css" asp-append-version="true" />
 }
 
-<div class="checkout-container row gx-5">
-    <div class="col-lg-8">
-        @if (Model.UserId != null)
-        {
-            <div class="section-card mb-4">
-                <partial name="_MemberAddressSection" model="Model.MemberAddress" />
-            </div>
-        }
-        else
-        {
-            <div class="section-card mb-4">
-                <partial name="_GuestAddressSection" model="Model.GuestAddress" />
-            </div>
-        }
+<form asp-action="CreateOrder" asp-controller="Order" method="post">
+    <input asp-for="IsGuest" type="hidden" />
+    <input asp-for="UserId" type="hidden" />
+    <input asp-for="GuestId" type="hidden" />
 
-        <div class="section-card mb-4">
-            <partial name="_ShippingSection" model="Model.Shipping" />
+
+    <div class="checkout-container row gx-5">
+        <div class="col-lg-8">
+            @if (Model.UserId != null)
+            {
+                <div class="section-card mb-4">
+                    @{
+                        ViewData.TemplateInfo.HtmlFieldPrefix = "MemberAddress";
+                    }
+                    <partial name="_MemberAddressSection" model="Model.MemberAddress" />
+                </div>
+            }
+            else
+            {
+                <div class="section-card mb-4">
+                    @{
+                        ViewData.TemplateInfo.HtmlFieldPrefix = "GuestAddress";
+                    }
+                    <partial name="_GuestAddressSection" model="Model.GuestAddress" />
+                </div>
+            }
+
+            <div class="section-card mb-4">
+                @{
+                    ViewData.TemplateInfo.HtmlFieldPrefix = "Shipping";
+                }
+                <partial name="_ShippingSection" model="Model.Shipping" />
+            </div>
+
+            <div class="section-card mb-4">
+                @{
+                    ViewData.TemplateInfo.HtmlFieldPrefix = "Payment";
+				}
+                <partial name="_PaymentSection" model="Model.Payment" />
+            </div>
         </div>
 
-        <div class="section-card mb-4">
-            <partial name="_PaymentSection" model="Model.Payment" />
+        <div class="col-lg-4">
+            @{
+                ViewData.TemplateInfo.HtmlFieldPrefix = "Summary";
+			}
+            <partial name="_OrderSummarySection" model="Model.Summary" />
         </div>
     </div>
-
-    <div class="col-lg-4">
-        <partial name="_OrderSummarySection" model="Model.Summary" />
-    </div>
-</div>
+</form>
 
 @section Scripts {
     <script src="~/js/Checkout/checkout.js" asp-append-version="true"></script>
+	<script src="~/js/validate.js" asp-append-version="true"></script>
 }
