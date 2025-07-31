@@ -13,14 +13,15 @@ using static OnlineStore.Web.Infrastructure.Extensions.ServiceCollectionExtensio
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+//Getting the application connection string.
 var connectionString = builder.Configuration
             .GetConnectionString("DbConnectionString") ?? 
                     throw new InvalidOperationException("Connection string 'DbConnectionString' not found.");
 
-//This interceptor is used to ovveride the default EF Core delete behaviour.
+//This interceptor is used to ovveride the default EF Core delete behaviour, so it is working with soft deletable entities.
 builder.Services.AddScoped<SoftDeleteInterceptor>();
 
+//Here we add and configure the app db context.
 builder.Services.AddApplicationDbContext(connectionString);
 
 builder.Services.AddScopedGenericRepositories(typeof(GenericRepository<,>));
@@ -34,7 +35,7 @@ builder.Services.AddScopedServices(typeof(IProductService).Assembly);
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 
-//Here we add the application identity via extension method!
+//Here we add the application custom identity.
 builder.Services.AddCustomIdentity();
 
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, CustomClaimsPrincipalFactory>();
@@ -52,7 +53,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -65,6 +65,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+//Here we add the guest tracking middleware, in order to support guest user functionality in the application.
 app.UseGuestTracking();
 
 app.MapControllerRoute(
