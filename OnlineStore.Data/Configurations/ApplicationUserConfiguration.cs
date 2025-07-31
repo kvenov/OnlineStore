@@ -75,11 +75,7 @@ namespace OnlineStore.Data.Configurations
 				.OnDelete(DeleteBehavior.Restrict);
 
 			entity
-				.HasQueryFilter(au => !au.IsDeleted &&
-									  !au.Wishlist.IsDeleted &&
-									  (au.DefaultPaymentMethod == null || !au.DefaultPaymentMethod.IsDeleted) &&
-									  (au.DefaultShippingAddress == null || !au.DefaultShippingAddress.IsDeleted) &&
-									  (au.DefaultBillingAddress == null || !au.DefaultBillingAddress.IsDeleted));
+				.HasQueryFilter(au => !au.IsDeleted);
 		}
 	}
 }
