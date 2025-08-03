@@ -66,4 +66,10 @@
         });
     });
 
+
+    document.addEventListener('input', function (e) {
+        if (e.target.classList.contains('masked-card-input')) {
+            e.target.value = e.target.value.replace(/[^0-9\*]/g, '');
+        }
+    });
 });

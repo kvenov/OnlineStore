@@ -61,7 +61,7 @@
             </div>
             <div class="col-md-6">
                 <label asp-for="CreditCardDetails.CardNumber" class="form-label">Card Number</label>
-                <input asp-for="CreditCardDetails.CardNumber" type="number" class="form-control" autocomplete="off" />
+                <input asp-for="CreditCardDetails.CardNumber" class="form-control masked-card-input" autocomplete="off" />
 				<span asp-validation-for="CreditCardDetails.CardNumber" class="text-danger"></span>
             </div>
             <div class="col-md-6">

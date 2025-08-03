@@ -16,7 +16,7 @@ namespace OnlineStore.Web.ViewModels.Checkout.Partials
 
 		[Required(ErrorMessage = Required)]
 		[StringLength(CardNumberMaxLength, MinimumLength = CardNumberMinLength, ErrorMessage = CardNumberLength)]
-		[RegularExpression(@"^\d+$", ErrorMessage = CardNumberInvalid)]
+		[RegularExpression(CardNumberPattern, ErrorMessage = CardNumberInvalid)]
 		[Display(Name = "Card Number")]
 		public string CardNumber { get; set; } = string.Empty;
 
@@ -33,7 +33,7 @@ namespace OnlineStore.Web.ViewModels.Checkout.Partials
 
 		[Required(ErrorMessage = Required)]
 		[StringLength(CvvMaxLength, MinimumLength = CvvMinLength, ErrorMessage = CVVLength)]
-		[RegularExpression(@"^\d{3,4}$", ErrorMessage = CVVLength)]
+		[RegularExpression(CVVPattern, ErrorMessage = CVVLength)]
 		[Display(Name = "CVV")]
 		public string CVV { get; set; } = string.Empty;
 
