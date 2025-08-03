@@ -18,25 +18,22 @@ namespace OnlineStore.Data.Models
 		public string? CardBrand { get; set; }
 
 		[Comment("Payment details card expiry data month")]
-		public int? ExpMonth { get; set; }
+		public int ExpMonth { get; set; }
 
 		[Comment("Payment details card expiry data year")]
-		public int? ExpYear { get; set; }
+		public int ExpYear { get; set; }
 
 		[Comment("Payment details card name")]
 		public string NameOnCard { get; set; } = null!;
-
-		[Comment("Payment details payment date")]
-		public DateTime? PaidAt { get; set; }
 
 		[Comment("Payment details payment status")]
 		public PaymentStatus Status { get; set; }
 
 
-		public int OrderId { get; set; }
+		public int? OrderId { get; set; }
 
 		[Comment("Order that uses the payment details")]
-		public virtual Order Order { get; set; } = null!;
+		public virtual Order? Order { get; set; }
 
 		[Comment("Checkout that uses the payment details")]
 		public virtual Checkout Checkout { get; set; } = null!;

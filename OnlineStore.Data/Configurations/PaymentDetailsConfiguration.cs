@@ -25,12 +25,12 @@ namespace OnlineStore.Data.Configurations
 			entity 
 				.Property(p => p.ExpMonth)
 				.HasPrecision(2)
-				.IsRequired(false);
+				.IsRequired(true);
 
 			entity 
 				.Property(p => p.ExpYear)
 				.HasPrecision(4)
-				.IsRequired(false);
+				.IsRequired(true);
 
 			entity
 				.Property(p => p.NameOnCard)
@@ -38,16 +38,12 @@ namespace OnlineStore.Data.Configurations
 				.IsRequired(true);
 
 			entity
-				.Property(p => p.PaidAt)
-				.IsRequired(false);
-
-			entity
 				.Property(p => p.Status)
 				.IsRequired(true);
 
 			entity
 				.Property(p => p.OrderId)
-				.IsRequired(true);
+				.IsRequired(false);
 
 			entity
 				.HasOne(p => p.Order)
@@ -63,9 +59,6 @@ namespace OnlineStore.Data.Configurations
 
 			entity
 				.HasIndex(p => p.Status);
-
-			entity
-				.HasIndex(p => p.PaidAt);
 
 			entity
 				.HasQueryFilter(pd => pd.Checkout.IsDeleted == false);
