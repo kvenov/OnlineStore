@@ -72,4 +72,61 @@
             e.target.value = e.target.value.replace(/[^0-9\*]/g, '');
         }
     });
+
+    // SHIPPING: toggle new shipping address form
+    const addNewShippingBtn = document.getElementById('addNewShippingAddressBtn');
+    const newShippingSection = document.getElementById('new-shipping-address-section');
+    const savedShippingRadios = document.querySelectorAll('input[name="MemberAddress.SelectedShippingAddressId"]');
+
+    if (addNewShippingBtn && newShippingSection) {
+        const toggleNewShippingSection = (show) => {
+            newShippingSection.style.display = show ? 'block' : 'none';
+            newShippingSection.querySelectorAll('input').forEach(input => input.disabled = !show);
+        };
+
+        // Default state based on selected radio
+        const hasAnySavedShipping = savedShippingRadios.length > 0;
+        const hasSelectedShipping = Array.from(savedShippingRadios).some(r => r.checked);
+        toggleNewShippingSection(!hasAnySavedShipping || !hasSelectedShipping);
+
+
+        savedShippingRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                toggleNewShippingSection(false);
+            });
+        });
+
+        addNewShippingBtn.addEventListener('click', () => {
+            toggleNewShippingSection(true);
+            savedShippingRadios.forEach(r => r.checked = false);
+        });
+    }
+
+    // BILLING: toggle new billing address form
+    const addNewBillingBtn = document.getElementById('addNewBillingAddressBtn');
+    const newBillingSection = document.getElementById('new-billing-address-section');
+    const savedBillingRadios = document.querySelectorAll('input[name="MemberAddress.SelectedBillingAddressId"]');
+
+    if (addNewBillingBtn && newBillingSection) {
+        const toggleNewBillingSection = (show) => {
+            newBillingSection.style.display = show ? 'block' : 'none';
+            newBillingSection.querySelectorAll('input').forEach(input => input.disabled = !show);
+        };
+
+        const hasAnySavedBilling = savedBillingRadios.length > 0;
+        const hasSelectedBilling = Array.from(savedBillingRadios).some(r => r.checked);
+        toggleNewBillingSection(!hasSelectedBilling || !hasAnySavedBilling);
+
+        savedBillingRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                toggleNewBillingSection(false);
+            });
+        });
+
+        addNewBillingBtn.addEventListener('click', () => {
+            toggleNewBillingSection(true);
+            savedBillingRadios.forEach(r => r.checked = false);
+        });
+    }
+
 });

@@ -9,7 +9,7 @@
 
 		public List<MemberAddressItemViewModel> SavedAddresses { get; set; } = new();
 
-		public MemberAddressItemViewModel? NewShippingAddress { get; set; } = new();
+		public MemberAddressItemViewModel? NewShippingAddress { get; set; }
 
 		public MemberAddressItemViewModel? NewBillingAddress { get; set; }
 	}

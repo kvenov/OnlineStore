@@ -42,42 +42,51 @@
 
     <hr class="my-4" />
 
-    <h3 class="h6 mb-3">Add New Shipping Address</h3>
-
-    <div class="row g-3">
-        <div class="col-md-6">
-            <label asp-for="NewShippingAddress.Street" class="form-label">Street</label>
-            <input asp-for="NewShippingAddress.Street" class="form-control" />
-            <span asp-validation-for="NewShippingAddress.Street" class="text-danger"></span>
-
-        </div>
-        <div class="col-md-6">
-            <label asp-for="NewShippingAddress.City" class="form-label">City</label>
-            <input asp-for="NewShippingAddress.City" class="form-control" />
-			<span asp-validation-for="NewShippingAddress.City" class="text-danger"></span>
-        </div>
-        <div class="col-md-6">
-            <label asp-for="NewShippingAddress.Country" class="form-label">Country</label>
-            <input asp-for="NewShippingAddress.Country" class="form-control" />
-			<span asp-validation-for="NewShippingAddress.Country" class="text-danger"></span>
-        </div>
-        <div class="col-md-6">
-            <label asp-for="NewShippingAddress.ZipCode" class="form-label">Zip Code</label>
-            <input asp-for="NewShippingAddress.ZipCode" class="form-control" />
-			<span asp-validation-for="NewShippingAddress.ZipCode" class="text-danger"></span>
-        </div>
-        <div class="col-md-6">
-            <label asp-for="NewShippingAddress.PhoneNumber" class="form-label">Phone Number</label>
-            <input asp-for="NewShippingAddress.PhoneNumber" class="form-control" />
-			<span asp-validation-for="NewShippingAddress.PhoneNumber" class="text-danger"></span>
-        </div>
+    <div class="mb-3">
+        <button type="button" class="btn btn-outline-primary" id="addNewShippingAddressBtn">
+            Add New Shipping Address
+        </button>
     </div>
 
-    <div class="form-check mb-4">
-        <input asp-for="NewShippingAddress.DefaultShipping" class="form-check-input small-checkbox" type="checkbox" id="defaultShipping" />
-        <label class="form-check-label" for="defaultShipping">
-            Set as default shipping address
-        </label>
+
+    <div id="new-shipping-address-section">
+        <h3 class="h6 mb-3">New Shipping Address</h3>
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label asp-for="NewShippingAddress.Street" class="form-label">Street</label>
+                <input asp-for="NewShippingAddress.Street" class="form-control" />
+                <span asp-validation-for="NewShippingAddress.Street" class="text-danger"></span>
+
+            </div>
+            <div class="col-md-6">
+                <label asp-for="NewShippingAddress.City" class="form-label">City</label>
+                <input asp-for="NewShippingAddress.City" class="form-control" />
+                <span asp-validation-for="NewShippingAddress.City" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="NewShippingAddress.Country" class="form-label">Country</label>
+                <input asp-for="NewShippingAddress.Country" class="form-control" />
+                <span asp-validation-for="NewShippingAddress.Country" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="NewShippingAddress.ZipCode" class="form-label">Zip Code</label>
+                <input asp-for="NewShippingAddress.ZipCode" class="form-control" />
+                <span asp-validation-for="NewShippingAddress.ZipCode" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="NewShippingAddress.PhoneNumber" class="form-label">Phone Number</label>
+                <input asp-for="NewShippingAddress.PhoneNumber" class="form-control" />
+                <span asp-validation-for="NewShippingAddress.PhoneNumber" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-check mb-4">
+            <input asp-for="NewShippingAddress.DefaultShipping" class="form-check-input small-checkbox" type="checkbox" id="defaultShipping" />
+            <label class="form-check-label" for="defaultShipping">
+                Set as default shipping address
+            </label>
+        </div>
     </div>
 
 
@@ -122,40 +131,52 @@
             </div>
         }
 
-        <h3 class="h6 mb-3">Add New Billing Address</h3>
-
-        <div class="col-md-6">
-            <label asp-for="NewBillingAddress.PhoneNumber" class="form-label">Billing Phone Number</label>
-            <input asp-for="NewBillingAddress.PhoneNumber" class="form-control" placeholder="Billing Phone Number" />
-			<span asp-validation-for="NewBillingAddress.PhoneNumber" class="text-danger"></span>
-        </div>
-        <div class="col-md-6">
-            <label asp-for="NewBillingAddress.Street" class="form-label">Billing Street</label>
-            <input asp-for="NewBillingAddress.Street" class="form-control" placeholder="Billing Street" />
-			<span asp-validation-for="NewBillingAddress.Street" class="text-danger"></span>
-        </div>
-        <div class="col-md-4">
-            <label asp-for="NewBillingAddress.City" class="form-label">Billing City</label>
-            <input asp-for="NewBillingAddress.City" class="form-control" placeholder="Billing City" />
-			<span asp-validation-for="NewBillingAddress.City" class="text-danger"></span>
-        </div>
-        <div class="col-md-4">
-            <label asp-for="NewBillingAddress.ZipCode" class="form-label">Billing Zip Code</label>
-            <input asp-for="NewBillingAddress.ZipCode" class="form-control" placeholder="Billing Zip Code" />
-			<span asp-validation-for="NewBillingAddress.ZipCode" class="text-danger"></span>
-        </div>
-        <div class="col-md-4">
-            <label asp-for="NewBillingAddress.Country" class="form-label">Billing Country</label>
-            <input asp-for="NewBillingAddress.Country" class="form-control" placeholder="Billing Country" />
-			<span asp-validation-for="NewBillingAddress.Country" class="text-danger"></span>
+        <div class="mb-3">
+            <button type="button" class="btn btn-outline-primary" id="addNewBillingAddressBtn">
+                Add New Billing Address
+            </button>
         </div>
 
-        <div class="form-check mb-4">
-            <input asp-for="NewBillingAddress.DefaultBilling" class="form-check-input small-checkbox" type="checkbox" id="defaultBilling" />
-            <label class="form-check-label" for="defaultBilling">
-                Set as default billing address
-            </label>
+        <div id="new-billing-address-section">
+            <h3 class="h6 mb-3">New Billing Address</h3>
+           
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="NewBillingAddress.PhoneNumber" class="form-label">Billing Phone Number</label>
+                    <input asp-for="NewBillingAddress.PhoneNumber" class="form-control" placeholder="Billing Phone Number" />
+                    <span asp-validation-for="NewBillingAddress.PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="NewBillingAddress.Street" class="form-label">Billing Street</label>
+                    <input asp-for="NewBillingAddress.Street" class="form-control" placeholder="Billing Street" />
+                    <span asp-validation-for="NewBillingAddress.Street" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="NewBillingAddress.City" class="form-label">Billing City</label>
+                    <input asp-for="NewBillingAddress.City" class="form-control" placeholder="Billing City" />
+                    <span asp-validation-for="NewBillingAddress.City" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="NewBillingAddress.ZipCode" class="form-label">Billing Zip Code</label>
+                    <input asp-for="NewBillingAddress.ZipCode" class="form-control" placeholder="Billing Zip Code" />
+                    <span asp-validation-for="NewBillingAddress.ZipCode" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="NewBillingAddress.Country" class="form-label">Billing Country</label>
+                    <input asp-for="NewBillingAddress.Country" class="form-control" placeholder="Billing Country" />
+                    <span asp-validation-for="NewBillingAddress.Country" class="text-danger"></span>
+                </div>
+            </div>
+
+            <br />
+            <div class="form-check mb-4">
+                <input asp-for="NewBillingAddress.DefaultBilling" class="form-check-input small-checkbox" type="checkbox" id="defaultBilling" />
+                <label class="form-check-label" for="defaultBilling">
+                    Set as default billing address
+                </label>
+            </div>
         </div>
+
     </div>
 
 </section>

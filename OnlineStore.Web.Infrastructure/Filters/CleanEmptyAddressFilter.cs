@@ -5,6 +5,9 @@ namespace OnlineStore.Web.Infrastructure.Filters
 {
 	public class CleanEmptyAddressFilter : IActionFilter
 	{
+		private const string BillingAddressKey = "BillingAddress";
+		private const string ShippingAddressKey = "ShippingAddress";
+
 		public void OnActionExecuting(ActionExecutingContext context)
 		{
 			if (context.ActionArguments.TryGetValue("model", out var obj) 
@@ -20,7 +23,7 @@ namespace OnlineStore.Web.Infrastructure.Filters
 					{
 						model.GuestAddress.BillingAddress = null;
 
-						foreach (var key in modelState.Keys.Where(k => k.Contains("BillingAddress")).ToList())
+						foreach (var key in modelState.Keys.Where(k => k.Contains(BillingAddressKey)).ToList())
 						{
 							modelState.Remove(key);
 						}
@@ -34,7 +37,17 @@ namespace OnlineStore.Web.Infrastructure.Filters
 
 						model.MemberAddress.NewBillingAddress = null;
 
-						foreach (var key in modelState.Keys.Where(k => k.Contains("BillingAddress")).ToList())
+						foreach (var key in modelState.Keys.Where(k => k.Contains(BillingAddressKey)).ToList())
+						{
+							modelState.Remove(key);
+						}
+					}
+					else if ((model.MemberAddress.NewShippingAddress != null) &&
+								model.MemberAddress.NewShippingAddress.IsEmpty())
+					{
+						model.MemberAddress.NewShippingAddress = null;
+
+						foreach (var key in modelState.Keys.Where(k => k.Contains(ShippingAddressKey)).ToList())
 						{
 							modelState.Remove(key);
 						}
