@@ -7,6 +7,8 @@ namespace OnlineStore.Data.Repository.Interfaces
 
 		Task RefreshCheckoutTotalsAsync(string? userId, int checkoutId);
 
+		Task RefreshCheckoutStartingDateAsync(int checkoutId);
+
 		Task<decimal> GetCheckoutDeliveryCostAsync(string? userId, decimal? subTotal);
 	}
 }

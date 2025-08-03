@@ -34,6 +34,18 @@ namespace OnlineStore.Data.Repository
 			return deliveryCost;
 		}
 
+		public async Task RefreshCheckoutStartingDateAsync(int checkoutId)
+		{
+			Checkout? checkout = await this
+						.SingleOrDefaultAsync(c => c.Id == checkoutId);
+
+			if (checkout == null)
+				throw new InvalidOperationException("Checkout not found.");
+
+			checkout.StartedAt = DateTime.UtcNow;
+			await this.UpdateAsync(checkout);
+		}
+
 		public async Task RefreshCheckoutTotalsAsync(string? userId, int checkoutId)
 		{
 			ShoppingCart? cart = await this.DbContext.ShoppingCarts
@@ -56,7 +68,7 @@ namespace OnlineStore.Data.Repository
 				.Sum(item => item.TotalPrice);
 
 			checkout.TotalPrice = subTotal;
-			await this.SaveChangesAsync();
+			await this.UpdateAsync(checkout);
 		}
 	}
 }
