@@ -32,9 +32,6 @@ namespace OnlineStore.Web.ViewModels.Checkout.Partials
 		[RegularExpression(CountryPattern, ErrorMessage = CountryInvalid)]
 		public string BillingCountry { get; set; } = string.Empty;
 
-		public bool DefaultBilling { get; set; } = false;
-
-
 		public bool IsEmpty()
 		{
 			return string.IsNullOrWhiteSpace(BillingStreet)

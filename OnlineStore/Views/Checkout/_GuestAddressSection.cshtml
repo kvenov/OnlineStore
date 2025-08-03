@@ -44,13 +44,6 @@
     </div>
 
     <div class="form-check mb-4">
-        <input asp-for="ShippingAddress.DefaultShipping" class="form-check-input small-checkbox" type="checkbox" id="defaultShipping" />
-        <label class="form-check-label" for="defaultShipping">
-            Set as default shipping address
-        </label>
-    </div>
-
-    <div class="form-check mb-4">
         <input class="form-check-input" type="checkbox" id="sameAsShipping" checked />
         <label class="form-check-label" for="sameAsShipping">
             Billing address is the same as shipping address
@@ -84,11 +77,5 @@
             <span asp-validation-for="BillingAddress.BillingCountry" class="text-danger"></span>
         </div>
 
-        <div class="form-check mb-4">
-            <input asp-for="BillingAddress.DefaultBilling" class="form-check-input small-checkbox" type="checkbox" id="defaultBilling" />
-            <label class="form-check-label" for="defaultBilling">
-                Set as default billing address
-            </label>
-        </div>
     </div>
 </section>

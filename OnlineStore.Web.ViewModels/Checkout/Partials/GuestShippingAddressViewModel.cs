@@ -32,7 +32,5 @@ namespace OnlineStore.Web.ViewModels.Checkout.Partials
 		[RegularExpression(CountryPattern, ErrorMessage = CountryInvalid)]
 		public string Country { get; set; } = string.Empty;
 
-		public bool DefaultShipping { get; set; } = false;
-
 	}
 }

@@ -16,6 +16,9 @@
     }
 }
 
+@{
+	bool isGuest = User.Identity?.IsAuthenticated == false;
+}
 
 <section class="mb-4">
     <h2 class="h5 mb-3">Payment Method</h2>
@@ -37,12 +40,15 @@
         
     </div>
 
-    <div class="form-check mb-4">
-        <input asp-for="DefaultPaymentMethod" class="form-check-input small-checkbox" type="checkbox" id="defaultPaymentMethod" />
-        <label class="form-check-label" for="defaultPaymentMethod">
-            Set as default payment method
-        </label>
-    </div>
+    @if (!isGuest)
+    {
+        <div class="form-check mb-4">
+            <input asp-for="DefaultPaymentMethod" class="form-check-input small-checkbox" type="checkbox" id="defaultPaymentMethod" />
+            <label class="form-check-label" for="defaultPaymentMethod">
+                Set as default payment method
+            </label>
+        </div>
+    }
 
 
     <div id="creditCardDetails" class="mt-4 @(Model.SelectedPaymentOption != PaymentMethodCode.CreditCard ? "d-none" : "")">
@@ -75,12 +81,15 @@
             </div>
         </div>
 
-        <div class="form-check mb-4">
-            <input asp-for="CreditCardDetails.DefaultPaymentDetails" class="form-check-input small-checkbox" type="checkbox" id="defaultPaymentDetails" />
-            <label class="form-check-label" for="defaultPaymentDetails">
-                Set as default payment details
-            </label>
-        </div>
+        @if (!isGuest)
+        {
+            <div class="form-check mb-4">
+                <input asp-for="CreditCardDetails.DefaultPaymentDetails" class="form-check-input small-checkbox" type="checkbox" id="defaultPaymentDetails" />
+                <label class="form-check-label" for="defaultPaymentDetails">
+                    Set as default payment details
+                </label>
+            </div>
+        }
 
     </div>
 
