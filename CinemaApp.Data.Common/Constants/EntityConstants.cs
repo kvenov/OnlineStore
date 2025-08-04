@@ -317,9 +317,19 @@
 		public static class Checkout
 		{
 			/// <summary>
+			/// The data type for the checkout's sub total price.
+			/// </summary>
+			public const string CheckoutSubTotalType = "DECIMAL(18,2)";
+
+			/// <summary>
 			/// The data type for the checkout's total price.
 			/// </summary>
 			public const string CheckoutTotalPriceType = "DECIMAL(18,2)";
+
+			/// <summary>
+			/// The data type for the checkout's shipping price.
+			/// </summary>
+			public const string CheckoutShippingPriceType = "DECIMAL(18,2)";
 		}
 	}
 

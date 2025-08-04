@@ -34,8 +34,8 @@ namespace OnlineStore.Data.Configurations
 				.IsRequired(true);
 
 			entity
-				.Property(p => p.TotalPrice)
-				.HasColumnType(CheckoutTotalPriceType)
+				.Property(p => p.SubTotal)
+				.HasColumnType(CheckoutSubTotalType)
 				.IsRequired(true);
 
 			entity
@@ -61,6 +61,30 @@ namespace OnlineStore.Data.Configurations
 			entity
 				.Property(p => p.BillingAddressId)
 				.IsRequired(false);
+
+			entity
+				.Property(p => p.ShippingOption)
+				.IsRequired(true);
+
+			entity
+				.Property(p => p.EstimatedDeliveryStart)
+				.IsRequired(true);
+
+			entity 
+				.Property(p => p.EstimatedDeliveryEnd)
+				.IsRequired(true);
+
+			entity
+				.Property(p => p.ShippingPrice)
+				.HasColumnType(CheckoutShippingPriceType)
+				.IsRequired(true);
+
+			entity
+				.Property(o => o.TotalPrice)
+				.HasComputedColumnSql("[ShippingPrice] + [SubTotal]", stored: true)
+				.HasColumnType(CheckoutTotalPriceType)
+				.IsRequired(true);
+
 
 			entity
 				.HasOne(p => p.User)

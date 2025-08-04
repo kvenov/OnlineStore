@@ -61,7 +61,8 @@
     radios.forEach(radio => {
         radio.addEventListener('change', function () {
             document.getElementById('selectedOptionName').value = this.dataset.name;
-            document.getElementById('selectedOptionDateRange').value = this.dataset.daterange;
+            document.getElementById('selectedOptionEstimatedDeliveryStart').value = this.dataset.estimatedDeliveryStart;
+            document.getElementById('selectedOptionEstimatedDeliveryEnd').value = this.dataset.estimatedDeliveryEnd;
             document.getElementById('selectedOptionPrice').value = this.dataset.price;
         });
     });

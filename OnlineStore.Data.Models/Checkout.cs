@@ -30,8 +30,8 @@ namespace OnlineStore.Data.Models
 		[Comment("Shopping cart used for the checkout")]
 		public virtual ShoppingCart ShoppingCart { get; set; } = null!;
 
-		[Comment("Checkout total price")]
-		public decimal TotalPrice { get; set; }
+		[Comment("Checkout SubTotal")]
+		public decimal SubTotal { get; set; }
 
 		public int PaymentMethodId { get; set; }
 
@@ -58,6 +58,21 @@ namespace OnlineStore.Data.Models
 
 		[Comment("Checkout Billing address")]
 		public virtual Address? BillingAddress { get; set; }
+
+		[Comment("Shipping option for the checkout")]
+		public string ShippingOption { get; set; } = null!;
+
+		[Comment("Estimated delivery start date")]
+		public DateTime EstimatedDeliveryStart { get; set; }
+
+		[Comment("Estimated delivery end date")]
+		public DateTime EstimatedDeliveryEnd { get; set; }
+
+		[Comment("Shipping price for the checkout")]
+		public decimal ShippingPrice { get; set; }
+
+		[Comment("Total price for the checkout")]
+		public decimal TotalPrice { get; set; }
 
 		[Comment("Order that is made of the checkout")]
 		public virtual Order? Order { get; set; }

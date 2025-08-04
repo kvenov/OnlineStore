@@ -58,6 +58,18 @@ namespace OnlineStore.Data.Models
 		[Comment("Order number")]
 		public string OrderNumber { get; set; } = null!;
 
+		[Comment("Shipping option for the order")]
+		public string ShippingOption { get; set; } = null!;
+
+		[Comment("Estimated delivery start date")]
+		public DateTime EstimatedDeliveryStart { get; set; }
+
+		[Comment("Estimated delivery end date")]
+		public DateTime EstimatedDeliveryEnd { get; set; }
+
+		[Comment("Shipping price for the order")]
+		public decimal ShippingPrice { get; set; }
+
 		public int CheckoutId { get; set; }
 
 		[Comment("The Checkout that is used to create the Order")]

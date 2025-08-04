@@ -3,7 +3,8 @@
 
 <section class="mb-4">
     <input name="Shipping.SelectedShippingOption.Name" id="selectedOptionName" value="@Model.SelectedShippingOption.Name" type="hidden" />
-    <input name="Shipping.SelectedShippingOption.DateRange" id="selectedOptionDateRange" value="@Model.SelectedShippingOption.DateRange" type="hidden" />
+    <input name="Shipping.SelectedShippingOption.EstimatedDeliveryStart" id="selectedOptionEstimatedDeliveryStart" value="@Model.SelectedShippingOption.EstimatedDeliveryStart" type="hidden" />
+    <input name="Shipping.SelectedShippingOption.EstimatedDeliveryEnd" id="selectedOptionEstimatedDeliveryEnd" value="@Model.SelectedShippingOption.EstimatedDeliveryEnd" type="hidden" />
     <input name="Shipping.SelectedShippingOption.Price" id="selectedOptionPrice" value="@Model.SelectedShippingOption.Price" type="hidden" />
 
     <h2 class="h5 mb-3">Shipping Method</h2>
@@ -26,9 +27,10 @@
                             name="shippingOption" 
                             class="form-check-input me-2"
                             data-name="@option.Name"
-                            data-daterange="@option.DateRange"
+                            data-estimated-delivery-start="@option.EstimatedDeliveryStart.ToString("yyyy-MM-dd")"
+                            data-estimated-delivery-end="@option.EstimatedDeliveryEnd.ToString("yyyy-MM-dd")"
                             data-price="@price"
-                           @(Model.SelectedShippingOption == option ? "checked" : "") />
+                            @(Model.SelectedShippingOption.Name == option.Name ? "checked" : "") />
                     <div>
                         <div class="fw-semibold">@option.Name</div>
                         <div>@option.Description</div>

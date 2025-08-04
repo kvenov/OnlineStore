@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OnlineStore.Data.Models;
+
 using static OnlineStore.Data.Common.Constants.EntityConstants.Order;
+using static OnlineStore.Data.Common.Constants.EntityConstants.Checkout;
 
 namespace OnlineStore.Data.Configurations
 {
@@ -58,6 +60,23 @@ namespace OnlineStore.Data.Configurations
 
 			entity
 				.Property(o => o.PaymentMethodId)
+				.IsRequired(true);
+
+			entity
+				.Property(p => p.ShippingOption)
+				.IsRequired(true);
+
+			entity
+				.Property(p => p.EstimatedDeliveryStart)
+				.IsRequired(true);
+
+			entity
+				.Property(p => p.EstimatedDeliveryEnd)
+				.IsRequired(true);
+
+			entity
+				.Property(p => p.ShippingPrice)
+				.HasColumnType(CheckoutShippingPriceType)
 				.IsRequired(true);
 
 			entity

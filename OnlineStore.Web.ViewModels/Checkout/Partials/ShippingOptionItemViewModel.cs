@@ -9,6 +9,10 @@
 
 		public string DateRange { get; set; } = null!;
 
+		public DateTime EstimatedDeliveryStart { get; set; }
+
+		public DateTime EstimatedDeliveryEnd { get; set; }
+
 		public decimal Price { get; set; }
 	}
 }
