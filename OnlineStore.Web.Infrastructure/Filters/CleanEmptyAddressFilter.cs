@@ -42,7 +42,8 @@ namespace OnlineStore.Web.Infrastructure.Filters
 							modelState.Remove(key);
 						}
 					}
-					else if ((model.MemberAddress.NewShippingAddress != null) &&
+					
+					if ((model.MemberAddress.NewShippingAddress != null) &&
 								model.MemberAddress.NewShippingAddress.IsEmpty())
 					{
 						model.MemberAddress.NewShippingAddress = null;
