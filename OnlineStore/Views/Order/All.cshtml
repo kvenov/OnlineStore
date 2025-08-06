@@ -1,0 +1,74 @@
+﻿@using OnlineStore.Web.ViewModels.Order
+@model IEnumerable<UserOrderViewModel>
+
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+@section Styles {
+    <link href="~/css/Order/userOrders.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="orders-container">
+    <h1>My Orders</h1>
+
+    @if (!Model.Any())
+    {
+        <p class="no-orders">You have not placed any orders yet.</p>
+    }
+    else
+    {
+        <div class="orders-list">
+            @foreach (var order in Model)
+            {
+                <div class="order-card">
+                    <div class="order-header">
+                        <div>
+                            <h2>Order #@order.OrderNumber</h2>
+                            <p class="order-date">Placed on: @order.OrderDate.ToString("MMM dd, yyyy")</p>
+                        </div>
+                        <div class="order-status @order.Status.ToLower()">
+                            @order.Status
+                        </div>
+                    </div>
+
+                    <div class="order-details">
+                        <p><strong>Total:</strong> @order.TotalAmount.ToString("C")</p>
+                        <p><strong>Shipping Option:</strong> @order.ShippingOption</p>
+                        <p><strong>Delivery Estimate:</strong> @order.EstimatedDeliveryStartFormatted – @order.EstimatedDeliveryEndFormatted</p>
+                    </div>
+
+                    <div class="order-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" data-start="@order.EstimatedDeliveryStart.ToString("yyyy-MM-dd")" data-end="@order.EstimatedDeliveryEnd.ToString("yyyy-MM-dd")" data-completed="@order.IsCompleted.ToString().ToLower()" style="width: 0%"></div>
+                        </div>
+                        <p class="progress-text">Order Progress</p>
+                    </div>
+
+                    <div class="order-items">
+                        @foreach (var item in order.Items)
+                        {
+                            <div class="order-item">
+                                <img src="@item.ImageUrl" alt="@item.Name" />
+                                <div class="item-info">
+                                    <p class="name">@item.Name</p>
+                                    <p class="quantity">Qty: @item.Quantity</p>
+                                    <p class="quantity">Size: @item.ProductSize</p>
+                                    <p class="price">@item.Price.ToString("C")</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="order-actions">
+                        <a href="/orders/details/@order.OrderNumber" class="view-details-btn">View Order Details</a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="~/js/Order/allUserOrders.js" asp-append-version="true"></script>
+}

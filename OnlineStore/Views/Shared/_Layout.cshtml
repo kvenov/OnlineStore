@@ -113,7 +113,7 @@
                                 <div class="account-menu-list">
                                     <a href="@Url.Action("ProductList", "Product")" class="account-menu-item">All Products</a>
                                     <a href="@Url.Action("Index", "Wishlist")" class="account-menu-item">Favorites</a>
-                                    <a href="@Url.Action("Orders", "User")" class="account-menu-item">Orders</a>
+                                    <a href="@Url.Action("All", "Order")" class="account-menu-item">Orders</a>
                                     <a href="@Url.Action("Profile", "User")" class="account-menu-item">Settings</a>
                                     <hr class="account-menu-divider" />
                                     <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">

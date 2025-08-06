@@ -6,8 +6,6 @@ using OnlineStore.Services.Core.Interfaces;
 using OnlineStore.Web.ViewModels.Order;
 using System.Security.Cryptography;
 using System.Text;
-
-
 using static OnlineStore.Services.Common.ServiceConstants;
 
 namespace OnlineStore.Services.Core
@@ -74,6 +72,7 @@ namespace OnlineStore.Services.Core
 							OrderId = order.Id,
 							Quantity = item.Quantity,
 							UnitPrice = item.Price,
+							ProductSize = item.ProductSize,
 							Subtotal = item.TotalPrice,
 
 						}).ToArray();
@@ -133,12 +132,55 @@ namespace OnlineStore.Services.Core
 					await this._shoppingCartRepository.ClearShoppingCartItemsAsync(checkout.ShoppingCart.Id);
 
 					checkout.CompletedAt = DateTime.UtcNow;
+					checkout.IsCompleted = true;
 					await this._checkoutRepository.UpdateAsync(checkout);
 				}
 
 			}
 
 			return newOrderId;
+		}
+
+		public async Task<IEnumerable<UserOrderViewModel>?> GetUserOrdersAsync(string? userId)
+		{
+			IEnumerable<UserOrderViewModel>? model = null;
+
+			if (userId != null)
+			{
+				ApplicationUser? user = await this._userManager
+										.FindByIdAsync(userId);
+
+				if (user != null)
+				{
+					var orders = await this._orderRepository
+							.GetAllAttached()
+							.AsNoTracking()
+							.Where(o => o.UserId == user.Id)
+							.ToListAsync();
+
+					model = orders.Select(order => new UserOrderViewModel
+					{
+						OrderNumber = order.OrderNumber,
+						OrderDate = order.OrderDate,
+						EstimatedDeliveryStart = order.EstimatedDeliveryStart,
+						EstimatedDeliveryEnd = order.EstimatedDeliveryEnd,
+						TotalAmount = order.TotalAmount,
+						ShippingOption = order.ShippingOption,
+						Status = order.Status.ToString(),
+						IsCompleted = order.IsCompleted,
+						IsCancelled = order.IsCancelled,
+						Items = order.OrderItems.Select(oi => new UserOrderItemViewModel
+						{
+							Name = oi.Product.Name,
+							Quantity = oi.Quantity,
+							Price = oi.UnitPrice,
+							ImageUrl = oi.Product.ImageUrl
+						}).ToList()
+					}).ToList();
+				}
+			}
+
+			return model;
 		}
 
 		public async Task<OrderConfirmationViewModel?> GetOrderForConfirmationPageAsync(string? userId, int? orderId)
@@ -182,6 +224,7 @@ namespace OnlineStore.Services.Core
 										Name = oi.Product.Name,
 										Quantity = oi.Quantity,
 										Price = oi.Subtotal,
+										ProductSize = oi.ProductSize,
 										ImageUrl = oi.Product.ImageUrl
 									})
 									.ToList();
@@ -248,7 +291,7 @@ namespace OnlineStore.Services.Core
 		}
 
 
-		public static string GenerateUniqueOrderNumber()
+		private static string GenerateUniqueOrderNumber()
 		{
 			const string prefix = "ORD";
 			string datePart = DateTime.UtcNow.ToString("yyyyMMdd");
@@ -269,7 +312,7 @@ namespace OnlineStore.Services.Core
 			return $"{prefix}-{datePart}-{randomPart}";
 		}
 
-		public static string FormatAddress(Address address)
+		private static string FormatAddress(Address address)
 		{
 			StringBuilder str = new StringBuilder();
 

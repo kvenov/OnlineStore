@@ -97,5 +97,36 @@ namespace OnlineStore.Web.Controllers
 				return this.RedirectToAction("Index", "Home" );
 			}
 		}
+
+		[HttpGet]
+		[ActionName("All")]
+		public async Task<IActionResult> GetUserOrders()
+		{
+			try
+			{
+				string userId = this.GetUserId()!;
+
+				if (userId == null)
+				{
+					return BadRequest();
+				}
+
+				IEnumerable<UserOrderViewModel>? orders = await this._orderService
+									.GetUserOrdersAsync(userId);
+
+				if (orders == null)
+				{
+					return NotFound();
+				}
+
+				return View(orders);
+			}
+			catch (Exception ex)
+			{
+				this._logger.LogError(ex, "An Error occured while getting the User Orders!");
+
+				return this.RedirectToAction("Index", "Home");
+			}
+		}
 	}
 }

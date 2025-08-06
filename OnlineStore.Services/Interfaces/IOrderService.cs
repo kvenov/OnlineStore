@@ -8,6 +8,8 @@ namespace OnlineStore.Services.Core.Interfaces
 
 		Task<int?> CreateOrderAsync(Checkout? checkout);
 
+		Task<IEnumerable<UserOrderViewModel>?> GetUserOrdersAsync(string? userId);
+
 		Task<OrderConfirmationViewModel?> GetOrderForConfirmationPageAsync(string? userId, int? orderId);
 	}
 }
