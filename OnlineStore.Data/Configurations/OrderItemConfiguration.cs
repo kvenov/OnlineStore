@@ -29,6 +29,10 @@ namespace OnlineStore.Data.Configurations
 				.HasColumnType(OrderItemSubtotalPriceType);
 
 			entity
+				.Property(p => p.ProductSize)
+				.IsRequired(true);
+
+			entity
 				.HasOne(oi => oi.Order)
 				.WithMany(o => o.OrderItems)
 				.HasForeignKey(oi => oi.OrderId)

@@ -27,5 +27,8 @@ namespace OnlineStore.Data.Models
 		public int ProductId { get; set; }
 		[Comment("Order item product")]
 		public virtual Product Product { get; set; } = null!;
+
+		[Comment("Order item ProductSize")]
+		public string ProductSize { get; set; } = null!;
 	}
 }
