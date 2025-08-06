@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OnlineStore.Data.Models;
 
 using static OnlineStore.Data.Common.Constants.EntityConstants.Order;
-using static OnlineStore.Data.Common.Constants.EntityConstants.Checkout;
 
 namespace OnlineStore.Data.Configurations
 {
@@ -76,8 +75,20 @@ namespace OnlineStore.Data.Configurations
 
 			entity
 				.Property(p => p.ShippingPrice)
-				.HasColumnType(CheckoutShippingPriceType)
+				.HasColumnType(OrderShippingPriceType)
 				.IsRequired(true);
+
+			entity
+				.Property(p => p.IsCompleted)
+				.HasDefaultValue(IsCompletedDefaultValue);
+
+			entity
+				.Property(p => p.IsCancelled)
+				.HasDefaultValue(IsCancelledDefaultValue);
+
+			entity
+				.Property(p => p.IsDeleted)
+				.HasDefaultValue(IsDeletedDefaultValue);
 
 			entity
 				.HasOne(o => o.User)
@@ -128,7 +139,8 @@ namespace OnlineStore.Data.Configurations
 				.HasIndex(o => o.Status);
 
 			entity
-				.HasQueryFilter(o => (o.User == null || !o.User.IsDeleted) &&
+				.HasQueryFilter(o =>  !o.IsDeleted &&
+									  (o.User == null || !o.User.IsDeleted) &&
 									  o.PaymentMethod.IsDeleted == false &&
 									  o.Checkout.IsDeleted == false &&
 									  o.BillingAddress.IsDeleted == false &&

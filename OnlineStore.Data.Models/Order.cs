@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineStore.Data.Models.Enums;
+using OnlineStore.Data.Models.Interfaces;
 
 namespace OnlineStore.Data.Models
 {
 
 	[Comment("Orders in the store")]
-	public class Order
+	public class Order : ISoftDeletable
 	{
 
 		[Comment("Order identifier")]
@@ -75,9 +76,17 @@ namespace OnlineStore.Data.Models
 		[Comment("The Checkout that is used to create the Order")]
 		public virtual Checkout Checkout { get; set; } = null!;
 
+		[Comment("Is Order Completed identifier")]
+		public bool IsCompleted { get; set; } = false;
+
+		[Comment("Is Order Cancelled identifier")]
+		public bool IsCancelled { get; set; } = false;
+
 
 		[Comment("Items in the order")]
 		public virtual ICollection<OrderItem> OrderItems { get; set; } = 
 					new HashSet<OrderItem>();
+
+		public bool IsDeleted { get; set; }
 	}
 }

@@ -77,6 +77,9 @@ namespace OnlineStore.Data.Models
 		[Comment("Order that is made of the checkout")]
 		public virtual Order? Order { get; set; }
 
+		[Comment("Is Checkout Completed identifier")]
+		public bool IsCompleted { get; set; } = false;
+
 		public bool IsDeleted { get; set; }
 	}
 }

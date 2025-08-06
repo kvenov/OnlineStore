@@ -85,6 +85,26 @@
 			/// The money type for the order's total amount.
 			/// </summary>
 			public const string OrderTotalAmountType = "DECIMAL(20,4)";
+
+			/// <summary>
+			/// The data type for the order's shipping price.
+			/// </summary>
+			public const string OrderShippingPriceType = "DECIMAL(18,2)";
+
+			/// <summary>
+			/// The default value for the Order's IsDeleted.
+			/// </summary>
+			public const bool IsDeletedDefaultValue = false;
+
+			/// <summary>
+			/// The default value for the Order's IsCompleted.
+			/// </summary>
+			public const bool IsCompletedDefaultValue = false;
+
+			/// <summary>
+			/// The default value for the Order's IsCancelled.
+			/// </summary>
+			public const bool IsCancelledDefaultValue = false;
 		}
 
 		public static class OrderItem
@@ -330,6 +350,11 @@
 			/// The data type for the checkout's shipping price.
 			/// </summary>
 			public const string CheckoutShippingPriceType = "DECIMAL(18,2)";
+
+			/// <summary>
+			/// The default value for the Order's IsCompleted.
+			/// </summary>
+			public const bool IsCompletedDefaultValue = false;
 		}
 	}
 

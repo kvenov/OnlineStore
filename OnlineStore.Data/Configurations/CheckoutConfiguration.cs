@@ -80,6 +80,10 @@ namespace OnlineStore.Data.Configurations
 				.IsRequired(true);
 
 			entity
+				.Property(p => p.IsCompleted)
+				.HasDefaultValue(IsCompletedDefaultValue);
+
+			entity
 				.Property(o => o.TotalPrice)
 				.HasComputedColumnSql("[ShippingPrice] + [SubTotal]", stored: true)
 				.HasColumnType(CheckoutTotalPriceType)
