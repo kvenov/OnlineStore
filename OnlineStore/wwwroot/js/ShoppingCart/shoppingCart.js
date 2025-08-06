@@ -100,7 +100,7 @@ function showCartToast(product) {
         toast: true,
         position: 'top-end', // Top right corner
         showConfirmButton: false,
-        timer: 4000,
+        timer: 2000,
         timerProgressBar: true,
         background: 'rgba(255, 255, 255, 0.95)',
         customClass: {
