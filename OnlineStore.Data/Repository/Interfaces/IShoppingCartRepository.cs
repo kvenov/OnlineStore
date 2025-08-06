@@ -17,5 +17,7 @@ namespace OnlineStore.Data.Repository.Interfaces
 		Task<decimal> GetItemsTotalPrice(string userId);
 
 		Task<decimal> GetShoppingCartShippingCostByUserIdAsync(string? userId);
+
+		Task ClearShoppingCartItemsAsync(int? shoppingCartId);
 	}
 }

@@ -1,0 +1,75 @@
+﻿@using OnlineStore.Web.ViewModels.Order
+@model OrderConfirmationViewModel
+
+@{
+    ViewData["Title"] = "Thank You for Your Order!";
+}
+
+@section Styles {
+    <link href="~/css/Order/thankYou.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="thank-you-page">
+    <div class="thank-you-card">
+        <div class="thank-you-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon-check" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-4.707-4.707a1 1 0 011.414-1.414L8.414 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+        </div>
+        <h2>Thank you for your order!</h2>
+        <p class="order-number">Order <strong>#@Model.OrderNumber</strong> has been placed successfully.</p>
+
+        <div class="order-info">
+            <div class="delivery-estimate">
+                <h3>Expect your Order between:</h3>
+                <p>@Model.EstimatedDeliveryStartFormatted &ndash; @Model.EstimatedDeliveryEndFormatted</p>
+                <p class="shipping-method">Shipping via: <strong>@Model.ShippingOption</strong></p>
+                <p class="shipping-method">Shipping price: <strong>@(Model.ShippingPrice == 0 ? "Free" : Model.ShippingPrice)</strong></p>
+            </div>
+
+            <div class="shipping-address">
+                <h3>Shipping To</h3>
+                <p>@Model.RecipientName</p>
+                <p>Email: @Model.UserEmail</p>
+                <p>@Model.ShippingAddress</p>
+            </div>
+        </div>
+
+        <div class="order-items">
+            <h3>Items in your order</h3>
+            <ul>
+                @foreach (var item in Model.Products)
+                {
+                    <li>
+                        <img src="@item.ImageUrl" alt="@item.Name" />
+                        <div class="item-info">
+                            <p class="name">@item.Name</p>
+                            <p class="quantity">Qty: @item.Quantity</p>
+                        </div>
+                        <div class="price">@item.Price.ToString("C")</div>
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <div class="order-total">
+            <p>Total: <strong>@Model.TotalAmount.ToString("C")</strong></p>
+        </div>
+
+        <div class="action-buttons">
+            <a href="/orders" class="btn btn-primary">View Order</a>
+            <a href="/" class="btn btn-secondary">Continue Shopping</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const card = document.querySelector(".thank-you-card");
+            if (card) {
+                card.classList.add("fade-in");
+            }
+        });
+    </script>
+}

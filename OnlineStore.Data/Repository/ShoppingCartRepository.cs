@@ -9,14 +9,34 @@ namespace OnlineStore.Data.Repository
 {
 	public class ShoppingCartRepository : BaseRepository<ShoppingCart, int>, IShoppingCartRepository
 	{
-		public ShoppingCartRepository(ApplicationDbContext dbContext) : 
+		private readonly IRepository<ShoppingCartItem, int> _shoppingCartItemRepository;
+
+		public ShoppingCartRepository(ApplicationDbContext dbContext, IRepository<ShoppingCartItem, int> shoppingCartItemRepository) : 
 				base(dbContext)
 		{
+			this._shoppingCartItemRepository = shoppingCartItemRepository;
 		}
 
 		public async Task AddShoppingCartItemAsync(ShoppingCartItem item)
 		{
 			await this.DbContext.ShoppingCartsItems.AddAsync(item);
+		}
+
+		public async Task ClearShoppingCartItemsAsync(int? shoppingCartId)
+		{
+			if (shoppingCartId != null)
+			{
+				ShoppingCart? shoppingCart = await this
+								.GetByIdAsync(shoppingCartId.Value);
+
+				if (shoppingCart != null)
+				{
+					await this._shoppingCartItemRepository
+									.GetAllAttached()
+									.Where(sci => sci.ShoppingCartId == shoppingCart.Id)
+									.ExecuteDeleteAsync();
+				}
+			}
 		}
 
 		public IQueryable<ShoppingCartItem> GetAllShoppingCartItemsAttached()

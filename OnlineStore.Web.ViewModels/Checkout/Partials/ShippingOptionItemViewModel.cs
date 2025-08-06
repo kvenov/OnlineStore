@@ -7,7 +7,7 @@
 
 		public string? Description { get; set; }
 
-		public string DateRange { get; set; } = null!;
+		public string? DateRange { get; set; }
 
 		public DateTime EstimatedDeliveryStart { get; set; }
 

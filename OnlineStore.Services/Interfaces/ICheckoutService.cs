@@ -8,5 +8,9 @@ namespace OnlineStore.Services.Core.Interfaces
 		Task<Checkout?> InitializeCheckoutAsync(string? userId);
 
 		Task<CheckoutViewModel?> GetUserCheckout(Checkout? checkout);
+
+		Task<Checkout?> UpdateGuestCheckoutAsync(CheckoutViewModel? model);
+
+		Task<Checkout?> UpdateUserCheckoutAsync(CheckoutViewModel? model);
 	}
 }

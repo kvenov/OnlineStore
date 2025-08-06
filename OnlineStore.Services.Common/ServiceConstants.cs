@@ -6,5 +6,7 @@ namespace OnlineStore.Services.Common
 	{
 
 		public const PaymentStatus DefaultStartingPaymentStatus = PaymentStatus.Pending;
+
+		public const OrderStatus DefaultStartingOrderStatus = OrderStatus.Pending;
 	}
 }

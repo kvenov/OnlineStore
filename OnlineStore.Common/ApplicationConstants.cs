@@ -15,6 +15,15 @@
 		public const string DefaultPaymentMethodName = "Credit Card";
 		public const string DefaultPaymentMethodCode = "CreditCard";
 
+		public const string StandartShippingOptionName = "Standard Delivery";
+		public const string ExpressShippingOptionName = "Express Delivery";
+
+		public const int StandartShippingOptionDaysMin = 5;
+		public const int StandartShippingOptionDaysMax = 7;
+
+		public const int ExpressShippingOptionDaysMin = 2;
+		public const int ExpressShippingOptionDaysMax = 3;
+
 		public static class AddressValidationConstants
 		{
 			public const int FullNameMaxLength = 100;
@@ -58,8 +67,12 @@
 			public const int ExpMonthMin = 1;
 			public const int ExpMonthMax = 12;
 
-			public const int ExpYearMin = 24;
+			public const int ExpYearMin = 25;
 			public const int ExpYearMax = 100;
+
+			public const string CardNumberPattern = @"^[\d\*]+$";
+			public const string CVVPattern = @"^\d{3,4}$";
+
 		}
 	}
 }
