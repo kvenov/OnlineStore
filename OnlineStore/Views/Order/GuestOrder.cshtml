@@ -61,6 +61,10 @@
                     </div>
                 }
             </div>
+
+            <div class="order-actions">
+                <a asp-action="Details" asp-controller="Order" asp-route-orderNumber="@Model.OrderNumber" class="view-details-btn">View Order Details</a>
+            </div>
         </div>
     }
     else if (Model.HasSearched)

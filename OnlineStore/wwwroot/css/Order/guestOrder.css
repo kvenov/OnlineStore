@@ -14,17 +14,17 @@
     margin-bottom: 2rem;
 }
 
-    .track-form-wrapper h1 {
-        font-size: 2rem;
-        margin-bottom: 1rem;
-        color: #1a202c;
-    }
+.track-form-wrapper h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #1a202c;
+}
 
-    .track-form-wrapper .description {
-        font-size: 1rem;
-        margin-bottom: 1.5rem;
-        color: #4a5568;
-    }
+.track-form-wrapper .description {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    color: #4a5568;
+}
 
 .track-form {
     display: flex;
@@ -133,4 +133,25 @@
     border-radius: 8px;
     text-align: center;
     font-weight: bold;
+}
+
+.order-actions {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.view-details-btn {
+    display: inline-block;
+    background: #007BFF;
+    color: white;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.view-details-btn:hover {
+    filter: brightness(86%);
+    transform: translateY(-1px);
 }

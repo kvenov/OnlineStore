@@ -176,7 +176,9 @@ namespace OnlineStore.Services.Core
 							Price = oi.UnitPrice,
 							ImageUrl = oi.Product.ImageUrl
 						}).ToList()
-					}).ToList();
+					})
+					.OrderByDescending(o => o.OrderDate)
+					.ToList();
 				}
 			}
 
@@ -229,6 +231,70 @@ namespace OnlineStore.Services.Core
 			}
 
 			return result;
+		}
+
+		public async Task<OrderDetailsViewModel?> GetOrderDetailsAsync(string? orderNumber)
+		{
+			OrderDetailsViewModel? details = null;
+
+			if (!string.IsNullOrWhiteSpace(orderNumber))
+			{
+				Order? order = await this._orderRepository
+								.SingleOrDefaultAsync(o => o.OrderNumber.ToLower() == orderNumber.ToLower());
+
+				if (order != null)
+				{
+					bool isBillingSameAsShipping = IsBillingSameAsShipping(order.ShippingAddress, order.BillingAddress);
+
+					details = new OrderDetailsViewModel()
+					{
+						OrderNumber = order.OrderNumber,
+						OrderDate = order.OrderDate,
+						Status = order.Status.ToString(),
+						ShippingOption = order.ShippingOption,
+						EstimatedDeliveryStart = order.EstimatedDeliveryStart,
+						EstimatedDeliveryEnd = order.EstimatedDeliveryEnd,
+						TotalAmount = order.TotalAmount,
+						ShippingPrice = order.ShippingPrice,
+						PaymentMethodName = order.PaymentMethod.Name,
+						PaymentMethodCode = order.PaymentMethod.Code!.Value,
+						PaymentDetails = order.PaymentDetails != null ? new OrderPaymentDetailsViewModel()
+						{
+							NameOnCard = order.PaymentDetails.NameOnCard,
+							CardNumberMasked = MaskCardNumber(order.PaymentDetails.CardNumber),
+							ExpMonth = order.PaymentDetails.ExpMonth,
+							ExpYear = order.PaymentDetails.ExpYear,
+							PaymentStatus = order.PaymentDetails.Status.ToString()
+						} : null,
+						ShippingAddress = new AddressViewModel()
+						{
+							Street = order.ShippingAddress.Street,
+							City = order.ShippingAddress.City,
+							Country = order.ShippingAddress.Country,
+							ZipCode = order.ShippingAddress.ZipCode,
+							PhoneNumber = order.ShippingAddress.PhoneNumber
+						},
+						BillingAddress = isBillingSameAsShipping ? null : new AddressViewModel()
+						{
+							Street = order.BillingAddress.Street,
+							City = order.BillingAddress.City,
+							Country = order.BillingAddress.Country,
+							ZipCode = order.BillingAddress.ZipCode,
+							PhoneNumber = order.BillingAddress.PhoneNumber
+						},
+						Items = order.OrderItems.Select(i => new OrderProductViewModel()
+						{
+							Name = i.Product.Name,
+							Price = i.UnitPrice,
+							Quantity = i.Quantity,
+							ProductSize = i.ProductSize,
+							ImageUrl = i.Product.ImageUrl
+						}).ToList()
+					};
+				}
+			}
+
+			return details;
 		}
 
 		public async Task<OrderConfirmationViewModel?> GetOrderForConfirmationPageAsync(string? userId, int? orderId)
@@ -381,5 +447,35 @@ namespace OnlineStore.Services.Core
 			return str.ToString().TrimEnd();
 		}
 
+		private static string MaskCardNumber(string cardNumber)
+		{
+			string maskedCardNumber = cardNumber.Length > 4
+							? new string('*', cardNumber.Length - 4) + cardNumber.Substring(cardNumber.Length - 4)
+							: cardNumber;
+
+			return maskedCardNumber;
+		}
+
+		private static bool IsBillingSameAsShipping(Address shipping, Address billing)
+		{
+			bool areSame = true;
+
+			if (!shipping.Street.Equals(billing.Street))
+				areSame = false;
+
+			if (!shipping.City.Equals(billing.City))
+				areSame = false;
+
+			if (!shipping.Country.Equals(billing.Country))
+				areSame = false;
+
+			if (!shipping.ZipCode.Equals(billing.ZipCode))
+				areSame = false;
+
+			if (!shipping.PhoneNumber.Equals(billing.PhoneNumber))
+				areSame = false;
+
+			return areSame;
+		}
 	}
 }

@@ -1,0 +1,101 @@
+﻿@using OnlineStore.Web.ViewModels.Order
+@model OrderDetailsViewModel
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+@section Styles {
+    <link href="~/css/Order/orderDetails.css" rel="stylesheet" asp-append-version="true"/>
+}
+
+<div class="order-wrapper">
+    <div class="order-title">Order Details - #@Model.OrderNumber</div>
+
+    <div class="order-summary">
+        <div class="summary-box">
+            <p><strong>Order Date:</strong> @Model.OrderDate.ToString("MMM dd, yyyy")</p>
+            <p><strong>Status:</strong> <span class="order-status @Model.Status.ToLower()">@Model.Status</span></p>
+            <p><strong>Total Amount:</strong> @Model.TotalAmount.ToString("C")</p>
+            <p><strong>Shipping Option:</strong> @Model.ShippingOption</p>
+            <p><strong>Estimated Delivery:</strong> @Model.EstimatedDeliveryStartFormatted - @Model.EstimatedDeliveryEndFormatted</p>
+        </div>
+    </div>
+
+    <div class="section-header">Addresses</div>
+    <div class="address-container">
+        <div class="address-box">
+            <h4>Shipping Address</h4>
+            <p>@Model.ShippingAddress.Street</p>
+            <p>@Model.ShippingAddress.City, @Model.ShippingAddress.ZipCode</p>
+            <p>@Model.ShippingAddress.Country</p>
+            <p>📞 @Model.ShippingAddress.PhoneNumber</p>
+        </div>
+
+        @if (Model.BillingAddress == null)
+        {
+            <div class="address-box">
+                <h4>Billing Address</h4>
+                <p>Same as shipping address</p>
+            </div>
+        }
+        else
+        {
+            <div class="address-box">
+                <h4>Billing Address</h4>
+                <p>@Model.BillingAddress.Street</p>
+                <p>@Model.BillingAddress.City, @Model.BillingAddress.ZipCode</p>
+                <p>@Model.BillingAddress.Country</p>
+                <p>📞 @Model.BillingAddress.PhoneNumber</p>
+            </div>
+        }
+    </div>
+
+    <div class="section-header">Payment</div>
+    <div class="payment-method-box">
+        <p><strong>Payment Method:</strong> @Model.PaymentMethodName</p>
+
+        @if (Model.ShowPaymentDetails && Model.PaymentDetails != null)
+        {
+            <button class="payment-toggle" id="toggle-payment-details">Show Payment Details</button>
+            <div id="payment-details">
+                <p><strong>Cardholder:</strong> @Model.PaymentDetails!.NameOnCard</p>
+                <p><strong>Card Brand:</strong> @Model.PaymentDetails.CardBrand</p>
+                <p><strong>Card Number:</strong> @Model.PaymentDetails.CardNumberMasked</p>
+                <p><strong>Expires:</strong> @Model.PaymentDetails.ExpMonth/@Model.PaymentDetails.ExpYear</p>
+                <p><strong>Status:</strong> @Model.PaymentDetails.PaymentStatus</p>
+            </div>
+        }
+    </div>
+
+    <div class="section-header">Items</div>
+    <div class="order-items-container">
+        @foreach (var item in Model.Items)
+        {
+            <div class="order-item">
+                <img src="@item.ImageUrl" alt="@item.Name" />
+                <div class="item-info">
+                    <p class="name">@item.Name</p>
+                    <p>Quantity: @item.Quantity</p>
+                    <p>Size: @item.ProductSize</p>
+                    <p class="price">@item.Price.ToString("C")</p>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById("toggle-payment-details")?.addEventListener("click", function () {
+            const details = document.getElementById("payment-details");
+            if (details.style.display === "none" || details.style.display === "") {
+                details.style.display = "block";
+                this.textContent = "Hide Payment Details";
+            } else {
+                details.style.display = "none";
+                this.textContent = "Show Payment Details";
+            }
+        });
+    </script>
+}

@@ -58,7 +58,7 @@
         </div>
 
         <div class="action-buttons">
-            <a href="/orders" class="btn btn-primary">View Order</a>
+            <a asp-action="Details" asp-controller="Order" asp-route-orderNumber="@Model.OrderNumber" class="btn btn-primary">View Order Details</a>
             <a href="/" class="btn btn-secondary">Continue Shopping</a>
         </div>
     </div>

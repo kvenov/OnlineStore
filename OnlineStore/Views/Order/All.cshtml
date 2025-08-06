@@ -61,7 +61,7 @@
                     </div>
 
                     <div class="order-actions">
-                        <a href="/orders/details/@order.OrderNumber" class="view-details-btn">View Order Details</a>
+                        <a asp-action="Details" asp-controller="Order" asp-route-orderNumber="@order.OrderNumber" class="view-details-btn">View Order Details</a>
                     </div>
                 </div>
             }

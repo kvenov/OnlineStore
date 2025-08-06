@@ -177,5 +177,30 @@ namespace OnlineStore.Web.Controllers
 				return this.RedirectToAction("Index", "Home");
 			}
 		}
+
+		[AllowAnonymous]
+		[HttpGet]
+		public async Task<IActionResult> Details(string? orderNumber)
+		{
+			try
+			{
+				OrderDetailsViewModel? details = await this._orderService
+									.GetOrderDetailsAsync(orderNumber);
+
+				if (details == null)
+				{
+					return NotFound();
+				}
+
+				return View(details);
+
+			}
+			catch (Exception ex)
+			{
+				this._logger.LogError(ex, "An error occured while getting the Order details");
+
+				return this.RedirectToAction("Index", "Home");
+			}
+		}
 	}
 }

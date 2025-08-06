@@ -12,6 +12,8 @@ namespace OnlineStore.Services.Core.Interfaces
 
 		Task<bool> GetGuestOrderAsync(string? userId, TrackGuestOrderViewModel? model);
 
+		Task<OrderDetailsViewModel?> GetOrderDetailsAsync(string? orderNumber);
+
 		Task<OrderConfirmationViewModel?> GetOrderForConfirmationPageAsync(string? userId, int? orderId);
 	}
 }
