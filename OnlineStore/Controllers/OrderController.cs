@@ -128,5 +128,54 @@ namespace OnlineStore.Web.Controllers
 				return this.RedirectToAction("Index", "Home");
 			}
 		}
+
+		[AllowAnonymous]
+		[HttpGet]
+		[ActionName("GuestOrder")]
+		public IActionResult GetGuestOrder()
+		{
+			TrackGuestOrderViewModel model = new TrackGuestOrderViewModel();
+
+			return View(model);
+		}
+
+		[AllowAnonymous]
+		[HttpPost]
+		[ActionName("GuestOrder")]
+		public async Task<IActionResult> GetGuestOrder(TrackGuestOrderViewModel? model)
+		{
+			if (!ModelState.IsValid)
+			{
+				this.ModelState.AddModelError(string.Empty, "The passed arguments are invalid or doesn't meet the system requirments!");
+
+				return View(model);
+			}
+
+			try
+			{
+				string? guestId = this.GetGuestId();
+
+				if (guestId == null)
+				{
+					return this.BadRequest();
+				}
+
+				bool result = await this._orderService
+							.GetGuestOrderAsync(guestId, model);
+
+				if (!result)
+				{
+					return View(model);
+				}
+
+				return View(model);
+			}
+			catch (Exception ex)
+			{
+				this._logger.LogError(ex, "Something went wrong while getting the guest order");
+
+				return this.RedirectToAction("Index", "Home");
+			}
+		}
 	}
 }

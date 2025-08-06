@@ -183,6 +183,54 @@ namespace OnlineStore.Services.Core
 			return model;
 		}
 
+		public async Task<bool> GetGuestOrderAsync(string? userId, TrackGuestOrderViewModel? model)
+		{
+			bool result = false;
+
+			if (model != null)
+			{
+				model.HasSearched = true;
+
+				bool isFormValid = !string.IsNullOrWhiteSpace(userId) &&
+								   !string.IsNullOrWhiteSpace(model.GuestEmail) &&
+								   !string.IsNullOrWhiteSpace(model.OrderNumber);
+
+				if (isFormValid)
+				{
+					Order? order = await this._orderRepository
+								.GetAllAttached()
+								.AsNoTracking()
+								.Where(o => o.GuestEmail!.ToLower() == model.GuestEmail!.ToLower() &&
+											o.OrderNumber.ToLower() == model.OrderNumber!.ToLower())
+								.SingleOrDefaultAsync();
+
+					bool isOrderValid = order != null && order.GuestId == userId;
+
+					if (isOrderValid)
+					{
+						model.OrderFound = true;
+						model.Status = order!.Status.ToString();
+						model.TotalAmount = order.TotalAmount;
+						model.ShippingOption = order.ShippingOption;
+						model.EstimatedDeliveryStartFormatted = order.EstimatedDeliveryStart.ToString("MMM dd");
+						model.EstimatedDeliveryEndFormatted = order.EstimatedDeliveryEnd.ToString("MMM dd");
+						model.Items = order.OrderItems.Select(i => new OrderProductViewModel
+						{
+							Name = i.Product.Name,
+							Quantity = i.Quantity,
+							Price = i.UnitPrice,
+							ProductSize = i.ProductSize,
+							ImageUrl = i.Product.ImageUrl
+						}).ToList();
+
+						result = true;
+					}
+				}
+			}
+
+			return result;
+		}
+
 		public async Task<OrderConfirmationViewModel?> GetOrderForConfirmationPageAsync(string? userId, int? orderId)
 		{
 			OrderConfirmationViewModel? model = null;

@@ -1,0 +1,87 @@
+﻿@using OnlineStore.Web.ViewModels.Order
+@model TrackGuestOrderViewModel
+
+@{
+    ViewData["Title"] = "Track Your Order";
+}
+
+@section Styles {
+    <link href="~/css/Order/guestOrder.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="track-container">
+    <div class="track-form-wrapper">
+        <h1>Track Your Order</h1>
+        <p class="description">Enter your email and order number to track your order status.</p>
+
+        <form asp-action="GuestOrder" asp-controller="Order" method="post" class="track-form">
+            <div class="form-group">
+                <label for="GuestEmail">Email Address</label>
+                <input asp-for="GuestEmail" class="form-control" placeholder="Enter your email" required />
+                <span asp-validation-for="GuestEmail" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="OrderNumber">Order Number</label>
+                <input asp-for="OrderNumber" class="form-control" placeholder="e.g., ORD123456" required />
+                <span asp-validation-for="OrderNumber" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="track-btn">Track Order</button>
+        </form>
+
+        <p class="note">
+            <strong>Where can I find my order number?</strong><br />
+            It is displayed after checkout and should have been saved.
+            If not, please see the order details sended to the provided Email.
+        </p>
+    </div>
+
+    @if (Model.OrderFound)
+    {
+        <div class="order-result">
+            <h2>Order #@Model.OrderNumber</h2>
+            <p><strong>Status:</strong> @Model.Status</p>
+            <p><strong>Total:</strong> @Model.TotalAmount.ToString("C")</p>
+            <p><strong>Shipping Option:</strong> @Model.ShippingOption</p>
+            <p><strong>Estimated Delivery:</strong> @Model.EstimatedDeliveryStartFormatted – @Model.EstimatedDeliveryEndFormatted</p>
+
+            <div class="order-items">
+                <h3>Items:</h3>
+                @foreach (var item in Model.Items)
+                {
+                    <div class="order-item">
+                        <img src="@item.ImageUrl" alt="@item.Name" />
+                        <div class="item-info">
+                            <p class="name">@item.Name</p>
+                            <p class="quantity">Qty: @item.Quantity</p>
+                            <p class="quantity">Size: @item.ProductSize</p>
+                            <p class="price">@item.Price.ToString("C")</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    else if (Model.HasSearched)
+    {
+        <p class="not-found">No order was found with the provided details. Please double-check and try again.</p>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const orderResult = document.querySelector(".order-result");
+            const notFound = document.querySelector(".not-found");
+
+            if (orderResult) {
+                orderResult.scrollIntoView({ behavior: "smooth", block: "start" });
+            } else if (notFound) {
+                notFound.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        });
+    </script>
+}

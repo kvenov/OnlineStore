@@ -10,6 +10,8 @@ namespace OnlineStore.Services.Core.Interfaces
 
 		Task<IEnumerable<UserOrderViewModel>?> GetUserOrdersAsync(string? userId);
 
+		Task<bool> GetGuestOrderAsync(string? userId, TrackGuestOrderViewModel? model);
+
 		Task<OrderConfirmationViewModel?> GetOrderForConfirmationPageAsync(string? userId, int? orderId);
 	}
 }
