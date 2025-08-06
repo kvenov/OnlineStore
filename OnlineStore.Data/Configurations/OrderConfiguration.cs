@@ -128,7 +128,7 @@ namespace OnlineStore.Data.Configurations
 				.HasIndex(o => o.Status);
 
 			entity
-				.HasQueryFilter(o => (o.User == null || !o.User.IsDeleted == false) &&
+				.HasQueryFilter(o => (o.User == null || !o.User.IsDeleted) &&
 									  o.PaymentMethod.IsDeleted == false &&
 									  o.Checkout.IsDeleted == false &&
 									  o.BillingAddress.IsDeleted == false &&
