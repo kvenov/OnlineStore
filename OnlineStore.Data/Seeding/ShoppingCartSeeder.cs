@@ -33,7 +33,7 @@ namespace OnlineStore.Data.Seeding
 			{
 				var users = await this._context
 					.Users
-					.Include(u => u.Wishlist)
+					.Include(u => u.ShoppingCart)
 					.Where(u => u.ShoppingCart == null)
 					.ToListAsync();
 
