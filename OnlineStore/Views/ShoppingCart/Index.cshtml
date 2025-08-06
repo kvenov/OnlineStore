@@ -5,6 +5,7 @@
     var isDisabled = !Model.Items.Any();
     var isAuthenticated = User.Identity?.IsAuthenticated == true;
     var buttonText = isAuthenticated ? "Member Checkout" : "Guest Checkout";
+    string formattedShipping = $"${Model.Shipping}";
 }
 
 @section Styles {
@@ -87,7 +88,7 @@
                 </div>
                 <div class="flex justify-between">
                     <span>Shipping</span>
-                    <span class="summary-shipping font-medium text-gray-700">$@Model.Shipping</span>
+                    <span class="summary-shipping font-medium text-gray-700">@(Model.Shipping == 0 ? "Free" : formattedShipping)</span>
                 </div>
                 <hr class="my-3" />
                 <div class="flex justify-between text-xl font-bold">

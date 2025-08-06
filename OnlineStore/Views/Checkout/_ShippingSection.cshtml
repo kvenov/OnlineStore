@@ -35,7 +35,7 @@
                         <div class="fw-semibold">@option.Name</div>
                         <div>@option.Description</div>
                         <small class="text-muted">@option.DateRange</small><br />
-                        <strong class="text-success">@option.Price.ToString("C")</strong>
+                        <strong class="text-success">@(option.Price == 0 ? "Free" : option.Price.ToString("C"))</strong>
                     </div>
                 </label>
             </div>
