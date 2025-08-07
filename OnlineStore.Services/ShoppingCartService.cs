@@ -562,9 +562,21 @@ namespace OnlineStore.Services.Core
 
 
 
-		public async Task AddNewShoppingCartAsync(ShoppingCart cart)
+		public async Task<ShoppingCart?> AddNewShoppingCartAsync(ApplicationUser? user)
 		{
-			await this._shoppingCartRepository.AddAsync(cart);
+			if (user != null)
+			{
+				ShoppingCart newShoppingCart = new()
+				{
+					UserId = user.Id,
+					User = user
+				};
+
+				await this._shoppingCartRepository.AddAsync(newShoppingCart);
+				return newShoppingCart;
+			}
+
+			return null;
 		}
 	}
 }

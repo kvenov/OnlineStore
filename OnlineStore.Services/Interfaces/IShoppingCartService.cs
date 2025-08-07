@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using OnlineStore.Data.Models;
+﻿using OnlineStore.Data.Models;
 using OnlineStore.Web.ViewModels.Layout;
 using OnlineStore.Web.ViewModels.ShoppingCart;
 
@@ -32,6 +31,6 @@ namespace OnlineStore.Services.Core.Interfaces
 
 		Task<ShoppingCartSummaryViewModel?> RemoveGuestCartItemAsync(string? guestId, int? itemId);
 
-		Task AddNewShoppingCartAsync(ShoppingCart cart);
+		Task<ShoppingCart?> AddNewShoppingCartAsync(ApplicationUser? user);
 	}
 }

@@ -2,24 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
 using OnlineStore.Data.Models;
 using OnlineStore.Services.Core.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace OnlineStore.Areas.Identity.Pages.Account
 {
@@ -126,13 +116,14 @@ namespace OnlineStore.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 					if (user.ShoppingCart == null)
 					{
-						ShoppingCart shoppingCart = new ShoppingCart()
-						{
-							UserId = user.Id
-						};
+						ShoppingCart? userShoppingCart = await this._shoppingCartService
+												.AddNewShoppingCartAsync(user);
 
-						user.ShoppingCart = shoppingCart;
-						await this._shoppingCartService.AddNewShoppingCartAsync(shoppingCart);
+						if (userShoppingCart == null)
+							throw new InvalidOperationException("The shopping cart for the User cannot be created!");
+
+						user.ShoppingCart = userShoppingCart;
+						await this._userManager.UpdateAsync(user);
 					}
 
 					await this._userManager.AddToRoleAsync(user, "User");

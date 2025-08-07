@@ -26,6 +26,8 @@
         <div class="auth-links d-flex align-items-center">
             @if (SignInManager.IsSignedIn(User))
             {
+                <a href="/User/Prodile" class="auth-link">Hi, @UserManager.GetUserName(User)</a>
+                <div class="divider"></div>
                 <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                     <button type="submit" style="border: none; background-color: transparent" class="auth-link">Logout</button>
                 </form>
@@ -34,11 +36,11 @@
             }
             else
             {
-                <a href="/Identity/Account/Login" class="auth-link">Sign In</a>
-                <div class="divider"></div>
-                <a href="/Identity/Account/Register" class="auth-link">Join Us</a>
-                <div class="divider"></div>
                 <a href="/Order/GuestOrder" class="auth-link track-link">Track My Order</a>
+                <div class="divider"></div>
+                <a href="/Account/Login" class="auth-link">Sign In</a>
+                <div class="divider"></div>
+                <a href="/Account/Register" class="auth-link">Join Us</a>
                 <div class="divider"></div>
                 <a href="/Home/Help" class="auth-link">Help</a>
             }

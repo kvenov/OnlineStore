@@ -5,6 +5,8 @@
 
 		public const string GuestCookieName = "guest_id";
 
+		public const string UserRoleName = "User";
+		public const string AdminRoleName = "Admin";
 
 		public const decimal MinPriceForFreeShipping = 300.00m;
 		public const decimal StandartShippingPriceForGuests = 20.00m;
@@ -23,6 +25,12 @@
 
 		public const int ExpressShippingOptionDaysMin = 2;
 		public const int ExpressShippingOptionDaysMax = 3;
+
+		public static class Account
+		{
+			public const string LoginPath = "/Account/Login";
+			public const string RegisterPath = "/Account/Register";
+		}
 
 		public static class AddressValidationConstants
 		{

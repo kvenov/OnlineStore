@@ -10,6 +10,8 @@ using OnlineStore.Services.Core.Identity;
 using OnlineStore.Services.Core.Interfaces;
 using OnlineStore.Web.Infrastructure.Extensions;
 using OnlineStore.Web.Infrastructure.Filters;
+
+using static OnlineStore.Common.ApplicationConstants.Account;
 using static OnlineStore.Web.Infrastructure.Extensions.ServiceCollectionExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,6 +40,11 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 //Here we add the application custom identity.
 builder.Services.AddCustomIdentity();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = LoginPath;
+});
 
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, CustomClaimsPrincipalFactory>();
 

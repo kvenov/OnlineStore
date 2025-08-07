@@ -23,6 +23,23 @@ namespace OnlineStore.Services.Core
 			this._productRepository = productRepository;
 		}
 
+		public async Task<Wishlist?> AddNewWishlistAsync(ApplicationUser? user)
+		{
+			if (user != null)
+			{
+				Wishlist newWishlist = new()
+				{
+					UserId = user.Id,
+					User = user
+				};
+
+				await this._wishlistRepository.AddAsync(newWishlist);
+				return newWishlist;
+			}
+
+			return null;
+		}
+
 		public async Task<bool> AddProductToWishlist(int? productId, string userId)
 		{
 			bool isAdded = false;

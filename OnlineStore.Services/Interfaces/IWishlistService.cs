@@ -1,4 +1,5 @@
-﻿using OnlineStore.Web.ViewModels.Wishlist;
+﻿using OnlineStore.Data.Models;
+using OnlineStore.Web.ViewModels.Wishlist;
 
 namespace OnlineStore.Services.Core.Interfaces
 {
@@ -14,5 +15,7 @@ namespace OnlineStore.Services.Core.Interfaces
 		Task<bool> EditNoteAsync(int? itemId, string? note, string userId);
 
 		Task<int> GetWishlistItemsCountAsync(string userId);
+
+		Task<Wishlist?> AddNewWishlistAsync(ApplicationUser? user);
 	}
 }
