@@ -1,0 +1,123 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_SalesLayout.cshtml";
+}
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <!-- Total Revenue Card -->
+    <div class="bg-white rounded-xl p-6 shadow hover:shadow-lg transition">
+        <h4 class="text-gray-500 text-sm">Total Revenue</h4>
+        <p class="text-2xl font-bold" id="totalRevenue">$0.00</p>
+        <select id="revenueRange" class="mt-2 border rounded p-1 text-sm">
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
+        </select>
+    </div>
+
+    <!-- Number of Orders Card -->
+    <div class="bg-white rounded-xl p-6 shadow hover:shadow-lg transition">
+        <h4 class="text-gray-500 text-sm">Number of Orders</h4>
+        <p class="text-2xl font-bold" id="totalOrders">0</p>
+    </div>
+
+    <!-- Average Order Value Card -->
+    <div class="bg-white rounded-xl p-6 shadow hover:shadow-lg transition">
+        <h4 class="text-gray-500 text-sm">Average Order Value</h4>
+        <p class="text-2xl font-bold" id="averageOrderValue">$0.00</p>
+    </div>
+
+    <!-- Top Products Button -->
+    <div class="bg-blue-100 text-blue-900 rounded-xl p-6 shadow flex items-center justify-between hover:shadow-lg transition">
+        <div>
+            <h4 class="text-sm">Explore</h4>
+            <p class="font-bold">Top Products</p>
+        </div>
+        <a href="/Admin/Sales/Analytics" class="text-sm underline">View</a>
+    </div>
+</div>
+
+<!-- Revenue Trends Chart -->
+<div class="bg-white rounded-xl shadow p-6 mb-8">
+    <h2 class="text-xl font-semibold mb-4">Revenue Trends</h2>
+    <canvas id="revenueChart" height="100"></canvas>
+</div>
+
+<!-- Revenue by Payment Method -->
+<div class="bg-white rounded-xl shadow p-6 mb-8">
+    <h2 class="text-xl font-semibold mb-4">Revenue by Payment Method</h2>
+    <canvas id="paymentMethodChart" height="100"></canvas>
+</div>
+
+@section Scripts{
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          const revenueChart = new Chart(document.getElementById("revenueChart"), {
+            type: 'line',
+            data: {
+              labels: [],
+              datasets: [{
+                label: 'Revenue',
+                data: [],
+                borderColor: 'rgba(37, 99, 235, 1)',
+                backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                tension: 0.4
+              }]
+            },
+            options: {
+              responsive: true,
+              scales: {
+                y: {
+                  beginAtZero: true
+                }
+              }
+            }
+          });
+
+          const paymentChart = new Chart(document.getElementById("paymentMethodChart"), {
+            type: 'doughnut',
+            data: {
+              labels: [],
+              datasets: [{
+                label: 'Revenue',
+                data: [],
+                backgroundColor: [
+                  'rgba(59, 130, 246, 0.7)',
+                  'rgba(16, 185, 129, 0.7)',
+                  'rgba(234, 88, 12, 0.7)',
+                  'rgba(139, 92, 246, 0.7)'
+                ],
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+            }
+          });
+
+          function fetchOverviewData(range) {
+            fetch(`/api/saleapi/overview?range=${range}`)
+              .then(res => res.json())
+              .then(data => {
+                document.getElementById("totalRevenue").innerText = `$${data.totalRevenue.toFixed(2)}`;
+                document.getElementById("totalOrders").innerText = data.totalOrders;
+                document.getElementById("averageOrderValue").innerText = `$${data.averageOrderValue.toFixed(2)}`;
+
+                revenueChart.data.labels = data.revenueTrends.labels;
+                revenueChart.data.datasets[0].data = data.revenueTrends.values;
+                revenueChart.update();
+
+                paymentChart.data.labels = data.paymentMethods.labels;
+                paymentChart.data.datasets[0].data = data.paymentMethods.values;
+                paymentChart.update();
+              });
+          }
+
+          document.getElementById("revenueRange").addEventListener("change", e => {
+            fetchOverviewData(e.target.value);
+          });
+
+          fetchOverviewData("daily");
+        });
+    </script>
+}

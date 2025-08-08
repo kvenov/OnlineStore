@@ -1,0 +1,60 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Sales Panel</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="flex h-screen">
+
+        <aside class="w-64 bg-white shadow-xl z-10">
+            <div class="p-4 text-2xl font-bold border-b">Sales Panel</div>
+            <nav class="p-4 text-gray-700">
+                <ul class="space-y-4">
+                    <li><a href="/Admin/Sale/Overview" class="hover:text-blue-500">📊 Overview</a></li>
+                    <li><a href="/Admin/Sales/Orders" class="hover:text-blue-500">📦 Orders</a></li>
+                    <li><a href="/Admin/Sales/Analytics" class="hover:text-blue-500">📈 Product Analytics</a></li>
+                    <li><a href="/Admin/Sales/Location" class="hover:text-blue-500">🌍 Sales by Location</a></li>
+                    <li><a href="/Admin/Sales/Customers" class="hover:text-blue-500">👤 Customer Insights</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="flex-1 overflow-y-scroll p-6">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+<!--
+EXPLANATION:
+1. Sidebar (Left) has navigation for all your core components:
+   - Overview: Dashboard with revenue, AOV, order count etc.
+   - Orders: Full order management
+   - Analytics: Product sales analytics
+   - Location: Map + location-based sales
+   - Customers: Top buyers, purchase behavior
+
+2. TailwindCSS is used for modern UI.
+3. Chart.js is preloaded for rendering graphs.
+4. Dynamic interactivity will be handled in /js/sales-panel.js via fetch() and async rendering.
+5. This layout will wrap all the other views in your ASP.NET Core MVC using Razor’s `Layout` system.
+-->
