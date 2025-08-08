@@ -12,5 +12,7 @@
 		public string Email { get; set; } = null!;
 
 		public IEnumerable<string> Roles { get; set; } = new List<string>();
+
+		public bool IsDeleted { get; set; }
 	}
 }

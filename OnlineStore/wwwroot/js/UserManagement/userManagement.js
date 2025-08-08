@@ -50,142 +50,189 @@
     searchInput.addEventListener("input", searchUsers);
     roleFilter.addEventListener("change", filterUsersByRole);
 
-
-    function isUserAdmin(user) {
-        return user.roles.includes('Admin');
-    }
-
-    function getUserData(element) {
-        const card = element.closest('.user-card');
-        return {
-            id: card.dataset.userId,
-            name: card.dataset.userName,
-            email: card.dataset.userEmail,
-            roles: card.dataset.userRoles.split(',')
-        };
-    }
-
-    function viewDetails(button) {
-        const user = getUserData(button);
-        Swal.fire({
-            title: `${user.name} Details`,
-            html: `<p><strong>Email:</strong> ${user.email}</p><p><strong>Roles:</strong> ${user.roles.join(', ')}</p>`,
-            icon: 'info'
-        });
-    }
-
-    function assignRole(button) {
-        const user = getUserData(button);
-        if (isUserAdmin(user)) {
-            Swal.fire('Permission Denied', 'You cannot modify an existing Admin!', 'warning');
-            return;
-        }
-
-        Swal.fire({
-            title: `Assign Role to ${user.name}`,
-            input: 'select',
-            inputOptions: { 'Admin': 'Admin', 'Manager': 'Manager' },
-            inputPlaceholder: 'Select a role',
-            showCancelButton: true,
-            preConfirm: async (role) => {
-                const response = await fetch(`/admin/users/assign-role/${user.id}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ role })
-                });
-                if (response.ok) {
-                    Swal.fire({ toast: true, icon: 'success', title: `${role} assigned`, position: 'top-end', timer: 2000, showConfirmButton: false });
-                    location.reload();
-                } else {
-                    Swal.fire('Error', 'Failed to assign role', 'error');
-                }
-            }
-        });
-    }
-
-    function removeRole(button) {
-        const user = getUserData(button);
-        if (isUserAdmin(user)) {
-            Swal.fire('Permission Denied', 'You cannot modify an existing Admin!', 'warning');
-            return;
-        }
-
-        const removableRoles = user.roles.filter(r => r !== 'User');
-        if (removableRoles.length === 0) {
-            Swal.fire('Not Allowed', 'No removable roles available.', 'info');
-            return;
-        }
-
-        const options = removableRoles.reduce((obj, r) => { obj[r] = r; return obj; }, {});
-
-        Swal.fire({
-            title: `Remove Role from ${user.name}`,
-            input: 'select',
-            inputOptions: options,
-            inputPlaceholder: 'Select a role to remove',
-            showCancelButton: true,
-            preConfirm: async (role) => {
-                const response = await fetch(`/admin/users/remove-role/${user.id}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ role })
-                });
-                if (response.ok) {
-                    Swal.fire({ toast: true, icon: 'info', title: `${role} removed`, position: 'top-end', timer: 2000, showConfirmButton: false });
-                    location.reload();
-                } else {
-                    Swal.fire('Error', 'Failed to remove role', 'error');
-                }
-            }
-        });
-    }
-
-    function softDelete(button) {
-        const user = getUserData(button);
-        if (isUserAdmin(user)) {
-            Swal.fire('Permission Denied', 'You cannot modify an existing Admin!', 'warning');
-            return;
-        }
-
-        Swal.fire({
-            title: `Soft delete ${user.name}?`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, soft delete',
-            preConfirm: async () => {
-                const response = await fetch(`/admin/users/soft-delete/${user.id}`, { method: 'POST' });
-                if (response.ok) {
-                    Swal.fire({ toast: true, icon: 'warning', title: 'User soft-deleted', position: 'top-end', timer: 2000, showConfirmButton: false });
-                    button.closest('.user-card').remove();
-                } else {
-                    Swal.fire('Error', 'Failed to soft delete', 'error');
-                }
-            }
-        });
-    }
-
-    function hardDelete(button) {
-        const user = getUserData(button);
-        if (isUserAdmin(user)) {
-            Swal.fire('Permission Denied', 'You cannot modify an existing Admin!', 'warning');
-            return;
-        }
-
-        Swal.fire({
-            title: `Hard delete ${user.name}?`,
-            text: 'This action is irreversible.',
-            icon: 'error',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, delete permanently',
-            preConfirm: async () => {
-                const response = await fetch(`/admin/users/hard-delete/${user.id}`, { method: 'DELETE' });
-                if (response.ok) {
-                    Swal.fire({ toast: true, icon: 'error', title: 'User permanently deleted', position: 'top-end', timer: 2000, showConfirmButton: false });
-                    button.closest('.user-card').remove();
-                } else {
-                    Swal.fire('Error', 'Failed to delete user', 'error');
-                }
-            }
-        });
-    }
 });
+
+function isUserAdmin(user) {
+    return user.roles.includes('Admin');
+}
+
+function getUserData(element) {
+    const card = element.closest('.user-card');
+    return {
+        id: card.dataset.userId,
+        name: card.dataset.userName,
+        email: card.dataset.userEmail,
+        roles: card.dataset.userRoles.split(',')
+    };
+}
+
+function viewDetails(button) {
+    const user = getUserData(button);
+    Swal.fire({
+        title: `${user.name} Details`,
+        html: `<p><strong>Email:</strong> ${user.email}</p><p><strong>Roles:</strong> ${user.roles.join(', ')}</p>`,
+        icon: 'info'
+    });
+}
+
+function assignRole(button) {
+    const user = getUserData(button);
+    if (isUserAdmin(user)) {
+        Swal.fire('Permission Denied', 'You cannot modify an existing Admin!', 'warning');
+        return;
+    }
+
+    const allRoles = ['Admin', 'Manager', 'User'];
+
+    const availableRoles = allRoles.filter(role => !user.roles.includes(role));
+
+    if (availableRoles.length === 0) {
+        Swal.fire('No Roles to Assign', `${user.name} already has all assignable roles.`, 'info');
+        return;
+    }
+
+    const inputOptions = {};
+    availableRoles.forEach(role => inputOptions[role] = role);
+
+    Swal.fire({
+        title: `Assign Role to ${user.name}`,
+        input: 'select',
+        inputOptions: inputOptions,
+        inputPlaceholder: 'Select a role',
+        showCancelButton: true,
+        preConfirm: async (role) => {
+            const response = await fetch(`/api/usermanagementapi/assign/${user.id}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ role })
+            });
+
+            if (!response.ok) Swal.fire('Error', 'Failed to assign role', 'error');
+
+            const data = await response.json();
+
+            if (data.result) {
+                Swal.fire({ toast: true, icon: 'success', title: `${role} assigned`, position: 'top-end', timer: 2000, showConfirmButton: false });
+
+                setTimeout(() => {
+                    location.reload();
+                }, 2060);
+            } else {
+                Swal.fire('Error', 'Failed to assign role', 'error');
+            }
+        }
+    });
+}
+
+function removeRole(button) {
+    const user = getUserData(button);
+    if (isUserAdmin(user)) {
+        Swal.fire('Permission Denied', 'You cannot modify an existing Admin!', 'warning');
+        return;
+    }
+
+    const removableRoles = user.roles;
+    if (removableRoles.length === 0) {
+        Swal.fire('Not Allowed', 'No removable roles available.', 'info');
+        return;
+    }
+
+    const options = removableRoles.reduce((obj, r) => { obj[r] = r; return obj; }, {});
+
+    Swal.fire({
+        title: `Remove Role from ${user.name}`,
+        input: 'select',
+        inputOptions: options,
+        inputPlaceholder: 'Select a role to remove',
+        showCancelButton: true,
+        preConfirm: async (role) => {
+            const response = await fetch(`/api/usermanagementapi/remove/${user.id}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ role })
+            });
+
+            if (!response.ok) Swal.fire('Error', 'Failed to remove role', 'error'); 
+
+            const data = await response.json();
+
+            if (data.result) {
+                Swal.fire({ toast: true, icon: 'info', title: `${role} removed`, position: 'top-end', timer: 2000, showConfirmButton: false });
+
+                setTimeout(() => {
+                    location.reload();
+                }, 2060);
+            } else {
+                Swal.fire('Error', 'Failed to remove role', 'error');
+            }
+        }
+    });
+}
+
+function softDelete(button) {
+    const user = getUserData(button);
+    if (isUserAdmin(user)) {
+        Swal.fire('Permission Denied', 'You cannot modify an existing Admin!', 'warning');
+        return;
+    }
+
+    Swal.fire({
+        title: `Soft delete ${user.name}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, soft delete',
+        preConfirm: async () => {
+            const response = await fetch(`/api/usermanagementapi/delete/${user.id}`,
+                { method: 'POST' }
+            );
+
+            if (!response.ok) Swal.fire('Error', 'Failed to soft delete user', 'error');
+
+            const data = await response.json();
+
+            if (data.result) {
+                Swal.fire({ toast: true, icon: 'warning', title: 'User soft-deleted', position: 'top-end', timer: 2000, showConfirmButton: false });
+
+                setTimeout(() => {
+                    location.reload();
+                }, 2060);
+            } else {
+                Swal.fire('Error', 'Failed to soft delete user', 'error');
+            }
+        }
+    });
+}
+
+function renew(button) {
+    const user = getUserData(button);
+    if (isUserAdmin(user)) {
+        Swal.fire('Permission Denied', 'You cannot modify an existing Admin!', 'warning');
+        return;
+    }
+
+    Swal.fire({
+        title: `Renew ${user.name}?`,
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, renew user',
+        preConfirm: async () => {
+            const response = await fetch(`/api/usermanagementapi/renew/${user.id}`,
+                { method: 'POST' }
+            );
+
+            if (!response.ok) Swal.fire('Error', 'Failed to renew user', 'error');
+
+            const data = await response.json();
+
+            if (data.result) {
+                Swal.fire({ toast: true, icon: 'success', title: 'User renewed', position: 'top-end', timer: 2000, showConfirmButton: false });
+
+                setTimeout(() => {
+                    location.reload();
+                }, 2060);
+            } else {
+                Swal.fire('Error', 'Failed to renew user', 'error');
+            }
+        }
+    });
+}

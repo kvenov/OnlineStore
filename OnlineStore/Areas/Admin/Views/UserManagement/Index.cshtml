@@ -1,4 +1,5 @@
 ﻿@using OnlineStore.Web.ViewModels.Admin.UserManagement
+@using static OnlineStore.Common.ApplicationConstants
 @model IEnumerable<UserManagementViewModel>
 
 @{
@@ -25,36 +26,80 @@
             <input type="text" class="form-control w-50" id="searchInput" placeholder="Search users...">
             <select id="roleFilter" class="form-select w-25">
                 <option value="all">All Roles</option>
-                <option value="User">User</option>
-                <option value="Admin">Admin</option>
-                <option value="Manager">Manager</option>
+                <option value="User">@UserRoleName</option>
+                <option value="Admin">@AdminRoleName</option>
+                <option value="Manager">@ManagerRoleName</option>
             </select>
         </div>
 
         <div class="row" id="userList">
             @foreach (var user in Model)
             {
-                <div class="col-md-4 mb-4 user-card"
-                     data-user-id="@user.Id"
-                     data-user-name="@user.Username"
-                     data-user-email="@user.Email"
-                     data-user-roles="@string.Join(",", user.Roles)">
-                    <div class="card card-user shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title">Username: @user.Username</h5>
-                            <h6 class="card-subtitle mb-2">Fullname: @user.FullName</h6>
-                            <p class="card-text">Email📧: @user.Email</p>
-                            <p><strong>Roles:</strong> @string.Join(", ", user.Roles)</p>
-                            <div class="d-flex flex-wrap gap-2 mt-3">
-                                <button class="btn btn-sm btn-info" onclick="viewDetails(this)">Details</button>
-                                <button class="btn btn-sm btn-success" onclick="assignRole(this)">Assign Role</button>
-                                <button class="btn btn-sm btn-warning" onclick="removeRole(this)">Remove Role</button>
-                                <button class="btn btn-sm btn-secondary" onclick="softDelete(this)">Soft Delete</button>
-                                <button class="btn btn-sm btn-danger" onclick="hardDelete(this)">Hard Delete</button>
+                @if (user.IsDeleted)
+                {
+                    <div class="col-md-4 mb-4 user-card"
+                         data-user-id="@user.Id"
+                         data-user-name="@user.Username"
+                         data-user-email="@user.Email"
+                         data-user-roles="@string.Join(",", user.Roles)">
+                        <div class="card card-user shadow-sm">
+                            <div class="card-body">
+                                <p class="btn btn-sm btn-warning">Currently the User is deleted!</p>
+                                <h5 class="card-title">Username: @user.Username</h5>
+                                <h6 class="card-subtitle mb-2">Fullname: @user.FullName</h6>
+                                <p class="card-text">Email📧: @user.Email</p>
+                                <p><strong>Roles:</strong> @string.Join(", ", user.Roles)</p>
+                                <div class="d-flex flex-wrap gap-2 mt-3">
+                                    <button class="btn btn-sm btn-success" onclick="renew(this)">Renew User</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                }
+                else if (user.Roles.Contains(AdminRoleName))
+                {
+                    <div class="col-md-4 mb-4 user-card"
+                         data-user-id="@user.Id"
+                         data-user-name="@user.Username"
+                         data-user-email="@user.Email"
+                         data-user-roles="@string.Join(",", user.Roles)">
+                        <div class="card card-user shadow-sm">
+                            <div class="card-body">
+                                <p class="btn btn-sm btn-warning">The User is Admin and cannot be Modified!</p>
+                                <h5 class="card-title">Username: @user.Username</h5>
+                                <h6 class="card-subtitle mb-2">Fullname: @user.FullName</h6>
+                                <p class="card-text">Email📧: @user.Email</p>
+                                <p><strong>Roles:</strong> @string.Join(", ", user.Roles)</p>
+                                <div class="d-flex flex-wrap gap-2 mt-3">
+                                    <button class="btn btn-sm btn-info" onclick="viewDetails(this)">Details</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-4 mb-4 user-card"
+                         data-user-id="@user.Id"
+                         data-user-name="@user.Username"
+                         data-user-email="@user.Email"
+                         data-user-roles="@string.Join(",", user.Roles)">
+                        <div class="card card-user shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">Username: @user.Username</h5>
+                                <h6 class="card-subtitle mb-2">Fullname: @user.FullName</h6>
+                                <p class="card-text">Email📧: @user.Email</p>
+                                <p><strong>Roles:</strong> @string.Join(", ", user.Roles)</p>
+                                <div class="d-flex flex-wrap gap-2 mt-3">
+                                    <button class="btn btn-sm btn-info" onclick="viewDetails(this)">Details</button>
+                                    <button class="btn btn-sm btn-success" onclick="assignRole(this)">Assign Role</button>
+                                    <button class="btn btn-sm btn-warning" onclick="removeRole(this)">Remove Role</button>
+                                    <button class="btn btn-sm btn-danger" onclick="softDelete(this)">Delete User</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
             }
         </div>
     </div>

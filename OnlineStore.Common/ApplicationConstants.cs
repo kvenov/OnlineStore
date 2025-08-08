@@ -7,6 +7,7 @@
 
 		public const string UserRoleName = "User";
 		public const string AdminRoleName = "Admin";
+		public const string ManagerRoleName = "Manager";
 
 		public const decimal MinPriceForFreeShipping = 300.00m;
 		public const decimal StandartShippingPriceForGuests = 20.00m;

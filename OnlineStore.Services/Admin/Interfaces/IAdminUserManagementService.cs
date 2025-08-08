@@ -6,5 +6,13 @@ namespace OnlineStore.Services.Core.Admin.Interfaces
 	{
 
 		Task<IEnumerable<UserManagementViewModel>> GetAllUsersAsync(string userId);
+
+		Task<bool> AssignUserToRoleAsync(string? userId, string? role);
+
+		Task<bool> RemoveRoleFromUserAsync(string? userId, string? role);
+
+		Task<bool> SoftDeleteUserAsync(string? userId);
+
+		Task<bool> RenewUserAsync(string? userId);
 	}
 }
