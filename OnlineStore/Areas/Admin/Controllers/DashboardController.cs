@@ -1,13 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace OnlineStore.Web.Areas.Admin.Controllers
 {
-	public class DashboardController : Controller
+	public class DashboardController : BaseAdminController
 	{
 
-		[Area("Admin")]
-		[Authorize(Roles = "Admin")]
 		public IActionResult ProductIndex()
 		{
 			return View();

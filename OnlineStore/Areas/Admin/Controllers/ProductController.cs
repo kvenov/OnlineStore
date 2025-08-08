@@ -1,14 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using OnlineStore.Services.Core.Admin.Interfaces;
 using OnlineStore.Web.ViewModels.Admin.Product;
 
 namespace OnlineStore.Web.Areas.Admin.Controllers
 {
 
-	[Area("Admin")]
-	[Authorize(Roles = "Admin")]
-	public class ProductController : Controller
+	public class ProductController : BaseAdminController
 	{
 		private readonly IAdminProductService _productService;
 		private readonly IAdminProductCategoryService _productCategoryService;

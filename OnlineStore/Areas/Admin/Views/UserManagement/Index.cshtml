@@ -1,0 +1,64 @@
+﻿@using OnlineStore.Web.ViewModels.Admin.UserManagement
+@model IEnumerable<UserManagementViewModel>
+
+@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@@sweetalert2/theme-material-ui/material-ui.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="~/css/UserManagement/userManagement.css" rel="stylesheet" asp-append-version="true" />
+</head>
+<body>
+    <div class="container py-5">
+        <h2 class="mb-4 text-center">✨ User Management Panel</h2>
+
+        <div class="d-flex gap-3 mb-4">
+            <input type="text" class="form-control w-50" id="searchInput" placeholder="Search users...">
+            <select id="roleFilter" class="form-select w-25">
+                <option value="all">All Roles</option>
+                <option value="User">User</option>
+                <option value="Admin">Admin</option>
+                <option value="Manager">Manager</option>
+            </select>
+        </div>
+
+        <div class="row" id="userList">
+            @foreach (var user in Model)
+            {
+                <div class="col-md-4 mb-4 user-card"
+                     data-user-id="@user.Id"
+                     data-user-name="@user.Username"
+                     data-user-email="@user.Email"
+                     data-user-roles="@string.Join(",", user.Roles)">
+                    <div class="card card-user shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Username: @user.Username</h5>
+                            <h6 class="card-subtitle mb-2">Fullname: @user.FullName</h6>
+                            <p class="card-text">Email📧: @user.Email</p>
+                            <p><strong>Roles:</strong> @string.Join(", ", user.Roles)</p>
+                            <div class="d-flex flex-wrap gap-2 mt-3">
+                                <button class="btn btn-sm btn-info" onclick="viewDetails(this)">Details</button>
+                                <button class="btn btn-sm btn-success" onclick="assignRole(this)">Assign Role</button>
+                                <button class="btn btn-sm btn-warning" onclick="removeRole(this)">Remove Role</button>
+                                <button class="btn btn-sm btn-secondary" onclick="softDelete(this)">Soft Delete</button>
+                                <button class="btn btn-sm btn-danger" onclick="hardDelete(this)">Hard Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <script src="~/js/UserManagement/userManagement.js" asp-append-version="true"></script>
+</body>
+</html>
