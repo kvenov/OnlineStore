@@ -1,0 +1,95 @@
+﻿@using OnlineStore.Web.ViewModels.User
+@model AccountSettingsViewModel
+
+@section Styles{
+    <link href="~/css/User/accountSettings.css" asp-append-version="true" rel="stylesheet" />
+}
+
+<div class="account-settings-container">
+    <h1>Account Settings</h1>
+
+    <div class="settings-grid">
+
+        <!-- Profile -->
+        <div class="settings-card">
+            <h2>Profile Information</h2>
+            <form asp-action="UpdateProfile" method="post" class="settings-form">
+                <label asp-for="FullName"></label>
+                <input asp-for="FullName" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+
+                <label asp-for="Username"></label>
+                <input asp-for="Username" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+
+                <label asp-for="Email"></label>
+                <input asp-for="Email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+
+                <label asp-for="PhoneNumber"></label>
+                <input asp-for="PhoneNumber" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+
+                <button type="submit" class="btn-save">Save Changes</button>
+            </form>
+        </div>
+
+        <!-- Security -->
+        <div class="settings-card">
+            <h2>Security</h2>
+            <form asp-action="ChangePassword" method="post" class="settings-form">
+                <label asp-for="ChangePassword.CurrentPassword"></label>
+                <input asp-for="ChangePassword.CurrentPassword" type="password" />
+
+                <label asp-for="ChangePassword.NewPassword"></label>
+                <input asp-for="ChangePassword.NewPassword" type="password" />
+
+                <label asp-for="ChangePassword.ConfirmNewPassword"></label>
+                <input asp-for="ChangePassword.ConfirmNewPassword" type="password" />
+
+                <button type="submit" class="btn-save">Update Password</button>
+            </form>
+        </div>
+
+        <!-- Addresses -->
+        <div class="settings-card">
+            <h2>Default Addresses</h2>
+            <form asp-action="UpdateAddresses" method="post" class="settings-form">
+                <label asp-for="Addresses.DefaultShippingAddressId">Default Shipping Address</label>
+                <select asp-for="Addresses.DefaultShippingAddressId" asp-items="@(new SelectList(Model.AvailableAddresses, "Id", "DisplayName"))">
+                    <option value="">-- Select --</option>
+                </select>
+
+                <label asp-for="Addresses.DefaultBillingAddressId">Default Billing Address</label>
+                <select asp-for="Addresses.DefaultBillingAddressId" asp-items="@(new SelectList(Model.AvailableAddresses, "Id", "DisplayName"))">
+                    <option value="">-- Select --</option>
+                </select>
+
+                <button type="submit" class="btn-save">Save</button>
+            </form>
+        </div>
+
+        <!-- Payment -->
+        <div class="settings-card">
+            <h2>Payment Settings</h2>
+            <form asp-action="UpdatePayment" method="post" class="settings-form">
+                <label asp-for="Payment.DefaultPaymentMethodId">Default Payment Method</label>
+                <select asp-for="Payment.DefaultPaymentMethodId" asp-items="@(new SelectList(Model.AvailablePaymentMethods, "Id", "MethodName"))">
+                    <option value="">-- Select --</option>
+                </select>
+
+                <label asp-for="Payment.DefaultPaymentDetailsId">Default Payment Details</label>
+                <select asp-for="Payment.DefaultPaymentDetailsId" asp-items="@(new SelectList(Model.AvailablePaymentDetails, "Id", "CardSummary"))">
+                    <option value="">-- Select --</option>
+                </select>
+
+                <button type="submit" class="btn-save">Save</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/User/accountSettings.js" asp-append-version="true"></script>
+}

@@ -55,20 +55,6 @@
                     <a class="navbar-brand fw-bold fs-4 nav-link text-dark" asp-controller="Home" asp-action="Index">
                         <i class="bi bi-speedometer2"></i> Admin Panel
                     </a>
-
-                    <div class="account-menu-container">
-                        <a href="#" class="account-menu-toggle">
-                            <span class="account-label">Account</span> <span class="account-arrow">▼</span>
-                        </a>
-                        <div class="account-menu-list">
-                            <a href="@Url.Action("Profile", "User")" class="account-menu-item">Settings</a>
-                            <hr class="account-menu-divider" />
-                            <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                                <button type="submit" class="account-menu-item text-danger">Logout</button>
-                            </form>
-                        </div>
-                    </div>
-
                 }
                 else
                 {
@@ -118,7 +104,7 @@
                                     <a href="@Url.Action("ProductList", "Product")" class="account-menu-item">All Products</a>
                                     <a href="@Url.Action("Index", "Wishlist")" class="account-menu-item">Favorites</a>
                                     <a href="@Url.Action("All", "Order")" class="account-menu-item">Orders</a>
-                                    <a href="@Url.Action("Profile", "User")" class="account-menu-item">Settings</a>
+                                    <a href="@Url.Action("AccountSettings", "User")" class="account-menu-item">Settings</a>
                                     <hr class="account-menu-divider" />
                                     <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                                         <button type="submit" class="account-menu-item text-danger">Logout</button>
