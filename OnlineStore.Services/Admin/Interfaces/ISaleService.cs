@@ -1,4 +1,5 @@
-﻿using OnlineStore.Services.Core.DTO.Sales.LocationSale;
+﻿using OnlineStore.Services.Core.DTO.Sales.CustomerInsights;
+using OnlineStore.Services.Core.DTO.Sales.LocationSale;
 using OnlineStore.Services.Core.DTO.Sales.OrderManagement;
 using OnlineStore.Services.Core.DTO.Sales.Overview;
 using OnlineStore.Services.Core.DTO.Sales.ProductAnalytics;
@@ -23,6 +24,10 @@ namespace OnlineStore.Services.Core.Admin.Interfaces
 		Task<ProductAnalyticsViewModel> GetProductAnalyticsAsync(ProductAnalyticsFilterDto? dto);
 
 		Task<LocationSalesViewModel> GetSalesByLocationAsync(SalesByLocationDto dto);
+
+		Task<object?> GetCustomerOrderHistoryAsync(string? customerId);
+
+		Task<CustomerInsightsDto> GetCustomersInsights(DateTime? start, DateTime? end);
 
 		string[] GetOrderStatusses();
 	}

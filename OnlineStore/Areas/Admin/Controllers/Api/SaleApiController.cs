@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineStore.Services.Core.Admin.Interfaces;
+using OnlineStore.Services.Core.DTO.Sales.CustomerInsights;
+using OnlineStore.Services.Core.DTO.Sales.LocationSale;
 using OnlineStore.Services.Core.DTO.Sales.OrderManagement;
 using OnlineStore.Services.Core.DTO.Sales.Overview;
 using OnlineStore.Services.Core.DTO.Sales.ProductAnalytics;
-using OnlineStore.Services.Core.DTO.Sales.LocationSale;
-using OnlineStore.Web.ViewModels.Admin.Sale.ProductAnalytics;
 using OnlineStore.Web.ViewModels.Admin.Sale.LocationSales;
+using OnlineStore.Web.ViewModels.Admin.Sale.ProductAnalytics;
 
 namespace OnlineStore.Web.Areas.Admin.Controllers.Api
 {
@@ -199,5 +200,45 @@ namespace OnlineStore.Web.Areas.Admin.Controllers.Api
 			}
 		}
 
+		[HttpGet("customer-orders/{customerId}")]
+		public async Task<IActionResult> GetOrdersByCustomer(string? customerId)
+		{
+			try
+			{
+				var orders = await this._saleService
+										.GetCustomerOrderHistoryAsync(customerId);
+
+				if (orders == null)
+				{
+					return BadRequest();
+				}
+
+				return Ok(orders);
+			}
+			catch (Exception ex)
+			{
+				this._logger.LogError(ex, "Something went wrong while getting the customer order history!");
+
+				return BadRequest();
+			}
+		}
+
+		[HttpGet("customer-insights")]
+		public async Task<IActionResult> GetCustomerInsights(DateTime? fromDate, DateTime? toDate)
+		{
+			try
+			{
+				CustomerInsightsDto dto = await this._saleService
+											.GetCustomersInsights(fromDate, toDate);
+
+				return Ok(dto);
+			}
+			catch (Exception ex)
+			{
+				this._logger.LogError(ex, "Something went wrong while getting the customer insights!");
+				 
+				return BadRequest();
+			}
+		}
 	}
 }

@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "Customer Insights";
+    Layout = "~/Areas/Admin/Views/Shared/_SalesLayout.cshtml";
+}
+
+<div class="flex gap-4 mb-6">
+    <input type="date" id="custFromDate" class="form-control" />
+    <input type="date" id="custToDate" class="form-control" />
+    <button class="btn btn-primary" onclick="loadCustomerInsights()">Apply Filters</button>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+    <div class="card p-4 shadow">
+        <h3 class="text-lg font-semibold">Repeat Buyer Rate</h3>
+        <p id="repeatBuyerRate" class="text-2xl font-bold">--%</p>
+        <small class="text-gray-500">Customers with >1 order / total customers</small>
+    </div>
+    <div class="card p-4 shadow">
+        <h3 class="text-lg font-semibold">Average LTV</h3>
+        <p id="avgLtv" class="text-2xl font-bold">--</p>
+        <small class="text-gray-500">Revenue per customer (all time)</small>
+    </div>
+    <div class="card p-4 shadow">
+        <h3 class="text-lg font-semibold">Total Customers</h3>
+        <h5 class="text-lg font-semibold">With completed orders</h5>
+        <p id="totalCustomers" class="text-2xl font-bold">--</p>
+    </div>
+</div>
+
+<div class="card p-4 shadow mb-6">
+    <h3 class="text-lg font-semibold mb-3">Top Customers - with completed orders</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Customer</th>
+                <th>Orders</th>
+                <th>Total Spent</th>
+            </tr>
+        </thead>
+        <tbody id="topCustomersTable"></tbody>
+    </table>
+</div>
+
+<div class="card p-4 shadow">
+    <h4 class="text-lg font-semibold mb-3">Customer Order History(all)</h4>
+    <div class="flex gap-4 mb-3">
+        <select id="customerSelect" class="form-control" onchange="loadOrderHistory()">
+            <option value="">Select Customer</option>
+        </select>
+    </div>
+    <small class="text-gray-500">Shown: Completed, Pending and Cancelled</small>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order #</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody id="orderHistoryTable"></tbody>
+    </table>
+</div>
+
+@section Scripts{
+    <script src="~/js/Sale/customerInsights.js" asp-append-version="true"></script>
+}

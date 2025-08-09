@@ -3,6 +3,7 @@ using OnlineStore.Data.Models;
 using OnlineStore.Data.Models.Enums;
 using OnlineStore.Data.Repository.Interfaces;
 using OnlineStore.Services.Core.Admin.Interfaces;
+using OnlineStore.Services.Core.DTO.Sales.CustomerInsights;
 using OnlineStore.Services.Core.DTO.Sales.LocationSale;
 using OnlineStore.Services.Core.DTO.Sales.OrderManagement;
 using OnlineStore.Services.Core.DTO.Sales.Overview;
@@ -377,6 +378,90 @@ namespace OnlineStore.Services.Core.Admin
 			};
 
 			return model;
+		}
+
+		public async Task<object?> GetCustomerOrderHistoryAsync(string? customerId)
+		{
+			if (!string.IsNullOrWhiteSpace(customerId))
+			{
+				var orders = await this._orderRepository
+								.GetAllAttached()
+								.AsNoTracking()
+								.Where(o => (o.UserId != null && o.UserId.ToLower() == customerId.ToLower()) ||
+											(o.GuestId != null && o.GuestId.ToLower() == customerId.ToLower()))
+								.Select(o => new
+								{
+									OrderNumber = o.OrderNumber,
+									Date = o.OrderDate,
+									Status = o.Status.ToString(),
+									Total = o.TotalAmount
+								})
+								.ToListAsync();
+
+				return orders;
+			}
+
+			return null;
+		}
+
+		public async Task<CustomerInsightsDto> GetCustomersInsights(DateTime? start, DateTime? end)
+		{
+			var query = this._orderRepository
+							.GetAllAttached()
+							.AsNoTracking()
+							.Where(o => o.IsCompleted && o.Status == OrderStatus.Delivered);
+
+			if (start.HasValue) query = query.Where(o => o.OrderDate >= start);
+
+			if (end.HasValue) query = query.Where(o => o.OrderDate <= end);
+
+			var orders = await query.ToListAsync();
+
+			var customerGroups = orders
+						.GroupBy(o => o.UserId ?? o.GuestId)
+						.Select(g => new
+						{
+							CustomerId = g.Key,
+							Name = g.First().User != null
+								   ? g.First().User!.UserName
+								   : g.First().GuestName,
+							OrdersCount = g.Count(),
+							TotalSpent = g.Sum(x => x.TotalAmount)
+						})
+						.ToList();
+
+			var totalCustomers = customerGroups.Count;
+			var repeatBuyers = customerGroups.Count(c => c.OrdersCount > 1);
+			var repeatBuyerRate = totalCustomers > 0
+				? (decimal)repeatBuyers / totalCustomers * 100
+				: 0;
+
+			var avgLtv = totalCustomers > 0
+				? customerGroups.Sum(c => c.TotalSpent) / totalCustomers
+				: 0;
+
+			var topCustomers = customerGroups
+				.OrderByDescending(c => c.TotalSpent)
+				.Take(10)
+				.Select(c => new TopCustomerDto
+				{
+					CustomerId = c.CustomerId,
+					Name = c.Name,
+					OrdersCount = c.OrdersCount,
+					TotalSpent = c.TotalSpent
+				})
+				.ToList();
+
+
+			CustomerInsightsDto dto = new()
+			{
+				AverageLtv = avgLtv,
+				RepeatBuyerRate = repeatBuyerRate,
+				TotalCustomers = totalCustomers,
+				TopCustomers = topCustomers
+			};
+
+			return dto;
 		}
 
 		public string[] GetOrderStatusses()

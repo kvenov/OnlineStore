@@ -43,6 +43,12 @@ namespace OnlineStore.Web.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
+		public IActionResult CustomerInsights()
+		{
+			return View();
+		}
+
+		[HttpGet]
 		public IActionResult ProductAnalytics()
 		{
 			return View();
