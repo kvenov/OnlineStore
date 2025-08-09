@@ -1,6 +1,8 @@
-﻿using OnlineStore.Services.Core.DTO.Sales.OrderManagement;
+﻿using OnlineStore.Services.Core.DTO.Sales.LocationSale;
+using OnlineStore.Services.Core.DTO.Sales.OrderManagement;
 using OnlineStore.Services.Core.DTO.Sales.Overview;
 using OnlineStore.Services.Core.DTO.Sales.ProductAnalytics;
+using OnlineStore.Web.ViewModels.Admin.Sale.LocationSales;
 using OnlineStore.Web.ViewModels.Admin.Sale.ProductAnalytics;
 
 namespace OnlineStore.Services.Core.Admin.Interfaces
@@ -19,6 +21,8 @@ namespace OnlineStore.Services.Core.Admin.Interfaces
 		Task<(bool isFinished, string message)> FinishOrderAsync(int? orderId);
 
 		Task<ProductAnalyticsViewModel> GetProductAnalyticsAsync(ProductAnalyticsFilterDto? dto);
+
+		Task<LocationSalesViewModel> GetSalesByLocationAsync(SalesByLocationDto dto);
 
 		string[] GetOrderStatusses();
 	}

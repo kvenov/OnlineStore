@@ -3,7 +3,9 @@ using OnlineStore.Services.Core.Admin.Interfaces;
 using OnlineStore.Services.Core.DTO.Sales.OrderManagement;
 using OnlineStore.Services.Core.DTO.Sales.Overview;
 using OnlineStore.Services.Core.DTO.Sales.ProductAnalytics;
+using OnlineStore.Services.Core.DTO.Sales.LocationSale;
 using OnlineStore.Web.ViewModels.Admin.Sale.ProductAnalytics;
+using OnlineStore.Web.ViewModels.Admin.Sale.LocationSales;
 
 namespace OnlineStore.Web.Areas.Admin.Controllers.Api
 {
@@ -76,6 +78,24 @@ namespace OnlineStore.Web.Areas.Admin.Controllers.Api
 			catch (Exception ex)
 			{
 				this._logger.LogError(ex, "Something went wrong while getting the ProductAnalytics");
+
+				return BadRequest();
+			}
+		}
+
+		[HttpGet("sales-by-location")]
+		public async Task<IActionResult> GetSalesByLocation([FromQuery] SalesByLocationDto dto)
+		{
+			try
+			{
+				LocationSalesViewModel model = await this._saleService
+											.GetSalesByLocationAsync(dto);
+
+				return Ok(model);
+			}
+			catch (Exception ex)
+			{
+				this._logger.LogError(ex, "Something went wrong while getting the location sales!");
 
 				return BadRequest();
 			}

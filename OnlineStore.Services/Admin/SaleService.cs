@@ -3,9 +3,11 @@ using OnlineStore.Data.Models;
 using OnlineStore.Data.Models.Enums;
 using OnlineStore.Data.Repository.Interfaces;
 using OnlineStore.Services.Core.Admin.Interfaces;
+using OnlineStore.Services.Core.DTO.Sales.LocationSale;
 using OnlineStore.Services.Core.DTO.Sales.OrderManagement;
 using OnlineStore.Services.Core.DTO.Sales.Overview;
 using OnlineStore.Services.Core.DTO.Sales.ProductAnalytics;
+using OnlineStore.Web.ViewModels.Admin.Sale.LocationSales;
 using OnlineStore.Web.ViewModels.Admin.Sale.ProductAnalytics;
 using System.Text;
 
@@ -308,6 +310,70 @@ namespace OnlineStore.Services.Core.Admin
 										  UnitsSold = g.Sum(oi => oi.Quantity)
 									  })
 									  .ToListAsync()
+			};
+
+			return model;
+		}
+
+		public async Task<LocationSalesViewModel> GetSalesByLocationAsync(SalesByLocationDto dto)
+		{
+			var query = this._orderRepository
+							.GetAllAttached()
+							.AsNoTracking()
+							.Where(o => o.IsCompleted == true && o.Status == OrderStatus.Delivered);
+
+			if (dto.FromDate.HasValue)
+			{
+				query = query
+						.Where(o => o.OrderDate >= dto.FromDate);
+			}
+
+			if (dto.ToDate.HasValue)
+			{
+				query = query
+						.Where(o => o.OrderDate <= dto.ToDate);
+			}
+
+			if (!string.IsNullOrWhiteSpace(dto.Country))
+			{
+				query = query
+						.Where(o => o.ShippingAddress.Country.ToLower().Contains(dto.Country.ToLower()));
+			}
+
+			if (!string.IsNullOrWhiteSpace(dto.City))
+			{
+				query = query
+						.Where(o => o.ShippingAddress.City.ToLower().Contains(dto.City.ToLower()));
+			}
+
+			if (!string.IsNullOrWhiteSpace(dto.ZipCode))
+			{
+				query = query
+						.Where(o => o.ShippingAddress.ZipCode.ToLower().Contains(dto.ZipCode.ToLower()));
+			}
+
+			LocationSalesViewModel model = new()
+			{
+				SalesByCountry = await query
+									.GroupBy(o => o.ShippingAddress.Country)
+									.Select(g => new LocationSalesData()
+									{
+										LocationName = g.Key,
+										TotalSales = g.Sum(o => o.TotalAmount),
+										OrdersCount = g.Count()
+									})
+									.OrderByDescending(g => g.TotalSales)
+									.ToListAsync(),
+				SalesByCity = await query
+									.GroupBy(o => o.ShippingAddress.City)
+									.Select(g => new LocationSalesData()
+									{
+										LocationName = g.Key,
+										TotalSales = g.Sum(o => o.TotalAmount),
+										OrdersCount = g.Count()
+									})
+									.OrderByDescending(g => g.TotalSales)
+									.ToListAsync(),
 			};
 
 			return model;
