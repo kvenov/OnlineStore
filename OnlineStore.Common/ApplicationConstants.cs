@@ -33,6 +33,22 @@
 			public const string RegisterPath = "/Account/Register";
 		}
 
+		public static class Sale
+		{
+			public static class ProductAnalytics
+			{
+				public const int FiftyPriceRangeIdentifier = 50;
+				public const int OneHundredPriceRangeIdentifier = 100;
+				public const int TwoHundredPriceRangeIdentifier = 200;
+
+
+				public const string FromZeroToFifty = "$0–$50";
+				public const string FromFiftyToOneHunderd = "$50–$100";
+				public const string FromOneHunderdToTwoHunderd = "$100–$200";
+				public const string TwoHunderdPlus = "$200+";
+			}
+		}
+
 		public static class AddressValidationConstants
 		{
 			public const int FullNameMaxLength = 100;

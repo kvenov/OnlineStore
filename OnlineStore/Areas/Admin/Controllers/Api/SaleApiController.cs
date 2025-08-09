@@ -2,6 +2,8 @@
 using OnlineStore.Services.Core.Admin.Interfaces;
 using OnlineStore.Services.Core.DTO.Sales.OrderManagement;
 using OnlineStore.Services.Core.DTO.Sales.Overview;
+using OnlineStore.Services.Core.DTO.Sales.ProductAnalytics;
+using OnlineStore.Web.ViewModels.Admin.Sale.ProductAnalytics;
 
 namespace OnlineStore.Web.Areas.Admin.Controllers.Api
 {
@@ -56,6 +58,24 @@ namespace OnlineStore.Web.Areas.Admin.Controllers.Api
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "Something went wrong while getting the Sale Overview!");
+
+				return BadRequest();
+			}
+		}
+
+		[HttpGet("product-analytics")]
+		public async Task<IActionResult> GetProductsAnalytics([FromQuery] ProductAnalyticsFilterDto? dto)
+		{
+			try
+			{
+				ProductAnalyticsViewModel model = await this._saleService
+											.GetProductAnalyticsAsync(dto);
+
+				return Ok(model);
+			}
+			catch (Exception ex)
+			{
+				this._logger.LogError(ex, "Something went wrong while getting the ProductAnalytics");
 
 				return BadRequest();
 			}

@@ -1,0 +1,48 @@
+﻿@using static OnlineStore.Common.ApplicationConstants.Sale.ProductAnalytics
+
+@{
+    ViewData["Title"] = "Product Analytics";
+    Layout = "~/Areas/Admin/Views/Shared/_SalesLayout.cshtml";
+}
+
+<div class="p-6">
+    <h1 class="text-3xl font-bold mb-6">📈 Product Analytics</h1>
+
+    <div class="flex gap-4 mb-6">
+        <input type="date" id="filterFromDate" class="form-control">
+        <input type="date" id="filterToDate" class="form-control">
+
+        <select id="filterPriceRange" class="form-select">
+            <option value="">All Price Ranges</option>
+            <option>@FromZeroToFifty</option>
+            <option>@FromFiftyToOneHunderd</option>
+            <option>@FromOneHunderdToTwoHunderd</option>
+            <option>@TwoHunderdPlus</option>
+        </select>
+
+        <button class="btn btn-primary" onclick="loadAnalytics()">Apply Filters</button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="card p-4 shadow">
+            <h2 class="text-xl font-semibold mb-3">Top 10 Selling Products</h2>
+            <canvas id="topSellingChart"></canvas>
+        </div>
+        <div class="card p-4 shadow">
+            <h2 class="text-xl font-semibold mb-3">Least Selling Products</h2>
+            <canvas id="leastSellingChart"></canvas>
+        </div>
+        <div class="card p-4 shadow">
+            <h2 class="text-xl font-semibold mb-3">Sales by Size</h2>
+            <canvas id="salesBySizeChart"></canvas>
+        </div>
+        <div class="card p-4 shadow">
+            <h2 class="text-xl font-semibold mb-3">Sales by Price Range</h2>
+            <canvas id="salesByPriceChart"></canvas>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/Sale/productAnalytics.js" asp-append-version="true"></script>
+}

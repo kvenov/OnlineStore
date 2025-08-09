@@ -1,5 +1,7 @@
 ﻿using OnlineStore.Services.Core.DTO.Sales.OrderManagement;
 using OnlineStore.Services.Core.DTO.Sales.Overview;
+using OnlineStore.Services.Core.DTO.Sales.ProductAnalytics;
+using OnlineStore.Web.ViewModels.Admin.Sale.ProductAnalytics;
 
 namespace OnlineStore.Services.Core.Admin.Interfaces
 {
@@ -15,6 +17,8 @@ namespace OnlineStore.Services.Core.Admin.Interfaces
 		Task<(bool isCancelled, string message)> CancelOrderAsync(int? orderId);
 
 		Task<(bool isFinished, string message)> FinishOrderAsync(int? orderId);
+
+		Task<ProductAnalyticsViewModel> GetProductAnalyticsAsync(ProductAnalyticsFilterDto? dto);
 
 		string[] GetOrderStatusses();
 	}

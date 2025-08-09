@@ -5,17 +5,23 @@ using OnlineStore.Data.Repository.Interfaces;
 using OnlineStore.Services.Core.Admin.Interfaces;
 using OnlineStore.Services.Core.DTO.Sales.OrderManagement;
 using OnlineStore.Services.Core.DTO.Sales.Overview;
+using OnlineStore.Services.Core.DTO.Sales.ProductAnalytics;
+using OnlineStore.Web.ViewModels.Admin.Sale.ProductAnalytics;
 using System.Text;
+
+using static OnlineStore.Common.ApplicationConstants.Sale.ProductAnalytics;
 
 namespace OnlineStore.Services.Core.Admin
 {
 	public class SaleService : ISaleService
 	{
 		private readonly IOrderRepository _orderRepository;
+		private readonly IRepository<OrderItem, int> _orderItemRepository;
 
-		public SaleService(IOrderRepository orderRepository)
+		public SaleService(IOrderRepository orderRepository, IRepository<OrderItem, int> orderItemRepository)
 		{
 			this._orderRepository = orderRepository;
+			this._orderItemRepository = orderItemRepository;
 		}
 
 		public async Task<IEnumerable<OrderListItemViewModel>?> GetFilteredOrdersAsync(OrderFilterDto? dto)
@@ -227,6 +233,84 @@ namespace OnlineStore.Services.Core.Admin
 			}
 
 			return (false, "The OrderId is invalid!");
+		}
+
+		public async Task<ProductAnalyticsViewModel> GetProductAnalyticsAsync(ProductAnalyticsFilterDto? dto)
+		{
+			var query = this._orderItemRepository
+								.GetAllAttached()
+								.AsNoTracking()
+								.Where(oi => oi.Order.IsCompleted == true && oi.Order.Status == OrderStatus.Delivered);
+
+			if (dto.FromDate.HasValue)
+			{
+				query = query.Where(oi => oi.Order.OrderDate >= dto.FromDate);
+			}
+
+			if (dto.ToDate.HasValue)
+			{
+				query = query.Where(oi => oi.Order.OrderDate <= dto.ToDate);
+			}
+
+			if (!string.IsNullOrWhiteSpace(dto.PriceRange))
+			{
+				query = dto.PriceRange switch
+				{
+					FromZeroToFifty => query.Where(oi => oi.Product.Price < 50),
+					FromFiftyToOneHunderd => query.Where(oi => oi.Product.Price >= 50 && oi.Product.Price < 100),
+					FromOneHunderdToTwoHunderd => query.Where(oi => oi.Product.Price >= 100 && oi.Product.Price < 200),
+					TwoHunderdPlus => query.Where(oi => oi.Product.Price >= 200),
+					_ => query
+				};
+			}
+
+			ProductAnalyticsViewModel model = new ProductAnalyticsViewModel()
+			{
+				TopSellingProducts = await query
+									  .GroupBy(oi => oi.Product.Name)
+									  .Select(g => new ProductSalesData()
+									  {
+										 ProductName = g.Key,
+										 UnitsSold = g.Sum(oi => oi.Quantity)
+									  })
+									  .OrderByDescending(g => g.UnitsSold)
+									  .Take(10)
+									  .ToListAsync(),
+				LeastSellingProducts = await query
+									  .GroupBy(oi => oi.Product.Name)
+									  .Select(g => new ProductSalesData()
+									  {
+										 ProductName = g.Key,
+										 UnitsSold = g.Sum(oi => oi.Quantity)
+									  })
+									  .OrderBy(g => g.UnitsSold)
+									  .Take(10)
+									  .ToListAsync(),
+				SalesBySize = await query
+									  .GroupBy(oi => oi.ProductSize)
+									  .Select(g => new SalesBySizeData()
+									  {
+										 Size = g.Key,
+										 UnitsSold = g.Sum(oi => oi.Quantity)
+									  })
+									  .ToListAsync(),
+				SalesByPriceRange = await query
+									  .GroupBy(oi => new
+									  {
+											  Range = oi.Product.Price < FiftyPriceRangeIdentifier ? FromZeroToFifty :
+												  oi.Product.Price < OneHundredPriceRangeIdentifier ? FromFiftyToOneHunderd :
+												  oi.Product.Price < TwoHundredPriceRangeIdentifier ? FromOneHunderdToTwoHunderd :
+													TwoHunderdPlus
+									  })
+									  .Select(g => new SalesByPriceRangeData()
+									  {
+										  PriceRange = g.Key.Range,
+										  UnitsSold = g.Sum(oi => oi.Quantity)
+									  })
+									  .ToListAsync()
+			};
+
+			return model;
 		}
 
 		public string[] GetOrderStatusses()

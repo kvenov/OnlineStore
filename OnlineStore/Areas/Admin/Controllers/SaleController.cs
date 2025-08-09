@@ -35,5 +35,11 @@ namespace OnlineStore.Web.Areas.Admin.Controllers
 
 			return View(model);
 		}
+
+		[HttpGet]
+		public IActionResult ProductAnalytics()
+		{
+			return View();
+		}
 	}
 }
