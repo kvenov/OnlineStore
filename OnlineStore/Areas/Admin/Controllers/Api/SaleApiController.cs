@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineStore.Services.Core.Admin.Interfaces;
+using OnlineStore.Services.Core.DTO.Sales.OrderManagement;
 using OnlineStore.Services.Core.DTO.Sales.Overview;
 
 namespace OnlineStore.Web.Areas.Admin.Controllers.Api
@@ -54,10 +55,109 @@ namespace OnlineStore.Web.Areas.Admin.Controllers.Api
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "Somethign went wrong while getting the Sale Overview!");
+				_logger.LogError(ex, "Something went wrong while getting the Sale Overview!");
 
 				return BadRequest();
 			}
 		}
+
+		[HttpGet("filter")]
+		public async Task<IActionResult> GetFilteredOrders([FromQuery] OrderFilterDto? dto)
+		{
+			try
+			{
+				IEnumerable<OrderListItemViewModel>? model = await this._saleService
+										.GetFilteredOrdersAsync(dto);
+
+				if (model == null)
+				{
+					return BadRequest();
+				}
+
+				return Ok(model);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Something went wrong while getting the filtered orders!");
+
+				return BadRequest();
+			}
+		}
+
+		[HttpGet("details/{orderId}")]
+		public async Task<IActionResult> GetOrderDetails(int? orderId)
+		{
+			try
+			{
+				OrderDetailsViewModel? model = await this._saleService
+										.GetOrderDetailsAsync(orderId);
+
+				if (model == null)
+				{
+					return BadRequest();
+				}
+
+				return Ok(model);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Something went wrong while getting the order details!");
+
+				return BadRequest();
+			}
+		}
+
+		[HttpPost("cancel/{orderId}")]
+		public async Task<IActionResult> CancleOrder(int? orderId)
+		{
+			try
+			{
+				(bool isCancelled, string message) = await this._saleService
+									.CancelOrderAsync(orderId);
+
+				return Ok(new
+				{
+					result = isCancelled,
+					message = message
+				});
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Something went wrong while canceling the Order!");
+
+				return BadRequest(new
+				{
+					result = false,
+					message = "An unexpected error occurred while cancelling the order."
+				});
+			}
+		}
+
+		[HttpPost("finish/{orderId}")]
+		public async Task<IActionResult> FinishOrder(int? orderId)
+		{
+			try
+			{
+				(bool isFinished, string message) = await this._saleService
+									.FinishOrderAsync(orderId);
+
+				return Ok(new
+				{
+					result = isFinished,
+					message = message
+				});
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Something went wrong while finishing the Order!");
+
+				return BadRequest(new
+				{
+					result = false,
+					message = "An unexpected error occurred while finishing the order."
+				});
+			}
+		}
+
 	}
 }

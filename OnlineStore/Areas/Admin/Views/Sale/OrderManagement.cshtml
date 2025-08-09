@@ -1,0 +1,133 @@
+﻿@using OnlineStore.Web.ViewModels.Admin.Sale.OrderManagement
+@model AdminOrdersListViewModel
+
+@{
+    ViewData["Title"] = "Orders Management";
+    Layout = "~/Areas/Admin/Views/Shared/_SalesLayout.cshtml";
+}
+
+@section Styles{
+    <link href="https://cdn.jsdelivr.net/npm/@@sweetalert2/theme-material-ui/material-ui.css" rel="stylesheet">
+}
+
+<div class="p-6">
+    <h1 class="text-3xl font-bold mb-6">📦 Orders Management</h1>
+
+    <!-- Filters -->
+    <div class="grid grid-cols-1 md:grid-cols-6 gap-4 mb-6">
+        <input type="text" id="filterOrderNumber" placeholder="Order Number" class="input input-bordered w-full" />
+        <input type="text" id="filterCustomer" placeholder="Customer Name/Email" class="input input-bordered w-full" />
+        <input type="date" id="filterDateFrom" class="input input-bordered w-full" />
+        <input type="date" id="filterDateTo" class="input input-bordered w-full" />
+        <select id="filterStatus" class="select select-bordered w-full">
+            <option value="">All Statuses</option>
+            @foreach (var status in Model.OrderStatuses)
+            {
+                <option value="@status">@status</option>
+            }
+        </select>
+        <button class="btn btn-primary w-full" onclick="fetchOrders()">Search</button>
+    </div>
+
+    <!-- Orders Table -->
+    <div class="overflow-x-auto">
+        <table class="table w-full text-sm">
+            <thead>
+                <tr class="bg-base-200">
+                    <th>Order Number</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="ordersTableBody">
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Order <span id="modalOrderNumber"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Customer Info -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <strong>Customer:</strong> <span id="modalCustomerName"></span><br>
+                            <strong>Email:</strong> <span id="modalCustomerEmail"></span>
+                        </div>
+                        <div class="col">
+                            <strong>Status:</strong>
+                            <select id="modalOrderStatus" class="form-select form-select-sm w-auto d-inline-block">
+                                <!-- filled dynamically -->
+                            </select>
+                        </div>
+                        <div class="col">
+                            <strong>Payment Method:</strong> <span id="modalPaymentMethod"></span><br>
+                            <strong>Date:</strong> <span id="modalOrderDate"></span>
+                        </div>
+                    </div>
+
+                    <!-- Addresses -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <strong>Billing Address</strong>
+                            <p id="modalBillingAddress" class="mb-0"></p>
+                        </div>
+                        <div class="col">
+                            <strong>Shipping Address</strong>
+                            <p id="modalShippingAddress" class="mb-0"></p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <strong>Order Shipping</strong>
+                            <h5>Shipping option: <span id="modalShippingOption"></span></h5>
+                            <p>EstimateDeliveryStart: <span id="modalEstimateDeliveryStart"></span></p>
+                            <p>EstimateDeliveryEnd: <span id="modalEstimateDeliveryEnd"></span></p>
+                        </div>
+                    </div>
+
+                    <!-- Order Items -->
+                    <h6>Items</h6>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Qty</th>
+                                <th>Size</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="modalOrderItems">
+                        </tbody>
+                    </table>
+
+                    <div class="text-end">
+                        <p>Subtotal: $<span id="modalSubtotal"></span></p>
+                        <p>Shipping price: $<span id="modalShipping"></span></p>
+                        <h5>Total: $<span id="modalTotal"></span></h5>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnCancelOrder" class="btn btn-danger">Cancel Order</button>
+                    <button id="btnFinishOrder" class="btn btn-warning">Finish Order</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/Sale/orderManagement.js" asp-append-version="true"></script>
+}

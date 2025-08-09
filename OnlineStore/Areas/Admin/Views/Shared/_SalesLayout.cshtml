@@ -23,7 +23,7 @@
             <nav class="p-4 text-gray-700">
                 <ul class="space-y-4">
                     <li><a href="/Admin/Sale/Overview" class="hover:text-blue-500">📊 Overview</a></li>
-                    <li><a href="/Admin/Sales/Orders" class="hover:text-blue-500">📦 Orders</a></li>
+                    <li><a href="/Admin/Sale/OrderManagement" class="hover:text-blue-500">📦 Orders</a></li>
                     <li><a href="/Admin/Sales/Analytics" class="hover:text-blue-500">📈 Product Analytics</a></li>
                     <li><a href="/Admin/Sales/Location" class="hover:text-blue-500">🌍 Sales by Location</a></li>
                     <li><a href="/Admin/Sales/Customers" class="hover:text-blue-500">👤 Customer Insights</a></li>
@@ -43,18 +43,3 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
-
-<!--
-EXPLANATION:
-1. Sidebar (Left) has navigation for all your core components:
-   - Overview: Dashboard with revenue, AOV, order count etc.
-   - Orders: Full order management
-   - Analytics: Product sales analytics
-   - Location: Map + location-based sales
-   - Customers: Top buyers, purchase behavior
-
-2. TailwindCSS is used for modern UI.
-3. Chart.js is preloaded for rendering graphs.
-4. Dynamic interactivity will be handled in /js/sales-panel.js via fetch() and async rendering.
-5. This layout will wrap all the other views in your ASP.NET Core MVC using Razor’s `Layout` system.
--->
