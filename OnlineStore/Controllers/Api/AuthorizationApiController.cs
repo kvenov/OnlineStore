@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace OnlineStore.Web.Controllers.Api
 {
-	[Route("api/[controller]")]
-	[ApiController]
 	public class AuthorizationApiController : BaseApiController
 	{
 

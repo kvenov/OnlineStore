@@ -7,8 +7,6 @@ using OnlineStore.Web.ViewModels.Product;
 
 namespace OnlineStore.Web.Controllers.Api
 {
-	[Route("api/[controller]")]
-	[ApiController]
 	public class ShoppingCartApiController : BaseApiController
 	{
 		private readonly IShoppingCartService _shoppingCartService;

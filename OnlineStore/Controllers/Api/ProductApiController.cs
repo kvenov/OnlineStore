@@ -6,8 +6,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OnlineStore.Web.Controllers.Api
 {
-	[Route("api/[controller]")]
-	[ApiController]
 	public class ProductApiController : BaseApiController
 	{
 		private readonly IProductService _productService;

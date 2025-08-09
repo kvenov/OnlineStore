@@ -51,7 +51,6 @@ namespace OnlineStore.Web.Controllers
 
 		[HttpPost]
 		[AllowAnonymous]
-		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Login(LoginViewModel model)
 		{
 			model.ReturnUrl ??= Url.Content("~/");
@@ -105,7 +104,6 @@ namespace OnlineStore.Web.Controllers
 
 		[HttpPost]
 		[AllowAnonymous]
-		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Register(RegisterViewModel model)
 		{
 			model.ReturnUrl ??= Url.Content("~/");

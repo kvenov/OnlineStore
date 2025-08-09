@@ -3,8 +3,6 @@ using OnlineStore.Services.Core.Interfaces;
 
 namespace OnlineStore.Web.Controllers.Api
 {
-	[Route("api/[controller]")]
-	[ApiController]
 	public class WishlistApiController : BaseApiController
 	{
 		private readonly IWishlistService _wishlistService;

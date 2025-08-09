@@ -6,6 +6,7 @@ namespace OnlineStore.Web.Controllers
 {
 
 	[Authorize]
+	[AutoValidateAntiforgeryToken]
 	public abstract class BaseController : Controller
 	{
 

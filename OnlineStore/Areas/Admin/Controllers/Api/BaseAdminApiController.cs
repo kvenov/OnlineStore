@@ -9,6 +9,7 @@ namespace OnlineStore.Web.Areas.Admin.Controllers.Api
 	[ApiController]
 	[Area(AdminRoleName)]
 	[Authorize(Roles = AdminRoleName)]
+	[AutoValidateAntiforgeryToken]
 	public class BaseAdminApiController : ControllerBase
 	{
 	}
