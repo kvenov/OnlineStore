@@ -7,7 +7,6 @@ namespace OnlineStore.Web.Controllers.Api
 	[Route("api/[controller]")]
 	[ApiController]
 	[Authorize]
-	[AutoValidateAntiforgeryToken]
 	public abstract class BaseApiController : ControllerBase
 	{
 
