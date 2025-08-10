@@ -26,7 +26,7 @@
         <div class="auth-links d-flex align-items-center">
             @if (SignInManager.IsSignedIn(User))
             {
-                <a href="/User/Prodile" class="auth-link">Hi, @UserManager.GetUserName(User)</a>
+                <a href="/User/AccountSettings" class="auth-link">Hi, @UserManager.GetUserName(User)</a>
                 <div class="divider"></div>
                 <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                     <button type="submit" style="border: none; background-color: transparent" class="auth-link">Logout</button>

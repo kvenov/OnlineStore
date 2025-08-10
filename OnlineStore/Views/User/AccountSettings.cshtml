@@ -10,83 +10,118 @@
 
     <div class="settings-grid">
 
-        <!-- Profile -->
         <div class="settings-card">
             <h2>Profile Information</h2>
-            <form asp-action="UpdateProfile" method="post" class="settings-form">
-                <label asp-for="FullName"></label>
-                <input asp-for="FullName" />
-                <span asp-validation-for="FullName" class="text-danger"></span>
+            <form data-api-url="/api/userapi/change-profile" method="post" class="settings-form">
+                <label for="FullName">FullName</label>
+                <input id="FullName" name="FullName" value="@Model.Profile.FullName" />
 
-                <label asp-for="Username"></label>
-                <input asp-for="Username" />
-                <span asp-validation-for="Username" class="text-danger"></span>
+                <label for="Username">Username</label>
+                <input id="Username" name="Username" value="@Model.Profile.Username" />
 
-                <label asp-for="Email"></label>
-                <input asp-for="Email" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-
-                <label asp-for="PhoneNumber"></label>
-                <input asp-for="PhoneNumber" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-
+                <label for="Email">Email</label>
+                <input id="Email" name="Email" value="@Model.Profile.Email" />
+                
+                <label for="PhoneNumber">PhoneNumber</label>
+                <input id="PhoneNumber" name="PhoneNumber" value="@Model.Profile.PhoneNumber" />
+                
                 <button type="submit" class="btn-save">Save Changes</button>
             </form>
         </div>
 
-        <!-- Security -->
         <div class="settings-card">
             <h2>Security</h2>
-            <form asp-action="ChangePassword" method="post" class="settings-form">
-                <label asp-for="ChangePassword.CurrentPassword"></label>
-                <input asp-for="ChangePassword.CurrentPassword" type="password" />
+            <form data-api-url="/api/userapi/change-password" method="post" class="settings-form">
+                <label for="CurrentPassword">Current Password</label>
+                <input id="CurrentPassword" name="CurrentPassword" type="password" required />
 
-                <label asp-for="ChangePassword.NewPassword"></label>
-                <input asp-for="ChangePassword.NewPassword" type="password" />
+                <label for="NewPassword">New Password</label>
+                <input id="NewPassword" name="NewPassword" type="password" required />
 
-                <label asp-for="ChangePassword.ConfirmNewPassword"></label>
-                <input asp-for="ChangePassword.ConfirmNewPassword" type="password" />
+                <label for="ConfirmNewPassword">Confirm New Password</label>
+                <input id="ConfirmNewPassword" name="ConfirmNewPassword" type="password" required />
 
                 <button type="submit" class="btn-save">Update Password</button>
             </form>
         </div>
 
-        <!-- Addresses -->
         <div class="settings-card">
             <h2>Default Addresses</h2>
-            <form asp-action="UpdateAddresses" method="post" class="settings-form">
-                <label asp-for="Addresses.DefaultShippingAddressId">Default Shipping Address</label>
-                <select asp-for="Addresses.DefaultShippingAddressId" asp-items="@(new SelectList(Model.AvailableAddresses, "Id", "DisplayName"))">
-                    <option value="">-- Select --</option>
+            <form data-api-url="/api/userapi/change-address" method="post" class="settings-form">
+                <label for="DefaultShippingAddressId">Default Shipping Address</label>
+                <select id="DefaultShippingAddressId" name="DefaultShippingAddressId" required>
+                    <option value="0">-- No Default Shipping Address --</option>
+                    @foreach (var addr in Model.AvailableAddresses)
+                    {
+                        if (Model.Addresses.DefaultShippingAddressId != 0 && Model.Addresses.DefaultShippingAddressId == addr.Id)
+                        {
+                            <option value="@addr.Id" selected="selected">@addr.DisplayName</option>
+                        }
+                        else
+                        {
+                            <option value="@addr.Id">@addr.DisplayName</option>
+                        }
+                    }
                 </select>
 
-                <label asp-for="Addresses.DefaultBillingAddressId">Default Billing Address</label>
-                <select asp-for="Addresses.DefaultBillingAddressId" asp-items="@(new SelectList(Model.AvailableAddresses, "Id", "DisplayName"))">
-                    <option value="">-- Select --</option>
+                <label for="DefaultBillingAddressId">Default Billing Address</label>
+                <select id="DefaultBillingAddressId" name="DefaultBillingAddressId" required>
+                    <option value="0">-- No Default Billing Address --</option>
+                    @foreach (var addr in Model.AvailableAddresses)
+                    {
+                        if (Model.Addresses.DefaultBillingAddressId != 0 && Model.Addresses.DefaultBillingAddressId == addr.Id)
+                        {
+                            <option value="@addr.Id" selected="selected">@addr.DisplayName</option>
+                        }
+                        else
+                        {
+                            <option value="@addr.Id">@addr.DisplayName</option>
+                        }
+                    }
                 </select>
 
                 <button type="submit" class="btn-save">Save</button>
             </form>
         </div>
 
-        <!-- Payment -->
         <div class="settings-card">
             <h2>Payment Settings</h2>
-            <form asp-action="UpdatePayment" method="post" class="settings-form">
-                <label asp-for="Payment.DefaultPaymentMethodId">Default Payment Method</label>
-                <select asp-for="Payment.DefaultPaymentMethodId" asp-items="@(new SelectList(Model.AvailablePaymentMethods, "Id", "MethodName"))">
-                    <option value="">-- Select --</option>
+            <form data-api-url="/api/userapi/change-payment-data" method="post" class="settings-form">
+                <label for="DefaultPaymentMethodId">Default Payment Method</label>
+                <select id="DefaultPaymentMethodId" name="DefaultPaymentMethodId" required>
+                    <option value="0">-- No Default PaymentMethod --</option>
+                    @foreach (var method in Model.AvailablePaymentMethods)
+                    {
+                        if (Model.Payment.DefaultPaymentMethodId != 0 && Model.Payment.DefaultPaymentMethodId == method.Id)
+                        {
+                            <option value="@method.Id" selected="selected">@method.MethodName</option>
+                        }
+                        else
+                        {
+                            <option value="@method.Id">@method.MethodName</option>
+                        }
+                    }
                 </select>
 
-                <label asp-for="Payment.DefaultPaymentDetailsId">Default Payment Details</label>
-                <select asp-for="Payment.DefaultPaymentDetailsId" asp-items="@(new SelectList(Model.AvailablePaymentDetails, "Id", "CardSummary"))">
-                    <option value="">-- Select --</option>
+                <label for="DefaultPaymentDetailsId">Default Payment Details</label>
+                <select id="DefaultPaymentDetailsId" name="DefaultPaymentDetailsId" required>
+                    <option value="0">-- No Default PaymentDetails --</option>
+                    @foreach (var details in Model.AvailablePaymentDetails)
+                    {
+                        if (Model.Payment.DefaultPaymentDetailsId != 0 && Model.Payment.DefaultPaymentDetailsId == details.Id)
+                        {
+                            <option value="@details.Id" selected="selected">@details.CardSummary</option>
+                        }
+                        else
+                        {
+                            <option value="@details.Id">@details.CardSummary</option>
+                        }
+                    }
                 </select>
 
                 <button type="submit" class="btn-save">Save</button>
             </form>
         </div>
-
     </div>
 </div>
 
