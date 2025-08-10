@@ -31,6 +31,8 @@ namespace OnlineStore.Services.Core.Interfaces
 
 		Task<ShoppingCartSummaryViewModel?> RemoveGuestCartItemAsync(string? guestId, int? itemId);
 
+		Task EnsureGuestCartExistsAsync(string guestId);
+
 		Task<ShoppingCart?> AddNewShoppingCartAsync(ApplicationUser? user);
 	}
 }

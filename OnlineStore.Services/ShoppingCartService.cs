@@ -560,7 +560,21 @@ namespace OnlineStore.Services.Core
 			return summaryModel;
 		}
 
+		public async Task EnsureGuestCartExistsAsync(string guestId)
+		{
+			var guestCart = await this._shoppingCartRepository
+									.SingleOrDefaultAsync(sc => sc.GuestId.ToLower() == guestId.ToLower());
 
+			if (guestCart == null)
+			{
+				ShoppingCart guestNewCart = new()
+				{
+					GuestId = guestId
+				};
+
+				await this._shoppingCartRepository.AddAsync(guestNewCart);
+			}
+		}
 
 		public async Task<ShoppingCart?> AddNewShoppingCartAsync(ApplicationUser? user)
 		{

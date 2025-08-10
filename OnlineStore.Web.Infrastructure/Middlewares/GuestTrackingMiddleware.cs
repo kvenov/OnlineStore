@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using OnlineStore.Services.Core.Interfaces;
 using System.Security.Claims;
 
 using static OnlineStore.Common.ApplicationConstants;
@@ -16,7 +17,7 @@ namespace OnlineStore.Web.Infrastructure.Middlewares
 			this._next = next;
 		}
 
-		public async Task InvokeAsync(HttpContext context)
+		public async Task InvokeAsync(HttpContext context, IShoppingCartService shoppingCartService)
 		{
 			string guestIdentifier;
 
@@ -37,11 +38,14 @@ namespace OnlineStore.Web.Infrastructure.Middlewares
 						SameSite = SameSiteMode.Strict,
 						HttpOnly = true,
 						Secure = true,
-						Expires = DateTimeOffset.UtcNow.AddDays(30)
+						Expires = DateTimeOffset.UtcNow.AddDays(60)
 					};
 
 					context.Response.Cookies.Append(GuestCookieName, guestIdentifier, cookieOptions);
 				}
+
+				//Here we ensure that the guest always will have a shopping cart!
+				await shoppingCartService.EnsureGuestCartExistsAsync(guestIdentifier);
 			}
 
 			context.Items["GuestIdentifier"] = guestIdentifier;
