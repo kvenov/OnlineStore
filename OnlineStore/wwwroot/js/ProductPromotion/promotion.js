@@ -1,9 +1,42 @@
 ﻿document.addEventListener('DOMContentLoaded', () => {
+    function getAntiForgeryToken() {
+        const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
+        return tokenElement ? tokenElement.value : '';
+    }
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        background: '#fff',
+        color: '#333',
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+        }
+    });
+
+    function showSuccess(message) {
+        Toast.fire({
+            icon: 'success',
+            title: message
+        });
+    }
+
+    function showError(message) {
+        Toast.fire({
+            icon: 'error',
+            title: message
+        });
+    }
+
     const table = $('#promotionsTable').DataTable({
         pageLength: 10,
         lengthMenu: [5, 10, 25, 50],
         columnDefs: [
-            { orderable: false, targets: 7 } // disable ordering on Actions col
+            { orderable: false, targets: 7 }
         ],
         language: {
             searchPlaceholder: "Search promotions..."
@@ -15,10 +48,13 @@
         minDate: "today"
     });
 
-    // Fetch products list dynamically for the product dropdown
     async function fetchProducts() {
         try {
-            const response = await fetch('/api/productapi/get'); // Adjust your endpoint
+            const response = await fetch('/api/productapi/get', {
+                headers: {
+                    'RequestVerificationToken': getAntiForgeryToken()
+                }
+            });
             const products = await response.json();
             const productSelect = document.getElementById('productId');
             productSelect.innerHTML = `<option value="" disabled selected>Select a product</option>`;
@@ -27,21 +63,23 @@
             });
         } catch (err) {
             console.error('Failed to load products', err);
+            showError('Failed to load products list.');
         }
     }
     fetchProducts();
 
-    // Open modal for adding or editing promotion
     const promotionModal = new bootstrap.Modal(document.getElementById('addPromotionModal'));
     const form = document.getElementById('promotionForm');
     const saveBtn = document.getElementById('savePromotionBtn');
 
-    // Handle Edit button click
     $('#promotionsTable').on('click', '.edit-btn', async function () {
         const promotionId = $(this).data('id');
-        // Fetch promotion by id (or use data from row)
         try {
-            const response = await fetch(`/api/productpromotionapi/get/${promotionId}`);
+            const response = await fetch(`/api/productpromotionapi/get/${promotionId}`, {
+                headers: {
+                    'RequestVerificationToken': getAntiForgeryToken()
+                }
+            });
             if (!response.ok) throw new Error("Failed to load promotion");
             const promo = await response.json();
 
@@ -59,30 +97,43 @@
 
             promotionModal.show();
         } catch (error) {
-            alert("Could not load promotion details.");
+            showError("Could not load promotion details.");
         }
     });
 
-    // Handle Delete button click
     $('#promotionsTable').on('click', '.delete-btn', function () {
         const promotionId = $(this).data('id');
-        if (confirm('Are you sure you want to delete this promotion?')) {
-            fetch(`/api/productpromotionapi/delete/${promotionId}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' }
-            }).then(async res => {
-                if (res.ok) {
-                    alert('Promotion deleted successfully.');
-                    location.reload();
-                } else {
-                    const err = await res.json();
-                    alert('Error: ' + err.message);
-                }
-            }).catch(() => alert('Failed to delete promotion.'));
-        }
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This will set the promotion as soft deleted.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/api/productpromotionapi/delete/${promotionId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': getAntiForgeryToken()
+                    }
+                }).then(async res => {
+                    if (res.ok) {
+                        showSuccess('Promotion deleted successfully.');
+                        setTimeout(() => location.reload(), 2100);
+                    } else {
+                        const err = await res.json();
+                        showError(err.message || 'Failed to delete promotion.');
+                    }
+                }).catch(() => {
+                    showError('Failed to delete promotion.');
+                });
+            }
+        });
     });
 
-    // Handle Add Promotion button click to reset form
     document.querySelector('button[data-bs-target="#addPromotionModal"]').addEventListener('click', () => {
         form.reset();
         document.getElementById('promotionId').value = 0;
@@ -90,7 +141,6 @@
         saveBtn.innerHTML = `<i class="fas fa-plus me-2"></i> Add Promotion`;
     });
 
-    // Form validation & submit
     form.addEventListener('submit', async e => {
         e.preventDefault();
         if (!form.checkValidity()) {
@@ -120,23 +170,25 @@
             const response = await fetch(url, {
                 method,
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': getAntiForgeryToken()
                 },
                 body: JSON.stringify(formData)
             });
 
             if (!response.ok) {
+                const result = await response.json();
                 const errorMessage = result.message || (result.errors?.join(', ') ?? 'Unknown error');
-                alert('Error: ' + errorMessage);
+                showError(errorMessage);
                 return;
             }
 
-            alert(`Promotion ${isEdit ? 'updated' : 'added'} successfully.`);
+            showSuccess(`Promotion ${isEdit ? 'updated' : 'added'} successfully.`);
             promotionModal.hide();
-            location.reload();
+            setTimeout(() => location.reload(), 2100);
 
         } catch (error) {
-            alert('Failed to save promotion.');
+            showError('Failed to save promotion.');
             console.error(error);
         }
     });

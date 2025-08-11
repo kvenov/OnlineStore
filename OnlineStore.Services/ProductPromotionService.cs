@@ -16,10 +16,11 @@ namespace OnlineStore.Services.Core
 
 		public async Task<IEnumerable<ProductPromotionViewModel>> GetProductsPromotionsAsync()
 		{
+			DateTime today = DateTime.Now;
 			IEnumerable<ProductPromotionViewModel> promotions = await this._productPromotionRepository
 								.GetAllAttached()
 								.AsNoTracking()
-								.Include(p => p.Product)
+								.Where(p => p.IsDeleted == false && p.ExpDate > today)
 								.Select(p => new ProductPromotionViewModel()
 								{
 									ProductId = p.ProductId,
