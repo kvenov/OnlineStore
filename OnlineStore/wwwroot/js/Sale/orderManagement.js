@@ -14,30 +14,30 @@
     });
 
     fetch(`/api/saleapi/filter?${query}`)
-        .then(res => res.json())
-        .then(data => {
-            const tbody = document.getElementById('ordersTableBody');
-            tbody.innerHTML = '';
+    .then(res => res.json())
+    .then(data => {
+        const tbody = document.getElementById('ordersTableBody');
+        tbody.innerHTML = '';
 
-            if (!data.length) {
-                tbody.innerHTML = '<tr><td colspan="7" class="text-center">No orders found</td></tr>';
-                return;
-            }
+        if (!data.length) {
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center">No orders found</td></tr>';
+            return;
+        }
 
-            data.forEach(order => {
-                const row = `<tr>
-                            <td>${order.orderNumber}</td>
-                            <td>${order.customerName} <br/><span class="text-xs">${order.customerEmail}</span></td>
-                            <td>${new Date(order.date).toLocaleDateString()}</td>
-                            <td><span class="btn btn-warning">${order.status}</span></td>
-                            <td>$${order.total.toFixed(2)}</td>
-                            <td>
-                                <button onclick="viewOrder('${order.id}')" class="btn btn-xs btn-outline">View Order Details</button>
-                            </td>
-                        </tr>`;
-                tbody.insertAdjacentHTML('beforeend', row);
-            });
+        data.forEach(order => {
+            const row = `<tr>
+                        <td>${order.orderNumber}</td>
+                        <td>${order.customerName} <br/><span class="text-xs">${order.customerEmail}</span></td>
+                        <td>${new Date(order.date).toLocaleDateString()}</td>
+                        <td><span class="btn btn-warning">${order.status}</span></td>
+                        <td>$${order.total.toFixed(2)}</td>
+                        <td>
+                            <button onclick="viewOrder('${order.id}')" class="btn btn-xs btn-outline">View Order Details</button>
+                        </td>
+                    </tr>`;
+            tbody.insertAdjacentHTML('beforeend', row);
         });
+    });
 }
 
 fetchOrders();
@@ -111,7 +111,10 @@ document.getElementById("btnCancelOrder").addEventListener("click", async () => 
         preConfirm: async () => {
             const response = await fetch(`/api/saleapi/cancel/${orderId}`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' }
+                headers: {
+                    'Content-Type': 'application/json',
+                    "RequestVerificationToken": getAntiForgeryToken()
+                }
             });
 
             if (!response.ok) {
@@ -144,7 +147,10 @@ document.getElementById("btnFinishOrder").addEventListener("click", async () => 
         preConfirm: async () => {
             const response = await fetch(`/api/saleapi/finish/${orderId}`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' }
+                headers: {
+                    'Content-Type': 'application/json',
+                    "RequestVerificationToken": getAntiForgeryToken()
+                }
             });
 
             if (!response.ok) {
@@ -163,3 +169,9 @@ document.getElementById("btnFinishOrder").addEventListener("click", async () => 
         }
     });
 });
+
+
+function getAntiForgeryToken() {
+    const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+    return tokenInput ? tokenInput.value : "";
+}

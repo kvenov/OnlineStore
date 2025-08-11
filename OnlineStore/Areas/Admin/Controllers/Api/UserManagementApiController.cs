@@ -4,6 +4,8 @@ using OnlineStore.Services.Core.DTO.UserManagement;
 
 namespace OnlineStore.Web.Areas.Admin.Controllers.Api
 {
+
+	[AutoValidateAntiforgeryToken]
 	public class UserManagementApiController : BaseAdminApiController
 	{
 		private readonly ILogger<UserManagementApiController> _logger;

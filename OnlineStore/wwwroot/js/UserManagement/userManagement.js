@@ -103,7 +103,10 @@ function assignRole(button) {
         preConfirm: async (role) => {
             const response = await fetch(`/api/usermanagementapi/assign/${user.id}`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    "RequestVerificationToken": getAntiForgeryToken()
+                },
                 body: JSON.stringify({ role })
             });
 
@@ -148,7 +151,10 @@ function removeRole(button) {
         preConfirm: async (role) => {
             const response = await fetch(`/api/usermanagementapi/remove/${user.id}`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    "RequestVerificationToken": getAntiForgeryToken()
+                },
                 body: JSON.stringify({ role })
             });
 
@@ -182,9 +188,12 @@ function softDelete(button) {
         showCancelButton: true,
         confirmButtonText: 'Yes, soft delete',
         preConfirm: async () => {
-            const response = await fetch(`/api/usermanagementapi/delete/${user.id}`,
-                { method: 'POST' }
-            );
+            const response = await fetch(`/api/usermanagementapi/delete/${user.id}`, {
+                method: 'POST',
+                headers: {
+                    "RequestVerificationToken": getAntiForgeryToken()
+                }
+            });
 
             if (!response.ok) Swal.fire('Error', 'Failed to soft delete user', 'error');
 
@@ -216,9 +225,12 @@ function renew(button) {
         showCancelButton: true,
         confirmButtonText: 'Yes, renew user',
         preConfirm: async () => {
-            const response = await fetch(`/api/usermanagementapi/renew/${user.id}`,
-                { method: 'POST' }
-            );
+            const response = await fetch(`/api/usermanagementapi/renew/${user.id}`, {
+                method: 'POST',
+                headers: {
+                    "RequestVerificationToken": getAntiForgeryToken()
+                }
+            });
 
             if (!response.ok) Swal.fire('Error', 'Failed to renew user', 'error');
 
@@ -235,4 +247,10 @@ function renew(button) {
             }
         }
     });
+}
+
+
+function getAntiForgeryToken() {
+    const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+    return tokenInput ? tokenInput.value : "";
 }

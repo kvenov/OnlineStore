@@ -4,6 +4,8 @@ using OnlineStore.Web.ViewModels.Admin.ProductPromotion;
 
 namespace OnlineStore.Web.Areas.Admin.Controllers.Api
 {
+
+	[AutoValidateAntiforgeryToken]
 	public class ProductPromotionApiController : BaseAdminApiController
 	{
 		private readonly IAdminProductPromotionService _productPromotionService;

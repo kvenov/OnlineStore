@@ -149,6 +149,7 @@ namespace OnlineStore.Web.Areas.Admin.Controllers.Api
 		}
 
 		[HttpPost("cancel/{orderId}")]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> CancleOrder(int? orderId)
 		{
 			try
@@ -175,6 +176,7 @@ namespace OnlineStore.Web.Areas.Admin.Controllers.Api
 		}
 
 		[HttpPost("finish/{orderId}")]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> FinishOrder(int? orderId)
 		{
 			try
