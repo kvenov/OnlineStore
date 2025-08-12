@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CinemaApp.Data.Common\OnlineStore.Data.Common.csproj" />
     <ProjectReference Include="..\OnlineStore.Common\OnlineStore.Common.csproj" />
     <ProjectReference Include="..\OnlineStore.Data.Models\OnlineStore.Data.Models.csproj" />
     <ProjectReference Include="..\OnlineStore.Data\OnlineStore.Data.csproj" />
