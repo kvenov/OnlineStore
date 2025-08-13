@@ -377,7 +377,7 @@ namespace OnlineStore.Services.Core
 
 			return summaryModel;
 		}
-
+		
 		public async Task<CartInfoViewModel?> GetGuestShoppingCartDataAsync(string? guestId)
 		{
 			CartInfoViewModel? cartModel = null;
