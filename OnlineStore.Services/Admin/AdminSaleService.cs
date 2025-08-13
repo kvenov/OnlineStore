@@ -16,12 +16,12 @@ using static OnlineStore.Common.ApplicationConstants.Sale.ProductAnalytics;
 
 namespace OnlineStore.Services.Core.Admin
 {
-	public class SaleService : ISaleService
+	public class AdminSaleService : IAdminSaleService
 	{
 		private readonly IOrderRepository _orderRepository;
 		private readonly IRepository<OrderItem, int> _orderItemRepository;
 
-		public SaleService(IOrderRepository orderRepository, IRepository<OrderItem, int> orderItemRepository)
+		public AdminSaleService(IOrderRepository orderRepository, IRepository<OrderItem, int> orderItemRepository)
 		{
 			this._orderRepository = orderRepository;
 			this._orderItemRepository = orderItemRepository;

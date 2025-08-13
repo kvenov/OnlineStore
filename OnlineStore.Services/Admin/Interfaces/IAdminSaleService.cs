@@ -8,7 +8,7 @@ using OnlineStore.Web.ViewModels.Admin.Sale.ProductAnalytics;
 
 namespace OnlineStore.Services.Core.Admin.Interfaces
 {
-	public interface ISaleService
+	public interface IAdminSaleService
 	{
 
 		Task<AdminSalesOverviewViewModel?> GetSaleOverviewAsync(DateTime? startDate, DateTime? endDate);

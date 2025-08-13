@@ -6,9 +6,9 @@ namespace OnlineStore.Web.Areas.Admin.Controllers
 {
 	public class SaleController : BaseAdminController
 	{
-		private readonly ISaleService _saleService;
+		private readonly IAdminSaleService _saleService;
 
-		public SaleController(ISaleService saleService)
+		public SaleController(IAdminSaleService saleService)
 		{
 			this._saleService = saleService;
 		}

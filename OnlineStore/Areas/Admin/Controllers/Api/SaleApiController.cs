@@ -12,10 +12,10 @@ namespace OnlineStore.Web.Areas.Admin.Controllers.Api
 {
 	public class SaleApiController : BaseAdminApiController
 	{
-		private readonly ISaleService _saleService;
+		private readonly IAdminSaleService _saleService;
 		private readonly ILogger<SaleApiController> _logger;
 
-		public SaleApiController(ISaleService saleService, ILogger<SaleApiController> logger)
+		public SaleApiController(IAdminSaleService saleService, ILogger<SaleApiController> logger)
 		{
 			this._saleService = saleService;
 			this._logger = logger;
