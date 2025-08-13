@@ -35,10 +35,13 @@ namespace OnlineStore.Services.Core.Admin
 		public async Task<bool> AddProductAsync(AddProductInputModel model)
 		{
 			bool isAdded = false;
-			ProductCategory productCategory = await this._categoryRepository
+			ProductCategory? productCategory = await this._categoryRepository
 				.GetAllAttached()
 				.Include(pc => pc.Products)
-				.FirstAsync(pc => pc.Id == model.CategoryId);
+				.FirstOrDefaultAsync(pc => pc.Id == model.CategoryId);
+
+			if (productCategory == null)
+				return false;
 
 			Brand? brand = null;
 			if (model.BrandId.HasValue)
@@ -46,7 +49,7 @@ namespace OnlineStore.Services.Core.Admin
 				brand = await this._brandRepository
 					.GetAllAttached()
 					.Include(b => b.Products)
-					.FirstAsync(b => b.Id == model.BrandId.Value);
+					.FirstOrDefaultAsync(b => b.Id == model.BrandId.Value);
 			}
 
 			bool isAvgRatingValid = double.TryParse(model.AverageRating, out var avgRating);
@@ -100,7 +103,7 @@ namespace OnlineStore.Services.Core.Admin
 		{
 			bool isRemoved = false;
 
-			if (string.IsNullOrWhiteSpace(id))
+			if (!string.IsNullOrWhiteSpace(id))
 			{
 				Product? productToDelete = await this._repository
 					.SingleOrDefaultAsync(p => p.Id.ToString().ToLower() == id!.ToLower());
