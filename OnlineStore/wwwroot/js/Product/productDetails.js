@@ -72,43 +72,37 @@ function handleProductRatingWithStars() {
     });
 }
 
-function handleUnauthenticatedUser() {
+function handleNotValidUsers() {
     const reviewContainer = document.getElementById('review-container');
 
     if (reviewContainer) {
-        const isAuthenticated = reviewContainer.dataset.auth === "true";
-        const productId = reviewContainer.dataset.productId;
-        const returnUrl = `/Product/Details/${productId}`;
-
         const reviewFormButton = document.getElementById('review-submit-button');
         reviewFormButton.addEventListener('click', (event) => {
-            if (!isAuthenticated) {
+            console.log(reviewContainer.dataset.isPurchased);
+            const isPurchased = reviewContainer.dataset.isPurchased === "True";
+
+            if (!isPurchased) {
                 event.preventDefault();
                 reviewFormButton.disabled = true;
 
-                if (!document.querySelector('.alert')) {
-
-                    const warningBox = document.createElement("div");
-                    warningBox.className = 'alert alert-warning mt-5 mb-5 text-center fade-in';
-                    warningBox.innerHTML = `
-                    <div class="alert alert-warning mt-5 mb-5 text-center">
-                          <strong>👋 Want to leave a review?</strong><br />
-                          <a href="/Identity/Account/Login?returnUrl=${returnUrl}" 
-                            class="btn btn-outline-primary mt-2 me-2">Log In</a>
-                          <a href="/Identity/Account/Register?returnUrl=${returnUrl}" 
-                            class="btn btn-primary mt-2">Register</a>
-                    </div>
-                `;
-
-                    reviewContainer.appendChild(warningBox);
-                }
+                Swal.fire({
+                    title: 'You must purchase this product first 🛒',
+                    text: 'Only customers who have bought this product can leave a review.',
+                    icon: 'warning',
+                    confirmButtonText: 'Ok',
+                    reverseButtons: true,
+                    customClass: {
+                        confirmButton: 'swal2-confirm btn btn-primary me-2',
+                    },
+                    buttonsStyling: false
+                });
             }
-        })
+        });
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     handleProductRatingWithStars();
-    handleUnauthenticatedUser();
+    handleNotValidUsers();
     updateProductRating();
 })

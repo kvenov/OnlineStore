@@ -75,6 +75,12 @@ namespace OnlineStore.Services.Core
 
 			if (productId != null)
 			{
+				ApplicationUser? user = await this._userManager
+								.FindByIdAsync(userId);
+
+				bool isProductPurchased = user != null && user
+									.Orders
+									.Any(o => o.OrderItems.Any(oi => oi.ProductId == productId));
 
 				productDetails = await this._repository
 					.GetAllAttached()
@@ -100,6 +106,7 @@ namespace OnlineStore.Services.Core
 																.Any(pr => pr.UserId == userId) && 
 															  p.ProductRatings.Where(pr => pr.IsDeleted == false)
 															    .Any(pr => pr.UserId == userId),
+						IsProductPurchased = isProductPurchased,
 						AvailableSizes = GetSizesForCategory(p.Category.Name),
 						Details = new ProductDetailsPartialViewModel()
 						{

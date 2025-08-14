@@ -13,6 +13,7 @@
 @section Styles {  
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />  
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="~/css/Product/productDetails.css" asp-append-version="true" />
 }
 
@@ -162,8 +163,8 @@
     }
     else
     {
-        <div id="review-container" data-auth="@User.Identity!.IsAuthenticated.ToString().ToLower()" data-product-id="@Model.Id"
-                    class="mt-5 mb-5 p-4 border rounded shadow-sm bg-light">
+        <div id="review-container" data-is-purchased="@Model.IsProductPurchased" data-product-id="@Model.Id"
+             class="mt-5 mb-5 p-4 border rounded shadow-sm bg-light">
             <h4 class="mb-4">📝 Leave a Review</h4>
 
             <form asp-action="AddReview" asp-controller="Product" method="post">
@@ -191,11 +192,10 @@
             </form>
         </div>
     }
-    
-
 </div>
 
 @section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="~/js/Product/productDetails.js" asp-append-version="true"></script>
     <script src="~/js/Wishlist/wishlist.js" asp-append-version="true"></script>
     <script src="~/js/ShoppingCart/shoppingCart.js" asp-append-version="true"></script>

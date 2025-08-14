@@ -14,6 +14,7 @@ namespace OnlineStore.Web.ViewModels.Product
 		public string Category { get; set; } = null!;
 		public string? Brand { get; set; }
 		public bool IsProductReviewed { get; set; }
+		public bool IsProductPurchased { get; set; }
 
 		public IEnumerable<string> AvailableSizes = new List<string>();
 		public ProductDetailsPartialViewModel Details { get; set; } = 
