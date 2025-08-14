@@ -581,25 +581,13 @@ namespace OnlineStore.Services.Tests
 			var result2 = await _service.GetAllProductsAsync("");
 			var result3 = await _service.GetAllProductsAsync("   ");
 			Assert.That(result1.Products, Is.Empty);
-			Assert.That(result1.SubCategories, Is.Empty);
 			Assert.That(result2.Products, Is.Empty);
-			Assert.That(result2.SubCategories, Is.Empty);
 			Assert.That(result3.Products, Is.Empty);
-			Assert.That(result3.SubCategories, Is.Empty);
 		}
 
 		[Test]
-		public async Task GetAllProductsAsync_ReturnsProductsAndSubCategories_WhenQueryMatches()
+		public async Task GetAllProductsAsync_ReturnsProducts_WhenQueryMatches()
 		{
-			var parentCategory = new ProductCategory
-			{
-				Name = "Shoes",
-				Subcategories = new List<ProductCategory>
-				{
-					new ProductCategory { Name = "Sporty" },
-					new ProductCategory { Name = "Lifestyle" }
-				}
-			};
 			var product = new Product
 			{
 				Id = 1,
@@ -608,23 +596,22 @@ namespace OnlineStore.Services.Tests
 				Price = 99.99m,
 				ImageUrl = "img",
 				AverageRating = 4.5,
-				Category = new ProductCategory { Name = "Sporty", ParentCategory = parentCategory }
+				ProductDetails = new ProductDetails()
+				{
+					Gender = "Male",
+					Color = "White"
+				}
 			};
 			var products = new List<Product> { product }.BuildMock();
-			_mockProductRepo.Setup(r => r.GetAllAttached()).Returns(products);
-
-			// Mock parentCategory selection
-			var parentCategories = new List<ProductCategory> { parentCategory }.BuildMock();
 			_mockProductRepo.Setup(r => r.GetAllAttached()).Returns(products);
 
 			var result = await _service.GetAllProductsAsync("sporty");
 
 			Assert.That(result.Products.Count(), Is.EqualTo(1));
 			Assert.That(result.Products.First().Name, Is.EqualTo("Sporty Shoes"));
-			Assert.That(result.SubCategories, Is.Not.Null);
-			Assert.That(result.SubCategories.Count(), Is.EqualTo(2));
-			Assert.That(result.SubCategories, Does.Contain("Sporty"));
-			Assert.That(result.SubCategories, Does.Contain("Lifestyle"));
+			Assert.That(result.Products.First().Gender, Is.EqualTo("Male"));
+			Assert.That(result.Products.First().Color, Is.EqualTo("White"));
+
 		}
 
 		[Test]
