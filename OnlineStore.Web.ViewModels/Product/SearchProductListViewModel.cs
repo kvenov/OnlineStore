@@ -1,9 +1,10 @@
-﻿namespace OnlineStore.Web.ViewModels.Product
+﻿using OnlineStore.Web.ViewModels.Product.Partial;
+
+namespace OnlineStore.Web.ViewModels.Product
 {
 	public class SearchProductListViewModel
 	{
-		public IEnumerable<AllProductListViewModel> Products { get; set; } = new List<AllProductListViewModel>();
+		public IEnumerable<SearchProductListItemViewModel> Products { get; set; } = new List<SearchProductListItemViewModel>();
 
-		public IEnumerable<string> SubCategories { get; set; } = new List<string>();
 	}
 }

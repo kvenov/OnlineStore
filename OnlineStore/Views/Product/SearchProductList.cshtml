@@ -14,19 +14,17 @@
 
 <div class="container mt-5">
     <div class="row">
-        <!-- Filters -->
-        <aside class="col-md-3 filter-section">
+        <aside class="col-md-3 filter-section" style="margin-bottom: 70px;">
             <div class="filters-panel">
-                <!-- Gender Filter -->
                 <div class="mb-3">
                     <h5 class="d-flex justify-content-between" onclick="toggleFilter(this)">Gender <i class="bi bi-chevron-right arrow-icon"></i></h5>
                     <div class="filter-content">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="Men" id="genderMen">
+                            <input class="form-check-input" type="checkbox" value="Male" id="genderMen">
                             <label class="form-check-label" for="genderMen">Male</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="Women" id="genderWomen">
+                            <input class="form-check-input" type="checkbox" value="Female" id="genderWomen">
                             <label class="form-check-label" for="genderWomen">Female</label>
                         </div>
                         <div class="form-check">
@@ -36,7 +34,6 @@
                     </div>
                 </div>
 
-                <!-- Price Filter -->
                 <div class="mb-3">
                     <h5 onclick="toggleFilter(this)">Shop By Price <i class="bi bi-chevron-right arrow-icon"></i></h5>
                     <div class="filter-content">
@@ -51,7 +48,6 @@
                     </div>
                 </div>
 
-                <!-- Color Filter -->
                 <div class="mb-3">
                     <h5 onclick="toggleFilter(this)">Color <i class="bi bi-chevron-right arrow-icon"></i></h5>
                     <div class="filter-content">
@@ -67,44 +63,48 @@
                             <input class="form-check-input" type="checkbox" value="Red" id="colorRed">
                             <label class="form-check-label" for="colorRed">Red</label>
                         </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="Blue" id="colorBlue">
+                            <label class="form-check-label" for="colorRed">Blue</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="Grey" id="colorGrey">
+                            <label class="form-check-label" for="colorRed">Grey</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="Pink" id="colorPink">
+                            <label class="form-check-label" for="colorRed">Pink</label>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Category Filter (based on query) -->
-                @if (Model.SubCategories.Any())
-                {
-                    <div class="mb-3">
-                        <h5 onclick="toggleFilter(this)">By Category <i class="bi bi-chevron-right arrow-icon"></i></h5>
-                        <div class="filter-content">
-                            @foreach (var subCategory in Model.SubCategories)
-                            {
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="@subCategory">
-                                    <label class="form-check-label">@subCategory</label>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                }
             </div>
+
+            <button id="applyFiltersBtn" class="btn btn-primary mt-3 w-100">
+                Apply Filters
+            </button>
+
         </aside>
 
-        <!-- Product Grid -->
         <div class="col-md-9 mb-5">
             <div class="mb-4">
-                <h4>Search results for "<strong>@query</strong>" (@totalCount)</h4>
+                <h4 id="searchResultsHeader">
+                    Search results for "<strong>@query</strong>" (@totalCount)
+                </h4>
             </div>
 
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 @foreach (var product in Model.Products)
                 {
-                    <div class="col">
+                    <div class="col"
+                         data-gender="@product.Gender"
+                         data-color="@product.Color"
+                         data-price="@product.Price">
                         <div class="card h-100 shadow-sm border-0">
                             <img src="@Url.Content(product.ImageUrl)" class="card-img-top" alt="@product.Name" style="height: 220px; object-fit: cover;">
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title">@product.Name</h5>
 
-                                <!-- Product Rating -->
                                 <div class="mb-2 text-warning">
                                     @{
                                         int fullStars = (int)Math.Floor(product.Rating);
@@ -156,7 +156,6 @@
                 }
             </div>
 
-            <!-- Add to Cart Modal -->
             <div class="modal fade" id="addToCartModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content border-0 shadow-lg rounded-4 animate__animated animate__fadeIn">
@@ -198,10 +197,9 @@
             header.classList.toggle('filter-active');
             header.nextElementSibling.classList.toggle('filter-content');
         }
-
-        // Placeholder: Dynamically filter products via JS or AJAX (implement if needed)
     </script>
     <script src="~/js/Wishlist/wishlist.js" asp-append-version="true"></script>
-	<script src="~/js/ShoppingCart/shoppingCart.js" asp-append-version="true"></script>
+    <script src="~/js/ShoppingCart/shoppingCart.js" asp-append-version="true"></script>
     <script src="~/js/Product/productList.js" asp-append-version="true"></script>
+    <script src="~/js/Product/searchProducts.js" asp-append-version="true"></script>
 }

@@ -380,42 +380,27 @@ namespace OnlineStore.Services.Core
 
 			if (!string.IsNullOrWhiteSpace(query))
 			{
-				IEnumerable<AllProductListViewModel> productList = await this._repository
+				IEnumerable<SearchProductListItemViewModel> productList = await this._repository
 					.GetAllAttached()
 					.AsNoTracking()
 					.Where(p => p.Name.ToLower().Contains(query.Trim().ToLower()) ||
 								p.Description.ToLower().Contains(query.Trim().ToLower()))
-					.Select(p => new AllProductListViewModel()
+					.Select(p => new SearchProductListItemViewModel()
 					{
 						Id = p.Id,
 						Name = p.Name,
 						ImageUrl = p.ImageUrl,
 						Description = p.Description,
 						Rating = (float)p.AverageRating,
-						Price = p.Price
+						Price = p.Price,
+						Gender = p.ProductDetails.Gender,
+						Color = p.ProductDetails.Color
 					})
 					.ToListAsync();
 
-				var parentCategory = await this._repository
-					.GetAllAttached()
-					.AsNoTracking()
-					.Include(p => p.Category)
-						.ThenInclude(c => c.ParentCategory)
-					.Where(p => p.Name.ToLower().Contains(query.Trim().ToLower()) ||
-								p.Description.ToLower().Contains(query.Trim().ToLower()))
-					.Select(p => p.Category.ParentCategory)
-					.FirstOrDefaultAsync();
-
-				List<string> subCategories = parentCategory?.Subcategories
-					.Select(sc => sc.Name)
-					.Distinct()
-					.ToList() ?? new List<string>();
-
-
 				searchProductList = new SearchProductListViewModel()
 				{
-					SubCategories = subCategories,
-					Products = productList ?? new List<AllProductListViewModel>()
+					Products = productList ?? new List<SearchProductListItemViewModel>()
 				};
 			}
 
