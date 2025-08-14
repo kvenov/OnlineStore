@@ -359,11 +359,37 @@ namespace OnlineStore.Services.Tests
 		}
 
 		[Test]
+		public async Task AddToCartForUserAsync_AddsNewItem_WhenNoMatchingIdsAndSizes()
+		{
+			var user = new ApplicationUser { Id = "user123" };
+			var product = new Product { Id = 1, Price = 100m };
+			var existingItem = new ShoppingCartItem { ProductId = 2, Quantity = 1, ProductSize = "L"};
+			var shoppingCart = new ShoppingCart { Id = 1, UserId = "user123", ShoppingCartItems = new List<ShoppingCartItem> { existingItem } };
+
+			_userManagerMock.Setup(x => x.FindByIdAsync("user123")).ReturnsAsync(user);
+			_productRepoMock.Setup(x => x.GetByIdAsync(1)).ReturnsAsync(product);
+
+			var mockShoppingCarts = new List<ShoppingCart> { shoppingCart }.BuildMock();
+			_cartRepoMock.Setup(x => x.GetAllAttached())
+				.Returns(mockShoppingCarts);
+
+			_cartRepoMock.Setup(x => x.GetShoppingCartItemAsync(It.IsAny<Expression<System.Func<ShoppingCartItem, bool>>>()))
+				.ReturnsAsync((ShoppingCartItem?)null);
+			_cartRepoMock.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask);
+
+			var result = await _service.AddToCartForUserAsync(1, "M", "user123");
+
+			Assert.That(result, Is.True);
+			Assert.That(existingItem.Quantity, Is.EqualTo(1));
+			Assert.That(shoppingCart.ShoppingCartItems.Count, Is.EqualTo(2));
+		}
+
+		[Test]
 		public async Task AddToCartForUserAsync_IncrementsExistingItem_ReturnsTrue()
 		{
 			var user = new ApplicationUser { Id = "user123" };
 			var product = new Product { Id = 1, Price = 100m };
-			var existingItem = new ShoppingCartItem { ProductId = 1, Quantity = 1 };
+			var existingItem = new ShoppingCartItem { ProductId = 1, Quantity = 1, ProductSize = "M"};
 			var shoppingCart = new ShoppingCart { Id = 1, UserId = "user123", ShoppingCartItems = new List<ShoppingCartItem> { existingItem } };
 
 			_userManagerMock.Setup(x => x.FindByIdAsync("user123")).ReturnsAsync(user);
@@ -381,6 +407,7 @@ namespace OnlineStore.Services.Tests
 
 			Assert.That(result, Is.True);
 			Assert.That(existingItem.Quantity, Is.EqualTo(2));
+			Assert.That(shoppingCart.ShoppingCartItems.Count, Is.EqualTo(1));
 		}
 
 		#endregion
@@ -430,10 +457,34 @@ namespace OnlineStore.Services.Tests
 		}
 
 		[Test]
+		public async Task AddToCartForGuestAsync_AddsNewItem_WhenNoMatchingIdsAndSizes()
+		{
+			var product = new Product { Id = 1, Price = 100m };
+			var existingItem = new ShoppingCartItem { ProductId = 2, Quantity = 1, ProductSize = "L" };
+			var shoppingCart = new ShoppingCart { Id = 1, GuestId = "guest123", ShoppingCartItems = new List<ShoppingCartItem> { existingItem } };
+
+			_productRepoMock.Setup(x => x.GetByIdAsync(1)).ReturnsAsync(product);
+
+			var mockShoppingCarts = new List<ShoppingCart> { shoppingCart }.BuildMock();
+			_cartRepoMock.Setup(x => x.GetAllAttached())
+				.Returns(mockShoppingCarts);
+
+			_cartRepoMock.Setup(x => x.GetShoppingCartItemAsync(It.IsAny<Expression<System.Func<ShoppingCartItem, bool>>>()))
+				.ReturnsAsync((ShoppingCartItem?)null);
+			_cartRepoMock.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask);
+
+			var result = await _service.AddToCartForGuestAsync(1, "M", "guest123");
+
+			Assert.That(result, Is.True);
+			Assert.That(existingItem.Quantity, Is.EqualTo(1));
+			Assert.That(shoppingCart.ShoppingCartItems.Count, Is.EqualTo(2));
+		}
+
+		[Test]
 		public async Task AddToCartForGuestAsync_IncrementsExistingItem_ReturnsTrue()
 		{
 			var product = new Product { Id = 1, Price = 50m };
-			var existingItem = new ShoppingCartItem { ProductId = 1, Quantity = 1 };
+			var existingItem = new ShoppingCartItem { ProductId = 1, Quantity = 1, ProductSize = "M"};
 			var shoppingCart = new ShoppingCart { GuestId = "guest123", ShoppingCartItems = new List<ShoppingCartItem> { existingItem } };
 
 			_productRepoMock.Setup(x => x.GetByIdAsync(1)).ReturnsAsync(product);
@@ -450,6 +501,7 @@ namespace OnlineStore.Services.Tests
 
 			Assert.That(result, Is.True);
 			Assert.That(existingItem.Quantity, Is.EqualTo(2));
+			Assert.That(shoppingCart.ShoppingCartItems.Count, Is.EqualTo(1));
 		}
 
 		#endregion
