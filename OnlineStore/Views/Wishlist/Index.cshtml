@@ -45,10 +45,10 @@
                                 </div>
                             }
 
-                            <p class="fw-bold text-dark mb-3">$@item.Price.ToString("F2")</p>
+                            <p class="fw-bold text-dark mb-3 card-text">$@item.Price.ToString("F2")</p>
 
                             <div class="d-flex gap-2 mt-auto">
-                                <button type="submit" class="btn btn-success w-100">
+                                <button type="submit" class="btn btn-success w-100 btn-add-to-cart" data-product-id="@item.ProductId">
                                     <i class="fas fa-cart-plus me-2"></i> Move to Cart
                                 </button>
 
@@ -78,9 +78,43 @@
                 </div>
             }
         </div>
+
+        <!-- Add to Cart Modal -->
+        <div class="modal fade" id="addToCartModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content border-0 shadow-lg rounded-4 animate__animated animate__fadeIn">
+                    <div class="modal-header bg-light border-bottom">
+                        <h5 class="modal-title fw-bold"><i class="bi bi-cart-plus-fill me-2 text-success"></i> Add to Cart</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <div class="row align-items-center">
+                            <div class="col-md-5 text-center">
+                                <img id="modalProductImage" src="" class="img-fluid rounded shadow-sm" style="max-height: 300px;" />
+                            </div>
+                            <div class="col-md-7">
+                                <h4 id="modalProductName" class="fw-bold"></h4>
+                                <p id="modalProductPrice" class="text-muted fs-5"></p>
+
+                                <div class="my-3">
+                                    <label class="form-label fw-semibold">Select Size</label>
+                                    <div id="sizeOptions" class="d-flex flex-wrap gap-2"></div>
+                                </div>
+
+                                <button id="confirmAddToCartBtn" class="btn btn-success mt-3 w-100" disabled>
+                                    <i class="bi bi-cart-check me-1"></i> Confirm Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     }
 </div>
 
 @section Scripts {
     <script src="~/js/Wishlist/wishlist.js" asp-append-version="true"></script>
+    <script src="~/js/ShoppingCart/shoppingCart.js" asp-append-version="true"></script>
+    <script src="~/js/Product/productList.js" asp-append-version="true"></script>
 }

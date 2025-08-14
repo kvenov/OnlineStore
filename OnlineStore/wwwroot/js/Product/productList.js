@@ -5,7 +5,6 @@ function showAddToCartModal(productId) {
     currentProductId = productId;
     selectedSize = null;
 
-    // Find product info from DOM (or fetch via Ajax if you prefer)
     const card = $(`button[data-product-id="${productId}"]`).closest('.card');
     const name = card.find('.card-title').text().trim();
     const price = card.find('.card-text').text().trim();
@@ -52,7 +51,6 @@ $('#confirmAddToCartBtn').on('click', function () {
     bootstrap.Modal.getInstance(document.getElementById('addToCartModal')).hide();
 });
 
-// Add event binding to all "Add to Cart" buttons
 $(document).ready(function () {
     $('.btn-add-to-cart').on('click', function () {
         const productId = $(this).data('product-id');

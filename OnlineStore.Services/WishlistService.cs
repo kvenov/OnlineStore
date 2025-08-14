@@ -140,6 +140,7 @@ namespace OnlineStore.Services.Core
 							.Select(wi => new WishlistItemPartialViewModel()
 							{
 								Id = wi.Id,
+								ProductId = wi.ProductId,
 								ProductName = wi.Product.Name,
 								ProductCategory = wi.Product.Category.Name,
 								ImageUrl = wi.Product.ImageUrl,
