@@ -108,7 +108,7 @@ function showSignInModal() {
         cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.isConfirmed) {
-            window.location.href = '/Identity/Account/Login'; // or your login route
+            window.location.href = '/Account/Login';
         }
     });
 }
