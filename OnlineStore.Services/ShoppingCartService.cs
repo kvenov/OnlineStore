@@ -167,7 +167,9 @@ namespace OnlineStore.Services.Core
 					if (shoppingCart != null)
 					{
 						ShoppingCartItem? existingShoppingCartItem = await this._shoppingCartRepository
-									.GetShoppingCartItemAsync(sci => sci.ShoppingCartId == shoppingCart.Id && sci.ProductId == product.Id);
+									.GetShoppingCartItemAsync(sci => sci.ShoppingCartId == shoppingCart.Id && 
+																     sci.ProductId == product.Id && 
+																	 sci.ProductSize.ToLower() == productSize.ToLower());
 
 						if (existingShoppingCartItem != null)
 						{
@@ -221,7 +223,9 @@ namespace OnlineStore.Services.Core
 					if (shoppingCart != null)
 					{
 						ShoppingCartItem? existingShoppingCartItem = await this._shoppingCartRepository
-									.GetShoppingCartItemAsync(sci => sci.ShoppingCartId == shoppingCart.Id && sci.ProductId == product.Id);
+									.GetShoppingCartItemAsync(sci => sci.ShoppingCartId == shoppingCart.Id && 
+																	 sci.ProductId == product.Id &&
+																	 sci.ProductSize.ToLower() == productSize.ToLower());
 
 						if (existingShoppingCartItem != null)
 						{
