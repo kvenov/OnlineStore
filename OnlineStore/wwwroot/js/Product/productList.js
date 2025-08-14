@@ -52,6 +52,29 @@ $('#confirmAddToCartBtn').on('click', function () {
 });
 
 $(document).ready(function () {
+    const $searchInput = $('input[name="search"]');
+    const $productCards = $('.row.row-cols-1 .col');
+    const $countLabel = $('.text-muted.small');
+
+    $searchInput.on('input', function () {
+        const query = $(this).val().trim().toLowerCase();
+        let visibleCount = 0;
+
+        $productCards.each(function () {
+            const productName = $(this).find('.card-title').text().toLowerCase();
+            if (!query || productName.includes(query)) {
+                $(this).show();
+                visibleCount++;
+            } else {
+                $(this).hide();
+            }
+        });
+
+        if ($countLabel.length) {
+            $countLabel.text(`Showing ${visibleCount} product(s)`);
+        }
+    });
+
     $('.btn-add-to-cart').on('click', function () {
         const productId = $(this).data('product-id');
         showAddToCartModal(productId);
