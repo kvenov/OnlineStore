@@ -130,4 +130,41 @@
         });
     }
 
+    function parseCurrency(value) {
+        if (value.trim().toLowerCase() === 'free') return 0;
+
+        return parseFloat(value.replace(/[^0-9.-]+/g, ""));
+    }
+
+    function formatCurrency(num) {
+        if (num == 0) return "Free";
+
+        return num.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+    }
+
+    document.querySelectorAll('input[name="shippingOption"]').forEach(so => {
+        so.addEventListener('change', function () {
+            const shippingPrice = parseFloat(so.dataset.price) || 0;
+
+            let subtotal = parseCurrency(document.getElementById('summary-subtotal-span').textContent);
+            let delivery = parseCurrency(document.getElementById('summary-deliveryCost-span').textContent);
+
+            let total;
+            if (shippingPrice === 0) {
+                delivery = 0;
+                total = subtotal;
+            } else if (shippingPrice === 20) {
+                delivery = subtotal >= 300 ? 0 : shippingPrice;
+                total = subtotal + delivery;
+            } else {
+                delivery = shippingPrice;
+                total = subtotal + delivery;
+            }
+
+            document.getElementById('summary-subtotal-span').textContent = formatCurrency(subtotal);
+            document.getElementById('summary-deliveryCost-span').textContent = delivery === 0 ? 'Free' : formatCurrency(delivery);
+            document.getElementById('summary-total-span').textContent = formatCurrency(total);
+        });
+    });
+    
 });

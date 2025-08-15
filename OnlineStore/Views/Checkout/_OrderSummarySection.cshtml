@@ -11,15 +11,15 @@
     <div class="mb-4 small text-muted">
         <div class="d-flex justify-content-between mb-2">
             <span>Subtotal</span>
-            <span>@Model.Subtotal.ToString("C")</span>
+            <span id="summary-subtotal-span">@Model.Subtotal.ToString("C")</span>
         </div>
         <div class="d-flex justify-content-between mb-2">
             <span>Delivery</span>
-            <span>@(Model.DeliveryCost == 0 ? "Free" : Model.DeliveryCost.ToString("C"))</span>
+            <span id="summary-deliveryCost-span">@(Model.DeliveryCost == 0 ? "Free" : Model.DeliveryCost.ToString("C"))</span>
         </div>
         <div class="d-flex justify-content-between fw-semibold text-dark">
             <span>Total</span>
-            <span>@Model.Total.ToString("C")</span>
+            <span id="summary-total-span">@Model.Total.ToString("C")</span>
         </div>
     </div>
 
