@@ -116,7 +116,7 @@ namespace OnlineStore.Services.Core
 							Quantity = item.Quantity,
 							UnitPrice = item.Price,
 							Subtotal = item.TotalPrice,
-
+							ProductSize = item.ProductSize,
 						}).ToArray();
 
 					order.OrderItems = orderItems;
