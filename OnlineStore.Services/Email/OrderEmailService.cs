@@ -32,9 +32,9 @@ namespace OnlineStore.Services.Core.Email
 
 			var orderItems = await _orderItemRepo
 							.GetAllAttached()
-							.Where(o => o.Id == order.Id)
+							.Where(oi => oi.OrderId == order.Id)
 							.ToListAsync(cancellationToken: ct);
-
+			
 			var items = orderItems.Select(i => new OrderEmailItem
 			{
 				Name = i.Product?.Name ?? $"Product #{i.ProductId}",
