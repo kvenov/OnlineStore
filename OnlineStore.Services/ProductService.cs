@@ -16,15 +16,18 @@ namespace OnlineStore.Services.Core
 	{
 		private readonly IProductRepository _repository;
 		private readonly IRepository<ProductCategory, int> _categoryRepository;
+		private readonly IProductRatingService _productRatingService;
 		private readonly UserManager<ApplicationUser> _userManager;
 
 		public ProductService(IProductRepository repository, 
 							  IRepository<ProductCategory, int> categoryRepository, 
-							  UserManager<ApplicationUser> userManager)
+							  UserManager<ApplicationUser> userManager,
+							  IProductRatingService productRatingService)
 		{
 			this._repository = repository;
 			this._userManager = userManager;
 			this._categoryRepository = categoryRepository;
+			this._productRatingService = productRatingService;
 		}
 
 		public async Task<IEnumerable<AllProductListViewModel>> GetAllProductsAsync()
@@ -180,7 +183,8 @@ namespace OnlineStore.Services.Core
 						{
 							ProductId = product.Id,
 							UserId = user.Id,
-							Content = content
+							Content = content,
+							IsDeleted = false
 						};
 
 						ProductRating productRating = new ProductRating()
@@ -211,6 +215,8 @@ namespace OnlineStore.Services.Core
 
 					await this._repository.SaveChangesAsync();
 					isAdded = true;
+
+					await this._productRatingService.RecalculateProductRatingAsync(productId.Value);
 				}
 			}
 
@@ -242,6 +248,8 @@ namespace OnlineStore.Services.Core
 
 					await this._repository.SaveChangesAsync();
 					isEdited = true;
+
+					await this._productRatingService.RecalculateProductRatingAsync(productRating.ProductId);
 				}
 			}
 
@@ -271,6 +279,8 @@ namespace OnlineStore.Services.Core
 					bool isRatingSucceed = await this._repository.DeleteRatingAsync(productRating);
 
 					isRemoved = (isReviewSucceed) && (isRatingSucceed);
+					if (isRemoved) await this._productRatingService
+									.RecalculateProductRatingAsync(productRating.ProductId);
 				}
 			}
 
@@ -293,7 +303,7 @@ namespace OnlineStore.Services.Core
 							ProductName = p.Name,
 							Price = p.Price.ToString("F2")
 						})
-						.Take(6)
+						.Take(8)
 						.ToListAsync();
 
 			return trendings;
