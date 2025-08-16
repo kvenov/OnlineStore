@@ -172,7 +172,7 @@
     }
     else
     {
-        <div id="review-container" data-is-purchased="@Model.IsProductPurchased" data-product-id="@Model.Id"
+        <div id="review-container" data-is-auth="@User?.Identity?.IsAuthenticated" data-is-purchased="@Model.IsProductPurchased" data-product-id="@Model.Id"
              class="mt-5 mb-5 p-4 border rounded shadow-sm bg-light">
             <h4 class="mb-4">📝 Leave a Review</h4>
 

@@ -78,10 +78,26 @@ function handleNotValidUsers() {
     if (reviewContainer) {
         const reviewFormButton = document.getElementById('review-submit-button');
         reviewFormButton.addEventListener('click', (event) => {
-            console.log(reviewContainer.dataset.isPurchased);
+            const isAuth = reviewContainer.dataset.isAuth === "True";
             const isPurchased = reviewContainer.dataset.isPurchased === "True";
 
-            if (!isPurchased) {
+            if (!isAuth) {
+                event.preventDefault();
+                reviewFormButton.disabled = true;
+
+                Swal.fire({
+                    title: 'You must sign in first 🔑',
+                    html: 'To leave a review, please <a href="/Account/Login">Sign In</a> or <a href="/Account/Register">Register</a>.',
+                    icon: 'info',
+                    confirmButtonText: 'Ok',
+                    reverseButtons: true,
+                    customClass: {
+                        confirmButton: 'swal2-confirm btn btn-primary me-2',
+                    },
+                    buttonsStyling: false
+                });
+
+            } else if (!isPurchased) {
                 event.preventDefault();
                 reviewFormButton.disabled = true;
 
@@ -100,6 +116,7 @@ function handleNotValidUsers() {
         });
     }
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
     handleProductRatingWithStars();
