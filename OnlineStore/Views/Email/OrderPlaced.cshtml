@@ -1,0 +1,128 @@
+﻿@using OnlineStore.Web.ViewModels.Email
+@model OrderPlacedEmailModel
+@{
+    Layout = null;
+}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="x-apple-disable-message-reformatting">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Order @Model.OrderNumber</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 24px;
+            background: #f6f7fb;
+            font-family: Segoe UI, Arial, sans-serif;
+            color: #222;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.07);
+            padding: 24px;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .h1 {
+            font-size: 22px;
+            margin: 0 0 4px;
+            font-weight: 700;
+        }
+
+        .muted {
+            color: #6b7280;
+            margin: 0 0 16px;
+            font-size: 13px;
+        }
+
+        .row {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .col {
+            flex: 1 1 300px;
+            background: #f8fafc;
+            border: 1px solid #eef2f7;
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .items {
+            margin-top: 12px;
+            border-top: 1px solid #eef2f7;
+            padding-top: 12px;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+            .item:last-child {
+                border-bottom: none;
+            }
+
+        .total {
+            font-weight: 700;
+            font-size: 16px;
+            margin-top: 8px;
+        }
+
+        .cta {
+            display: inline-block;
+            background: #0d6efd;
+            color: #fff !important;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            margin-top: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1 class="h1">Thank you for your order, @Model.RecipientName!</h1>
+        <p class="muted">Order <strong>#@Model.OrderNumber</strong> was placed on @Model.OrderDate.ToString("MMM dd, yyyy").</p>
+
+        <div class="row">
+            <div class="col">
+                <strong>Shipping</strong><br />
+                @Model.ShippingAddress<br />
+                <div style="margin-top:6px;"><small>Method: @Model.ShippingOption</small></div>
+                <div><small>ETA: @Model.EstimatedDeliveryStartFormatted – @Model.EstimatedDeliveryEndFormatted</small></div>
+            </div>
+            <div class="col">
+                <strong>Payment</strong><br />
+                @Model.PaymentMethodName<br />
+                @if (!string.IsNullOrWhiteSpace(Model.CardLast4))
+                {
+                    <div><small>Card •••• @Model.CardLast4</small></div>
+                }
+                <div class="total">Total: @Model.TotalAmount.ToString("C")</div>
+            </div>
+        </div>
+
+        <div class="items">
+            <strong>Items</strong>
+            @foreach (var it in Model.Items)
+            {
+                <div class="item">
+                    <div>@it.Name - @it.ProductSize x(@it.Qty)</div>
+                    <div>@it.Price.ToString("C")</div>
+                </div>
+            }
+        </div>
+
+        <a class="cta" href="@Model.OrderDetailsUrl" target="_blank">View order details</a>
+    </div>
+</body>
+</html>

@@ -560,8 +560,7 @@ namespace OnlineStore.Services.Core
 										NameOnCard = paymentDetails.NameOnCard,
 										ExpMonth = paymentDetails.ExpMonth,
 										ExpYear = paymentDetails.ExpYear,
-										Status = DefaultStartingPaymentStatus,
-										Checkout = existingCheckout
+										Status = DefaultStartingPaymentStatus
 									};
 
 									existingCheckout.PaymentDetailsId = newPaymentDetails.Id;
@@ -585,7 +584,6 @@ namespace OnlineStore.Services.Core
 												ExpMonth = paymentDetails.ExpMonth,
 												ExpYear = paymentDetails.ExpYear,
 												Status = DefaultStartingPaymentStatus,
-												Checkout = existingCheckout
 											};
 
 											existingCheckout.PaymentDetailsId = newPaymentDetails.Id;
@@ -602,8 +600,7 @@ namespace OnlineStore.Services.Core
 											NameOnCard = paymentDetails.NameOnCard,
 											ExpMonth = paymentDetails.ExpMonth,
 											ExpYear = paymentDetails.ExpYear,
-											Status = DefaultStartingPaymentStatus,
-											Checkout = existingCheckout
+											Status = DefaultStartingPaymentStatus
 										};
 
 										existingCheckout.PaymentDetailsId = newPaymentDetails.Id;
@@ -936,8 +933,7 @@ namespace OnlineStore.Services.Core
 										NameOnCard = paymentDetails.NameOnCard,
 										ExpMonth = paymentDetails.ExpMonth,
 										ExpYear = paymentDetails.ExpYear,
-										Status = DefaultStartingPaymentStatus,
-										Checkout = existingCheckout
+										Status = DefaultStartingPaymentStatus
 									};
 
 									existingCheckout.PaymentDetailsId = newPaymentDetails.Id;
@@ -961,8 +957,7 @@ namespace OnlineStore.Services.Core
 												NameOnCard = paymentDetails.NameOnCard,
 												ExpMonth = paymentDetails.ExpMonth,
 												ExpYear = paymentDetails.ExpYear,
-												Status = DefaultStartingPaymentStatus,
-												Checkout = existingCheckout
+												Status = DefaultStartingPaymentStatus
 											};
 
 											existingCheckout.PaymentDetailsId = newPaymentDetails.Id;
@@ -979,8 +974,7 @@ namespace OnlineStore.Services.Core
 											NameOnCard = paymentDetails.NameOnCard,
 											ExpMonth = paymentDetails.ExpMonth,
 											ExpYear = paymentDetails.ExpYear,
-											Status = DefaultStartingPaymentStatus,
-											Checkout = existingCheckout
+											Status = DefaultStartingPaymentStatus
 										};
 
 										existingCheckout.PaymentDetailsId = newPaymentDetails.Id;

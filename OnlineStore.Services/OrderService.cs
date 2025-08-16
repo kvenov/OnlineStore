@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using OnlineStore.Data.Models;
 using OnlineStore.Data.Repository.Interfaces;
+using OnlineStore.Services.Core.Email.Interfaces;
 using OnlineStore.Services.Core.Interfaces;
 using OnlineStore.Web.ViewModels.Order;
 using System.Security.Cryptography;
@@ -19,6 +21,8 @@ namespace OnlineStore.Services.Core
 		private readonly IAsyncRepository<OrderItem, int> _asyncOrderItemRepository;
 		private readonly ICheckoutRepository _checkoutRepository;
 		private readonly IProductRepository _productRepository;
+		private readonly IOrderEmailService _orderEmailService;
+		private readonly ILogger<OrderService> _logger;
 
 		public OrderService(IOrderRepository orderRepository,
 							IShoppingCartRepository shoppingCartRepository,
@@ -26,7 +30,9 @@ namespace OnlineStore.Services.Core
 							IRepository<OrderItem, int> syncOrderItemRepository,
 							IAsyncRepository<OrderItem, int> asyncOrderItemRepository,
 							ICheckoutRepository checkoutRepository,
-							IProductRepository productRepository)
+							IProductRepository productRepository,
+							IOrderEmailService orderEmailService,
+							ILogger<OrderService> logger)
 		{
 			this._orderRepository = orderRepository;
 			this._shoppingCartRepository = shoppingCartRepository;
@@ -35,6 +41,8 @@ namespace OnlineStore.Services.Core
 			this._asyncOrderItemRepository = asyncOrderItemRepository;
 			this._checkoutRepository = checkoutRepository;
 			this._productRepository = productRepository;
+			this._orderEmailService = orderEmailService;
+			_logger = logger;
 		}
 
 		public async Task<int?> CreateOrderAsync(Checkout? checkout)
@@ -55,6 +63,7 @@ namespace OnlineStore.Services.Core
 												checkout.BillingAddressId.Value : 
 													checkout.ShippingAddressId.Value,
 						PaymentMethodId = checkout.PaymentMethodId,
+						PaymentDetailsId = checkout.PaymentDetailsId,
 						PaymentDetails = checkout.PaymentDetails,
 						ShippingOption = checkout.ShippingOption,
 						EstimatedDeliveryStart = checkout.EstimatedDeliveryStart,
@@ -98,6 +107,7 @@ namespace OnlineStore.Services.Core
 												checkout.BillingAddressId.Value :
 													checkout.ShippingAddressId.Value,
 						PaymentMethodId = checkout.PaymentMethodId,
+						PaymentDetailsId = checkout.PaymentDetailsId,
 						PaymentDetails = checkout.PaymentDetails,
 						ShippingOption = checkout.ShippingOption,
 						EstimatedDeliveryStart = checkout.EstimatedDeliveryStart,
@@ -134,6 +144,19 @@ namespace OnlineStore.Services.Core
 					checkout.CompletedAt = DateTime.UtcNow;
 					checkout.IsCompleted = true;
 					await this._checkoutRepository.UpdateAsync(checkout);
+
+					//After a successful order creation, send an email confirmation.
+					try
+					{
+						Order? order = await this._orderRepository
+								.GetByIdAsync(newOrderId.Value);
+
+						await _orderEmailService.SendOrderPlacedAsync(order!);
+					}
+					catch (Exception ex)
+					{
+						_logger.LogError(ex, "Failed to send order confirmation email for OrderId {OrderId}", newOrderId);
+					}
 				}
 
 			}

@@ -6,6 +6,8 @@ using OnlineStore.Data.Repository;
 using OnlineStore.Data.Repository.Interfaces;
 using OnlineStore.Data.Seeding;
 using OnlineStore.Data.Seeding.Interfaces;
+using OnlineStore.Services.Core.Email;
+using OnlineStore.Services.Core.Email.Interfaces;
 using OnlineStore.Services.Core.Identity;
 using OnlineStore.Services.Core.Interfaces;
 using OnlineStore.Web.Infrastructure.Extensions;
@@ -53,6 +55,11 @@ builder.Services.AddCustomFilters(typeof(CleanEmptyAddressFilter).Assembly);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddHttpContextAccessor();
+
+//This required so that the application can use email sending functionality.
+builder.Services.AddSingleton<IEmailSender, SendGridEmailSender>();
 
 WebApplication app = builder.Build();
 
