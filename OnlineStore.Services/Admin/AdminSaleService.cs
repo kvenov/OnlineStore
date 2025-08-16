@@ -320,8 +320,7 @@ namespace OnlineStore.Services.Core.Admin
 		{
 			var query = this._orderRepository
 							.GetAllAttached()
-							.AsNoTracking()
-							.Where(o => o.IsCompleted == true && o.Status == OrderStatus.Delivered);
+							.AsNoTracking();
 
 			if (dto.FromDate.HasValue)
 			{
