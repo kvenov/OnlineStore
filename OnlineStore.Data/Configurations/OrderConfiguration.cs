@@ -91,6 +91,10 @@ namespace OnlineStore.Data.Configurations
 				.HasDefaultValue(IsDeletedDefaultValue);
 
 			entity
+				.Property(p => p.PaymentDetailsId)
+				.IsRequired(false);
+
+			entity
 				.HasOne(o => o.User)
 				.WithMany(u => u.Orders)
 				.HasForeignKey(o => o.UserId)
@@ -104,8 +108,8 @@ namespace OnlineStore.Data.Configurations
 
 			entity
 				.HasOne(o => o.PaymentDetails)
-				.WithOne(pd => pd.Order)
-				.HasForeignKey<PaymentDetails>(pd => pd.OrderId)
+				.WithMany(pd => pd.Orders)
+				.HasForeignKey(p => p.PaymentDetailsId)
 				.OnDelete(DeleteBehavior.Cascade);
 
 			entity

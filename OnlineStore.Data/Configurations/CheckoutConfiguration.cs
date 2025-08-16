@@ -110,8 +110,8 @@ namespace OnlineStore.Data.Configurations
 
 			entity
 				.HasOne(p => p.PaymentDetails)
-				.WithOne(pd => pd.Checkout)
-				.HasForeignKey<Checkout>(p => p.PaymentDetailsId)
+				.WithMany(pd => pd.Checkouts)
+				.HasForeignKey(p => p.PaymentDetailsId)
 				.OnDelete(DeleteBehavior.Restrict);
 
 			entity

@@ -42,26 +42,7 @@ namespace OnlineStore.Data.Configurations
 				.IsRequired(true);
 
 			entity
-				.Property(p => p.OrderId)
-				.IsRequired(false);
-
-			entity
-				.HasOne(p => p.Order)
-				.WithOne(o => o.PaymentDetails)
-				.HasForeignKey<PaymentDetails>(p => p.OrderId)
-				.OnDelete(DeleteBehavior.Cascade);
-
-			entity
-				.HasOne(p => p.Checkout)
-				.WithOne(c => c.PaymentDetails)
-				.HasForeignKey<Checkout>(c => c.PaymentDetailsId)
-				.OnDelete(DeleteBehavior.Restrict);
-
-			entity
 				.HasIndex(p => p.Status);
-
-			entity
-				.HasQueryFilter(pd => pd.Checkout.IsDeleted == false);
 
 		}
 	}

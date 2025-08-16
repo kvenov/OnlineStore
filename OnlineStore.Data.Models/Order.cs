@@ -38,6 +38,8 @@ namespace OnlineStore.Data.Models
 		[Comment("Payment method used for the order")]
 		public virtual PaymentMethod PaymentMethod { get; set; } = null!;
 
+		public int? PaymentDetailsId { get; set; }
+
 		[Comment("Payment details used for the order")]
 		public virtual PaymentDetails? PaymentDetails { get; set; }
 

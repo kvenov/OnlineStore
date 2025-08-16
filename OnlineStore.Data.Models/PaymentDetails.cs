@@ -30,13 +30,13 @@ namespace OnlineStore.Data.Models
 		public PaymentStatus Status { get; set; }
 
 
-		public int? OrderId { get; set; }
+		[Comment("The Orders that uses the payment details")]
+		public virtual ICollection<Order> Orders { get; set; } =
+						new HashSet<Order>();
 
-		[Comment("Order that uses the payment details")]
-		public virtual Order? Order { get; set; }
-
-		[Comment("Checkout that uses the payment details")]
-		public virtual Checkout Checkout { get; set; } = null!;
+		[Comment("The Checkouts that uses the payment details")]
+		public virtual ICollection<Checkout> Checkouts { get; set; } = 
+						new HashSet<Checkout>();
 
 
 		[Comment("The Users that uses this payment details as default")]
