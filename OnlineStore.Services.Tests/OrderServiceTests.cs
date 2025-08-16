@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using MockQueryable;
 using Moq;
 using OnlineStore.Data.Models;
 using OnlineStore.Data.Models.Enums;
 using OnlineStore.Data.Repository.Interfaces;
 using OnlineStore.Services.Core;
+using OnlineStore.Services.Core.Email.Interfaces;
 using OnlineStore.Services.Core.Interfaces;
 using OnlineStore.Web.ViewModels.Order;
 using System.Linq.Expressions;
@@ -21,6 +23,8 @@ namespace OnlineStore.Services.Tests
 		private Mock<IAsyncRepository<OrderItem, int>> _asyncOrderItemRepoMock;
 		private Mock<ICheckoutRepository> _checkoutRepoMock;
 		private Mock<IProductRepository> _productRepoMock;
+		private Mock<IOrderEmailService> _orderEmailService;
+		private Mock<ILogger<OrderService>> _logger;
 
 		private IOrderService _orderService;
 
@@ -34,6 +38,8 @@ namespace OnlineStore.Services.Tests
 			_asyncOrderItemRepoMock = new Mock<IAsyncRepository<OrderItem, int>>();
 			_checkoutRepoMock = new Mock<ICheckoutRepository>();
 			_productRepoMock = new Mock<IProductRepository>();
+			_orderEmailService = new Mock<IOrderEmailService>();
+			_logger = new Mock<ILogger<OrderService>>();
 
 			_orderService = new OrderService(
 				_orderRepoMock.Object,
@@ -42,7 +48,9 @@ namespace OnlineStore.Services.Tests
 				_syncOrderItemRepoMock.Object,
 				_asyncOrderItemRepoMock.Object,
 				_checkoutRepoMock.Object,
-				_productRepoMock.Object
+				_productRepoMock.Object,
+				_orderEmailService.Object,
+				_logger.Object
 			);
 		}
 
