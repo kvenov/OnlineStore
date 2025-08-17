@@ -19,27 +19,6 @@
 
 <section class="container py-4">
     <div class="row mb-4">
-        <div class="col-md-4 mb-2">
-            <form method="get" asp-action="All">
-                <div class="input-group">
-                    <input type="text" class="form-control" name="search" placeholder="Search products...">
-                    <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
-                </div>
-            </form>
-        </div>
-
-        <div class="col-md-4 mb-2">
-            <form method="get" asp-action="All">
-                <select class="form-select" name="category">
-                    <option value="">All Categories</option>
-                    <!-- Populate dynamically -->
-                    <option value="Clothing">Clothing</option>
-                    <option value="Accessories">Accessories</option>
-                    <option value="Tech">Tech</option>
-                </select>
-            </form>
-        </div>
-
         <div class="col-md-4 d-flex align-items-center justify-content-end">
             <span class="text-muted small">Showing @Model.Count() product(s)</span>
         </div>
@@ -95,7 +74,7 @@
                                     <i class="bi bi-heart me-1"></i>
                                     <span class="btn-label">Favorites</span>
                                 </button>
-                                <button class="expand-button btn btn-outline-success btn-sm">
+                                <button class="expand-button btn btn-outline-success btn-sm btn-add-to-cart" data-product-id="@product.Id">
                                     <i class="bi bi-cart-plus me-1"></i>
                                     <span class="btn-label">Add to Cart</span>
                                 </button>
@@ -108,9 +87,42 @@
             </div>
         }
     </div>
+
+    <div class="modal fade" id="addToCartModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg rounded-4 animate__animated animate__fadeIn">
+                <div class="modal-header bg-light border-bottom">
+                    <h5 class="modal-title fw-bold"><i class="bi bi-cart-plus-fill me-2 text-success"></i> Add to Cart</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-5 text-center">
+                            <img id="modalProductImage" src="" class="img-fluid rounded shadow-sm" style="max-height: 300px;" />
+                        </div>
+                        <div class="col-md-7">
+                            <h4 id="modalProductName" class="fw-bold"></h4>
+                            <p id="modalProductPrice" class="text-muted fs-5"></p>
+
+                            <div class="my-3">
+                                <label class="form-label fw-semibold">Select Size</label>
+                                <div id="sizeOptions" class="d-flex flex-wrap gap-2"></div>
+                            </div>
+
+                            <button id="confirmAddToCartBtn" class="btn btn-success mt-3 w-100" disabled>
+                                <i class="bi bi-cart-check me-1"></i> Confirm Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
 @section Scripts {
     <script src="~/js/Wishlist/wishlist.js" asp-append-version="true"></script>
+    <script src="~/js/ShoppingCart/shoppingCart.js" asp-append-version="true"></script>
+    <script src="~/js/Product/productList.js" asp-append-version="true"></script>
 }
 
