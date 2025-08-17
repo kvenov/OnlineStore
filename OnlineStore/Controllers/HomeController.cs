@@ -1,7 +1,5 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OnlineStore.Models;
 using OnlineStore.Services.Core.Interfaces;
 using OnlineStore.Web.Controllers;
 using OnlineStore.Web.ViewModels.Home;
@@ -11,11 +9,6 @@ namespace OnlineStore.Controllers
 {
     public class HomeController : BaseController
     {
-        private readonly Dictionary<int, string> statusCodesCache = new Dictionary<int, string>
-        {
-            {401, "UnauthorizedError"}
-        };
-
 		private readonly ILogger<HomeController> _logger;
         private readonly IProductService _productService;
         private readonly IProductPromotionService _productPromotionService;
@@ -73,7 +66,6 @@ namespace OnlineStore.Controllers
         [AllowAnonymous]
         public IActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
 			return View();
 		}
 

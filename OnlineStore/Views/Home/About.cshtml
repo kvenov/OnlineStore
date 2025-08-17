@@ -1,5 +1,80 @@
 ﻿@{
-	string message = ViewBag.Message ?? "Welcome to the Online Store!";
+    ViewData["Title"] = "About Us";
 }
 
-<h2>@message</h2>
+@section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+    <link href="~/css/Home/about.css" rel="stylesheet" asp-append-version="true"/>
+}
+
+<div class="hero-section">
+    <h1>About Our Store</h1>
+    <p>Quality products, unbeatable prices, and a passion for customer satisfaction.</p>
+</div>
+
+<div class="container my-5">
+    <div class="row align-items-center mb-5">
+        <div class="col-md-6" data-aos="fade-right">
+            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30" 
+                 alt="Store history" class="img-fluid rounded shadow" />
+        </div>
+        <div class="col-md-6" data-aos="fade-left">
+            <h2 class="fw-bold mb-3">Our Journey</h2>
+            <p class="text-muted">
+                Founded in 2015, our online store started with a simple mission: 
+                to make high-quality products accessible to everyone. 
+                What began as a small family business has grown into a trusted marketplace 
+                known for reliability, affordability, and outstanding service. 
+            </p>
+        </div>
+    </div>
+
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">Why Shop With Us?</h2>
+        <p class="text-muted">More than just products – we deliver value.</p>
+    </div>
+
+    <div class="row text-center g-4">
+        <div class="col-md-4" data-aos="zoom-in">
+            <div class="card feature-card p-4 border-0 shadow-sm">
+                <i class="fa-solid fa-truck-fast fa-3x text-primary mb-3"></i>
+                <h5>Fast Delivery</h5>
+                <p class="text-muted">Get your orders delivered quickly and securely right to your doorstep.</p>
+            </div>
+        </div>
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="150">
+            <div class="card feature-card p-4 border-0 shadow-sm">
+                <i class="fa-solid fa-award fa-3x text-success mb-3"></i>
+                <h5>Premium Quality</h5>
+                <p class="text-muted">We carefully select only the best products for our customers.</p>
+            </div>
+        </div>
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
+            <div class="card feature-card p-4 border-0 shadow-sm">
+                <i class="fa-solid fa-headset fa-3x text-danger mb-3"></i>
+                <h5>24/7 Support</h5>
+                <p class="text-muted">Our team is always here to help you with any questions or concerns.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5 text-center" data-aos="fade-up">
+        <h2 class="fw-bold mb-3">We’re Here For You</h2>
+        <p class="text-muted mb-4">Join thousands of happy customers who trust us for their everyday needs.</p>
+        <a href="/Product/ProductList" class="btn btn-primary btn-lg px-5">
+            <i class="fa-solid fa-shopping-bag me-2"></i> Shop Now
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+    </script>
+}
