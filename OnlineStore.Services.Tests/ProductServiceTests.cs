@@ -15,6 +15,7 @@ namespace OnlineStore.Services.Tests
 		private Mock<IProductRepository> _mockProductRepo;
 		private Mock<IRepository<ProductCategory, int>> _mockCategoryRepo;
 		private Mock<UserManager<ApplicationUser>> _mockUserManager;
+		private Mock<IProductRatingService> _productRatingMock;
 		private IProductService _service;
 
 		[SetUp]
@@ -22,13 +23,16 @@ namespace OnlineStore.Services.Tests
 		{
 			_mockProductRepo = new Mock<IProductRepository>();
 			_mockCategoryRepo = new Mock<IRepository<ProductCategory, int>>();
+			_productRatingMock = new Mock<IProductRatingService>();
+
 			_mockUserManager = new Mock<UserManager<ApplicationUser>>(
 				Mock.Of<IUserStore<ApplicationUser>>(), null, null, null, null, null, null, null, null);
 
 			_service = new ProductService(
 				_mockProductRepo.Object,
 				_mockCategoryRepo.Object,
-				_mockUserManager.Object
+				_mockUserManager.Object,
+				_productRatingMock.Object
 			);
 		}
 
